@@ -1,22 +1,34 @@
+# 🏛️ Tourasna 3D & ML Integration
 
-# 🏛️ Tourasna 3D Models Integration
+This repository contains two main components used in the **Tourasna Flutter application**:
 
-This repository contains links to 3D `.glb` models stored on Firebase/Google Cloud Storage.  
-The models represent Egyptian heritage and tourist sites, ready to be integrated into the **Tourasna Flutter app**.
+1. 🧩 **3D `.glb` models** of Egyptian heritage sites (stored on Firebase/Google Cloud Storage).  
+2. 🧠 **Machine Learning model (`.tflite`)** for Egyptian landmark image classification.
+
+Both components work together to enhance the Tourasna experience — allowing users to explore Egypt’s landmarks in 3D and identify them automatically through AI.
 
 ---
 
-## 📂 Storage Overview
+## 📦 Repository Contents
+
+| Folder / File | Description |
+|----------------|-------------|
+| `/3d_models/` | Contains URLs for `.glb` models hosted on Firebase |
+| `/ml_model/landmark_classifier.tflite` | TensorFlow Lite model used for image classification |
+| `/ml_model/label_map.json` | Label mapping for landmark names |
+| `/docs/` | Additional resources and project documentation |
+
+---
+
+## 🌐 3D Models Overview
 
 - **Bucket name:** `tourasna-storage`  
 - **Access:** Public (read-only)  
 - **Folder:** `3d_models/`
 
-Each model can be loaded directly using its public URL.
+Each `.glb` model represents a famous Egyptian heritage site.
 
----
-
-## 🌐 Example `.glb` URLs (3 of 30 total)
+### Example Public URLs (3 of 30 total)
 
 | # | Model Name | Public URL |
 |---|-------------|------------|
@@ -28,40 +40,24 @@ Each model can be loaded directly using its public URL.
 
 ---
 
-## 🧩 Flutter Integration Example
+## 🧠 Landmark Classification Model (ML Integration)
 
-You can use the [`model_viewer`](https://pub.dev/packages/model_viewer) Flutter package to display the `.glb` files:
+The **`landmark_classifier.tflite`** model is a pre-trained TensorFlow Lite model capable of recognizing Egyptian tourist landmarks from images.
 
-```dart
-import 'package:model_viewer_plus/model_viewer_plus.dart';
-
-ModelViewer(
-  src: 'https://storage.googleapis.com/tourasna-storage/3d_models/Aisha%20Fahmy%20Palace.glb',
-  alt: 'Aisha Fahmy Palace 3D Model',
-  ar: true,
-  autoRotate: true,
-  cameraControls: true,
-);
-```
+### Model Files
+| File | Purpose |
+|-------|----------|
+| `landmark_classifier.tflite` | Lightweight ML model for on-device inference |
+| `label_map (1).json` | List of landmark names (used for readable predictions) |
 
 ---
 
-## 🔐 Access Policy
+## ⚙️ Flutter Integration Guide (for the Flutter Team)
 
-- All `.glb` files are **publicly readable**, so the Flutter app can fetch them directly.  
-- Only project maintainers can **upload or modify** files in the bucket.  
-- For security, write access is limited to the Firebase service account.
-
----
-
-## 🧾 Notes
-
-- Each 3D model follows the `.glb` (binary glTF) standard.  
-- Ensure your Flutter app has internet permission enabled.  
-- For offline caching or optimization, consider downloading and bundling critical assets.
-
----
-
-**Maintainer:** Tourasna 3D Team  
-**Firebase Bucket:** `tourasna-storage`  
-**Total Models:** 30
+### 1️⃣ Add dependencies
+In `pubspec.yaml`:
+```yaml
+dependencies:
+  tflite_flutter: ^0.10.1
+  image: ^4.2.2
+  model_viewer_plus: ^1.7.1
