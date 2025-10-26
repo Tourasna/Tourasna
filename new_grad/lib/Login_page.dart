@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: const Color(0xFFF5ECD7),
+        color: const Color(0xFFF5E5D1),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -28,11 +28,11 @@ class _LoginPageState extends State<LoginPage> {
                 const Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 35),
+                    padding: EdgeInsets.only(left: 10),
                     child: Image(
                       image: AssetImage('assets/images/loginn.png'),
-                      width: 323,
-                      height: 322,
+                      width: 342,
+                      height: 333,
                     ),
                   ),
                 ),
