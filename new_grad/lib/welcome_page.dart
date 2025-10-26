@@ -8,24 +8,19 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background gradient
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFD28B52),
-                  Color(0xFFEFE8DA),
-                  Color(0xFF4DA6A8),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+              image: DecorationImage(
+                image: AssetImage('assets/images/Welcome.png'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
+          Container(color: Colors.white.withOpacity(0.5)),
 
           const Positioned(
             left: 40,
-            top: 150,
+            top: 80,
             child: Text(
               "Hello,",
               style: TextStyle(
@@ -39,7 +34,7 @@ class WelcomePage extends StatelessWidget {
 
           const Positioned(
             left: 40,
-            top: 300,
+            top: 200,
             child: Text(
               "'Our legacy, \nyour journey'.",
               style: TextStyle(
@@ -70,7 +65,7 @@ class WelcomePage extends StatelessWidget {
             top: 740,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/welcome');
+                Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
