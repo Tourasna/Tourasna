@@ -52,92 +52,99 @@ class _OTPPageState extends State<OTPPage> {
       body: SafeArea(
         child: Column(
           children: [
+            // Main section centered
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
-                    vertical: 20,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Enter the 6-digits code sent to you at :',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.black),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        '+1 81234 56789',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 20,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Enter the 6-Digits Code Sent to\nYou at :',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          myInputBox(context, txt1),
-                          myInputBox(context, txt2),
-                          myInputBox(context, txt3),
-                          myInputBox(context, txt4),
-                          myInputBox(context, txt5),
-                          myInputBox(context, txt6),
-                        ],
-                      ),
-                      const SizedBox(height: 25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Didn’t Receive?",
-                            style: TextStyle(fontSize: 16),
+                        const SizedBox(height: 15),
+                        const Text(
+                          '+1 81234 56789',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 8),
-                          resendTime == 0
-                              ? InkWell(
-                                  onTap: () {
-                                    invalidOtp = false;
-                                    resendTime = 60;
-                                    startTimer();
-                                  },
-                                  child: const Text(
-                                    'Resend Code',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                        ),
+                        const SizedBox(height: 25),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            myInputBox(context, txt1),
+                            myInputBox(context, txt2),
+                            myInputBox(context, txt3),
+                            myInputBox(context, txt4),
+                            myInputBox(context, txt5),
+                            myInputBox(context, txt6),
+                          ],
+                        ),
+                        const SizedBox(height: 25),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Didn’t Receive?",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(width: 8),
+                            resendTime == 0
+                                ? InkWell(
+                                    onTap: () {
+                                      invalidOtp = false;
+                                      resendTime = 60;
+                                      startTimer();
+                                    },
+                                    child: const Text(
+                                      'Resend Code',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      resendTime != 0
-                          ? Text(
-                              'You can resend OTP after ${strFormatting(resendTime)} second(s)',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black54,
-                              ),
-                            )
-                          : const SizedBox(),
-                      const SizedBox(height: 20),
-                      Text(
-                        invalidOtp ? 'Invalid otp!' : '',
-                        style: const TextStyle(fontSize: 18, color: Colors.red),
-                      ),
-                    ],
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        resendTime != 0
+                            ? Text(
+                                'You can resend OTP after ${strFormatting(resendTime)} second(s)',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                ),
+                              )
+                            : const SizedBox(),
+                        const SizedBox(height: 15),
+                        Text(
+                          invalidOtp ? 'Invalid otp!' : '',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
 
-            // ✅ Buttons pinned at bottom
+            // Buttons stay at bottom
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 30,
