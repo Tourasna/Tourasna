@@ -1,10 +1,10 @@
-# 🕌 Tourasna
+# 𓅓 Tourasna
 
 Tourasna is an AI-powered heritage tourism assistant that provides personalized cultural recommendations and smart tour planning for travelers interested in discovering Egypt’s rich historical sites.
 
 ## 🌍 Project Overview
 
-Tourasna is a graduation project developed by students of the Faculty of Computers and Artificial Intelligence, Cairo University. It leverages artificial intelligence to enhance smart tourism experiences through personalized guidance, landmark recognition, and optimized cultural itineraries.
+Tourasna is a graduation project developed by students of the Faculty of Information Technology and Computer Science, Nile University. It leverages artificial intelligence to enhance smart tourism experiences through personalized guidance, landmark recognition, and optimized cultural itineraries.
 
 ## 🚀 Key Features
 
@@ -43,7 +43,7 @@ Tourasna/
 - **Project Title:** Tourasna
 - **University:** Nile University – Faculty of CS
 - **Academic Year:** 2025–2026
-- **Supervisor:** Dr. Noha Gamal
+- **Supervisor:** Dr. Noha Gamal- Dr. Mohamed Elhelw
 
 ## 🧠 Team Members
 
