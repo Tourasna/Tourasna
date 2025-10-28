@@ -43,7 +43,7 @@ Tourasna/
 - **Project Title:** Tourasna
 - **University:** Nile University – Faculty of CS
 - **Academic Year:** 2025–2026
-- **Supervisor:** Dr. Noha Gamal
+- **Supervisor:** Dr. Noha Gamal- Dr. Mohamed Elhelw
 
 ## 🧠 Team Members
 
