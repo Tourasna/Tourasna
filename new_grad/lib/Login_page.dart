@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +10,56 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _signIn() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Login Successful')));
+        // Navigate to next page (replace with your home screen route)
+        // Navigator.pushReplacementNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'invalid-email':
+          message = 'Invalid email address.';
+          break;
+        case 'user-disabled':
+          message = 'This user account has been disabled.';
+          break;
+        case 'user-not-found':
+          message = 'No user found for this email.';
+          break;
+        case 'wrong-password':
+          message = 'Wrong password.';
+          break;
+        default:
+          message = 'Login failed. Please try again.';
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +81,16 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Image(
-                      image: AssetImage('assets/images/loginn.png'),
+                      image: AssetImage('assets/images/loginnn.png'),
                       width: 342,
                       height: 333,
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 30),
 
-                Text(
+                const Text(
                   'Welcome back',
                   style: TextStyle(
                     fontSize: 30,
@@ -46,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.black,
                   ),
                 ),
+
                 const SizedBox(height: 40),
 
                 Form(
@@ -53,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) => value == null || value.isEmpty
                             ? 'Enter Email'
                             : null,
@@ -65,9 +119,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 25),
 
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) => value == null || value.isEmpty
@@ -88,31 +144,42 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(color: Colors.black),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
+                          onPressed: _isLoading ? null : _signIn,
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.black,
+                                )
+                              : const Text(
+                                  'Sign in',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
+
                       const SizedBox(height: 40),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const [
-                          Icon(Icons.facebook, color: Colors.blue),
-                          Icon(Icons.share, color: Colors.red),
-                          Icon(Icons.mail, color: Colors.black),
+                          Icon(Icons.facebook, color: Colors.blue, size: 35),
+                          Icon(Icons.share, color: Colors.red, size: 35),
+                          Icon(Icons.mail, color: Colors.black, size: 35),
                         ],
                       ),
+
                       const SizedBox(height: 40.0),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -121,8 +188,10 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(color: Colors.black45),
                           ),
                           GestureDetector(
-                            onTap: () {},
-                            child: Text(
+                            onTap: () {
+                              // TODO: Navigate to signup
+                            },
+                            child: const Text(
                               'Sign up',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -132,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 40),
                     ],
                   ),
