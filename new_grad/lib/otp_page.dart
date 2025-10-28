@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:new_grad/Login_page.dart';
+import 'package:new_grad/login_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -73,7 +73,7 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                         const SizedBox(height: 15),
                         const Text(
-                          '+1 81234 56789',
+                          'useremail@gmail.com',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
