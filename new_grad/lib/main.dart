@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:new_grad/Terms_and_conditions.dart';
 import 'package:new_grad/start_page.dart';
 import 'package:new_grad/Login_page.dart';
 import 'package:new_grad/OTP_page.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/start': (context) => const FirstPage(),
         '/home': (context) => const WelcomePage(),
+        '/Terms_and_conditions': (context) => const TermsAndConditions(),
         '/login': (context) => const LoginPage(),
         '/otp': (context) => const OTPPage(),
       },
