@@ -33,7 +33,7 @@ class TermsAndConditions extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 const Text(
-                  'Almost Finished!',
+                  'Almost Finishedd!',
                   style: TextStyle(
                     fontFamily: 'Sail',
                     fontSize: 35,
