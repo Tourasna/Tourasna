@@ -36,7 +36,7 @@ class WelcomePage extends StatelessWidget {
             left: 40,
             top: 200,
             child: Text(
-              "'Our legacy, \nyour journey'.",
+              "Our legacy, \nyour journey.",
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
@@ -65,7 +65,7 @@ class WelcomePage extends StatelessWidget {
             top: 740,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/login');
+                Navigator.pushNamed(context, '/Terms_and_conditions');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
