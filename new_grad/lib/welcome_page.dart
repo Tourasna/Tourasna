@@ -36,7 +36,7 @@ class WelcomePage extends StatelessWidget {
             left: 40,
             top: 200,
             child: Text(
-              "Our legacy, \nyour journeyy.",
+              "Our legacy, \nyour journey.",
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
