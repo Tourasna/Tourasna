@@ -65,7 +65,7 @@ class WelcomePage extends StatelessWidget {
             top: 740,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/Terms_and_conditions');
+                Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
