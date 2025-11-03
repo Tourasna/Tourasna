@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
       title: 'Tourasna',
       theme: ThemeData(primarySwatch: Colors.blue),
 
-      // ✅ Your initial screen
       initialRoute: '/start',
 
       // ✅ All registered routes
