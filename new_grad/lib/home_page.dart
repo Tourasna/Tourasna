@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: Container(
-            margin: const EdgeInsets.all(7.0),
+            margin: const EdgeInsets.all(8.0),
             decoration: const BoxDecoration(
               color: Colors.black,
               shape: BoxShape.circle,
