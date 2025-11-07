@@ -67,11 +67,9 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() => _loading = true);
 
     try {
-      // ✅ 1. Create user in Firebase Auth
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      // ✅ 2. Save extra info in Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(credential.user!.uid)
@@ -84,7 +82,6 @@ class _SignUpPageState extends State<SignUpPage> {
             'createdAt': FieldValue.serverTimestamp(),
           });
 
-      // ✅ 3. Send verification email
       await credential.user!.sendEmailVerification();
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +91,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
 
-      // ✅ 4. Redirect to login after short delay
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacementNamed(context, '/login');
       });
