@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
 
       initialRoute: '/start',
 
-      // ✅ All registered routes
       routes: {
         '/start': (context) => const FirstPage(),
         '/home': (context) => const WelcomePage(),
