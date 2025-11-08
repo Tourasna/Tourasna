@@ -33,10 +33,6 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Login Successful')));
-
         Navigator.pushReplacementNamed(context, '/homescreen');
       }
     } on FirebaseAuthException catch (e) {
