@@ -14,7 +14,7 @@ class _FirstPageState extends State<FirstPage> {
   void initState() {
     super.initState();
 
-    // Wait 10 seconds then move to Login Page
+    // Wait 5 seconds then move to Login Page
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -33,7 +33,7 @@ class _FirstPageState extends State<FirstPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/Start.png'),
+                image: AssetImage('assets/images/start.png'),
                 fit: BoxFit.cover,
               ),
             ),
