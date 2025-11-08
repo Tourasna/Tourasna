@@ -23,7 +23,7 @@ class TermsAndConditions extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Image(
-                    image: AssetImage('assets/images/Terms.png'),
+                    image: AssetImage('assets/images/terms.png'),
                     width: 292,
                     height: 285,
                     fit: BoxFit.contain,
