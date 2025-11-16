@@ -29,7 +29,6 @@ class _FirstPageState extends State<FirstPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -39,10 +38,8 @@ class _FirstPageState extends State<FirstPage> {
             ),
           ),
 
-          // Semi-transparent overlay for better contrast
           Container(color: Colors.white.withOpacity(0.25)),
 
-          // Centered logo
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +51,6 @@ class _FirstPageState extends State<FirstPage> {
                 ),
                 const SizedBox(height: 50),
 
-                // Optional text or loading indicator
                 const Text(
                   'Loading...',
                   style: TextStyle(
