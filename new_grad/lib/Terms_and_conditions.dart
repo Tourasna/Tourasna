@@ -153,7 +153,10 @@ class TermsAndConditions extends StatelessWidget {
                             ),
                             onPressed: isChecked
                                 ? () {
-                                    Navigator.pushNamed(context, '/done');
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/preferences',
+                                    );
                                   }
                                 : null,
                             child: const Text(
