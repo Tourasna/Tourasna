@@ -143,9 +143,7 @@ class _HomePageState extends State<HomePage> {
                             child: _serviceButton(
                               iconPath: 'assets/images/contextual.png',
                               label: 'Contextual Awareness',
-                              onTap: () {
-                                print('Contextual Awareness clicked');
-                              },
+                              onTap: () {},
                             ),
                           ),
                         ],
@@ -161,7 +159,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(15),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/chatbot');
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -196,7 +196,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                // HORIZONTAL RECOMMENDATIONS
                 SizedBox(
                   height: 220,
                   child: ListView(
@@ -223,7 +222,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      // CAMERA BUTTON
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await openCamera();
@@ -240,7 +238,6 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      // BOTTOM NAVBAR
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: const Color(0xFFF5E5D1),

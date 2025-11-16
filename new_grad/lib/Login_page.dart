@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
       final doc = await FirebaseFirestore.instance
           .collection('users')
-          .doc(user.email)
+          .doc(user.uid)
           .get();
 
       final firstLogin = doc.data()?['firstLogin'] ?? true;

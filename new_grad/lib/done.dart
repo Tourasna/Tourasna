@@ -36,7 +36,7 @@ class DonePage extends StatelessWidget {
             top: 740,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/login');
+                Navigator.pushNamed(context, '/homescreen');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
