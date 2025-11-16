@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class HomePage extends StatelessWidget {
+Future<void> openCamera() async {
+  final picker = ImagePicker();
+  final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+
+  if (photo != null) {
+    print("📸 Snapshot path: ${photo.path}");
+  }
+}
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +39,8 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
+
+                // LOGO + SEARCH
                 Column(
                   children: [
                     Padding(
@@ -90,7 +107,9 @@ class HomePage extends StatelessWidget {
                             child: _serviceButton(
                               iconPath: 'assets/images/lens.png',
                               label: 'AI Lens',
-                              onTap: () {},
+                              onTap: () async {
+                                await openCamera();
+                              },
                             ),
                           ),
                           Flexible(
@@ -102,6 +121,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -109,13 +129,6 @@ class HomePage extends StatelessWidget {
                             child: _serviceButton(
                               iconPath: 'assets/images/tts.png',
                               label: 'TTS',
-                              onTap: () {},
-                            ),
-                          ),
-                          Flexible(
-                            child: _serviceButton(
-                              iconPath: 'assets/images/stt.png',
-                              label: 'STT',
                               onTap: () {},
                             ),
                           ),
@@ -148,10 +161,7 @@ class HomePage extends StatelessWidget {
                   ),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(15),
-                    onTap: () {
-                      print('Chatbot clicked');
-                      // Add your chatbot logic here
-                    },
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -180,18 +190,13 @@ class HomePage extends StatelessWidget {
 
                 const Padding(
                   padding: EdgeInsets.fromLTRB(24, 0, 0, 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'FOR YOU: RECOMMENDATIONS',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  child: Text(
+                    'FOR YOU: RECOMMENDATIONS',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
 
+                // HORIZONTAL RECOMMENDATIONS
                 SizedBox(
                   height: 220,
                   child: ListView(
@@ -218,8 +223,11 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
+      // CAMERA BUTTON
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await openCamera();
+        },
         backgroundColor: const Color(0xFFF5E5D1),
         elevation: 8.0,
         shape: const CircleBorder(),
@@ -232,6 +240,7 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
+      // BOTTOM NAVBAR
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: const Color(0xFFF5E5D1),
@@ -263,8 +272,8 @@ class HomePage extends StatelessWidget {
               Row(
                 children: [
                   _buildNavItem(
-                    iconPath: 'assets/icons/settings.png',
-                    label: 'Settings',
+                    iconPath: 'assets/icons/agenda.png',
+                    label: 'Agenda',
                     onPressed: () {},
                   ),
                   const SizedBox(width: 28),
