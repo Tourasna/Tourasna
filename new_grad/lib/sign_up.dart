@@ -80,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
             'dateOfBirth': dob,
             'email': email,
             'createdAt': FieldValue.serverTimestamp(),
+            'firstLogin': true,
           });
 
       await credential.user!.sendEmailVerification();
