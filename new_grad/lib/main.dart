@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:new_grad/Terms_and_conditions.dart';
+import 'package:new_grad/terms_and_conditions.dart';
 import 'package:new_grad/done.dart';
 import 'package:new_grad/home_page.dart';
 import 'package:new_grad/sign_up.dart';
