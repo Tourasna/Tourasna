@@ -8,7 +8,9 @@ import 'package:new_grad/start_page.dart';
 import 'package:new_grad/Login_page.dart';
 import 'package:new_grad/OTP_page.dart';
 import 'package:new_grad/welcome_page.dart';
+import 'package:new_grad/preferences_page.dart';
 import 'firebase_options.dart';
+import 'package:new_grad/cahtbot_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,9 +37,11 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/otp': (context) => const OTPPage(),
         '/signup': (context) => const SignUpPage(),
+        '/preferences': (context) => const PreferencesPage(),
         '/homescreen': (context) => const HomePage(),
         '/terms': (context) => const TermsAndConditions(),
         '/done': (context) => const DonePage(),
+        '/chatbot': (context) => const ChatbotPage(),
       },
     );
   }

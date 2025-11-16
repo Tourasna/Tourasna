@@ -16,6 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _dateOfBirthController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _loading = false;
 
   @override
@@ -26,40 +27,57 @@ class _SignUpPageState extends State<SignUpPage> {
     _dateOfBirthController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime(2000),
+      initialDate: DateTime(2000), // Start at a reasonable default
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      lastDate: DateTime.now(), // User cannot be born in the future
     );
     if (picked != null) {
       setState(() {
+        // Formatting the date for consistency
         _dateOfBirthController.text =
-            "${picked.day}/${picked.month}/${picked.year}";
+        "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
   }
 
   Future<void> _signUp() async {
+    // Hide keyboard if it's open
+    FocusScope.of(context).unfocus();
+
     final firstName = _firstNameController.text.trim();
     final lastName = _lastNameController.text.trim();
     final username = _usernameController.text.trim();
     final dob = _dateOfBirthController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
     if (firstName.isEmpty ||
         lastName.isEmpty ||
         username.isEmpty ||
         dob.isEmpty ||
         email.isEmpty ||
-        password.isEmpty) {
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
@@ -70,21 +88,27 @@ class _SignUpPageState extends State<SignUpPage> {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      // Check if user is not null before proceeding
+      if (credential.user == null) {
+        throw Exception("User creation failed, user is null.");
+      }
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(credential.user!.uid)
           .set({
-            'firstName': firstName,
-            'lastName': lastName,
-            'username': username,
-            'dateOfBirth': dob,
-            'email': email,
-            'createdAt': FieldValue.serverTimestamp(),
-            'firstLogin': true,
-          });
+        'firstName': firstName,
+        'lastName': lastName,
+        'username': username,
+        'dateOfBirth': dob,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
+      // Send verification email
       await credential.user!.sendEmailVerification();
 
+      // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Verification email sent! Please check your inbox.'),
@@ -92,29 +116,38 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
 
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushReplacementNamed(context, '/login');
-      });
+      // Navigate to login page after a delay
+      // Ensure context is still valid if the widget is disposed
+      if (mounted) {
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, '/login');
+          }
+        });
+      }
     } on FirebaseAuthException catch (e) {
       String message = 'Signup failed';
       if (e.code == 'email-already-in-use') {
         message = 'This email is already registered.';
       } else if (e.code == 'weak-password') {
-        message = 'Password is too weak.';
+        message = 'Password is too weak (must be at least 6 characters).';
       } else if (e.code == 'invalid-email') {
         message = 'Invalid email format.';
+      } else {
+        message = e.message ?? 'An unknown error occurred.';
       }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red,));
     } catch (e) {
       debugPrint('❌ Error during signup: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Signup failed: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Signup failed: $e'), backgroundColor: Colors.red,));
     } finally {
-      setState(() => _loading = false);
+      // Ensure widget is still mounted before updating state
+      if (mounted) {
+        setState(() => _loading = false);
+      }
     }
   }
 
@@ -131,206 +164,242 @@ class _SignUpPageState extends State<SignUpPage> {
     );
 
     return Scaffold(
+      // This remains true, which is correct.
       resizeToAvoidBottomInset: true,
       backgroundColor: pageBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: pageBackgroundColor,
-        elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-      ),
+
+
+      // 🔥🔥 FIXED BODY — NO MORE OVERFLOW 🔥🔥
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: Stack(
-                  children: [
-                    const CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, size: 80, color: Colors.black),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
+        // We use a LayoutBuilder to get the screen's constraints
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // This makes the column scrollable
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              // This ensures the scrollable area is at least as tall as the screen
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                // IntrinsicHeight ensures the Column children can fill the height
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Center(
+                          child: Stack(
+                            children: [
+                              const CircleAvatar(
+                                radius: 60,
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.person,
+                                    size: 80, color: Colors.black),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildTextField(
+                                "First Name",
+                                "Enter your Name",
+                                _firstNameController,
+                                enabledBorder,
+                                focusedBorder,
+                                pageBackgroundColor,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: _buildTextField(
+                                "Last Name",
+                                "Enter Last Name",
+                                _lastNameController,
+                                enabledBorder,
+                                focusedBorder,
+                                pageBackgroundColor,
+                              ),
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.edit,
-                          size: 20,
-                          color: Colors.black,
+
+                        const SizedBox(height: 16),
+
+                        _buildTextField(
+                          "Username",
+                          "Enter Unique Name",
+                          _usernameController,
+                          enabledBorder,
+                          focusedBorder,
+                          pageBackgroundColor,
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 25),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      "First Name",
-                      "Enter your Name",
-                      _firstNameController,
-                      enabledBorder,
-                      focusedBorder,
-                      pageBackgroundColor,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _buildTextField(
-                      "Last Name",
-                      "Enter Last Name",
-                      _lastNameController,
-                      enabledBorder,
-                      focusedBorder,
-                      pageBackgroundColor,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                "Username",
-                "Enter Unique Name",
-                _usernameController,
-                enabledBorder,
-                focusedBorder,
-                pageBackgroundColor,
-              ),
-              const SizedBox(height: 16),
-              _buildDateField(
-                "Date of Birth",
-                "DD/MM/YY",
-                _dateOfBirthController,
-                enabledBorder,
-                focusedBorder,
-                pageBackgroundColor,
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                "Email Address",
-                "Enter your Email",
-                _emailController,
-                enabledBorder,
-                focusedBorder,
-                pageBackgroundColor,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                "Password",
-                "Enter your Password",
-                _passwordController,
-                enabledBorder,
-                focusedBorder,
-                pageBackgroundColor,
-                obscureText: true,
-              ),
-              const SizedBox(height: 30),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.black,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 5,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: _loading ? null : _signUp,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Center(
-                      child: _loading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              "Next",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+
+                        const SizedBox(height: 16),
+
+                        _buildDateField(
+                          "Date of Birth",
+                          "DD/MM/YYYY", // Hint updated for clarity
+                          _dateOfBirthController,
+                          enabledBorder,
+                          focusedBorder,
+                          pageBackgroundColor,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _buildTextField(
+                          "Email Address",
+                          "Enter your Email",
+                          _emailController,
+                          enabledBorder,
+                          focusedBorder,
+                          pageBackgroundColor,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _buildTextField(
+                          "Password",
+                          "Enter your Password",
+                          _passwordController,
+                          enabledBorder,
+                          focusedBorder,
+                          pageBackgroundColor,
+                          obscureText: true,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _buildTextField(
+                          "Confirm Password",
+                          "Re-enter your Password",
+                          _confirmPasswordController,
+                          enabledBorder,
+                          focusedBorder,
+                          pageBackgroundColor,
+                          obscureText: true,
+                        ),
+
+                        // Use a Spacer to push content up if space allows
+                        // but it will collapse when scrolling is needed
+                        const Spacer(),
+
+                        const SizedBox(height: 30),
+
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 5,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: _loading ? null : _signUp,
+                              borderRadius: BorderRadius.circular(10),
+                              child: Center(
+                                child: _loading
+                                    ? const CircularProgressIndicator(
+                                    color: Colors.white)
+                                    : const Text(
+                                  "Next",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Already have an Account?",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                              const SizedBox(width: 4),
+                              TextButton(
+                                onPressed: _loading ? null : () { // Disable while loading
+                                  Navigator.pushNamed(context, '/login');
+                                },
+                                child: const Text(
+                                  "Sign-in",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Already have an Account?",
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    const SizedBox(width: 4),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      child: const Text(
-                        "Sign-in",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 
   Widget _buildTextField(
-    String label,
-    String hint,
-    TextEditingController controller,
-    OutlineInputBorder enabledBorder,
-    OutlineInputBorder focusedBorder,
-    Color fillColor, {
-    TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false,
-  }) {
+      String label,
+      String hint,
+      TextEditingController controller,
+      OutlineInputBorder enabledBorder,
+      OutlineInputBorder focusedBorder,
+      Color fillColor, {
+        TextInputType keyboardType = TextInputType.text,
+        bool obscureText = false,
+      }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -351,13 +420,11 @@ class _SignUpPageState extends State<SignUpPage> {
             hintText: hint,
             filled: true,
             fillColor: fillColor,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 15,
-            ),
+            contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             enabledBorder: enabledBorder,
             focusedBorder: focusedBorder,
-            border: enabledBorder,
+            border: enabledBorder, // Use enabledBorder as the default border
           ),
         ),
       ],
@@ -365,13 +432,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildDateField(
-    String label,
-    String hint,
-    TextEditingController controller,
-    OutlineInputBorder enabledBorder,
-    OutlineInputBorder focusedBorder,
-    Color fillColor,
-  ) {
+      String label,
+      String hint,
+      TextEditingController controller,
+      OutlineInputBorder enabledBorder,
+      OutlineInputBorder focusedBorder,
+      Color fillColor,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -384,8 +451,11 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         const SizedBox(height: 6),
+        // Use GestureDetector to detect taps on the whole field area
         GestureDetector(
           onTap: () => _selectDate(context),
+          // AbsorbPointer prevents the TextField from gaining focus,
+          // which would show the keyboard.
           child: AbsorbPointer(
             child: TextField(
               controller: controller,
@@ -393,17 +463,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 hintText: hint,
                 filled: true,
                 fillColor: fillColor,
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 15,
-                ),
+                contentPadding:
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 enabledBorder: enabledBorder,
                 focusedBorder: focusedBorder,
                 border: enabledBorder,
-                suffixIcon: const Icon(
-                  Icons.calendar_today,
-                  color: Colors.grey,
-                ),
+                suffixIcon:
+                const Icon(Icons.calendar_today, color: Colors.grey),
               ),
             ),
           ),
