@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:new_grad/Terms_and_conditions.dart';
+import 'package:new_grad/done.dart';
 import 'package:new_grad/home_page.dart';
 import 'package:new_grad/sign_up.dart';
 import 'package:new_grad/start_page.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/preferences': (context) => const PreferencesPage(),
         '/homescreen': (context) => const HomePage(),
+        '/terms': (context) => const TermsAndConditions(),
+        '/done': (context) => const DonePage(),
         '/chatbot': (context) => const ChatbotPage(),
       },
     );
