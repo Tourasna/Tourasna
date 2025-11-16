@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -57,9 +59,30 @@ class PreferencesPageState extends State<PreferencesPage> {
   void _showInfo() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Note: Long press for more information about the preferences"),
+        content: Text(
+          "Note: Long press for more information about the preferences",
+        ),
       ),
     );
+  }
+
+  Future<void> _savePreferencesAndFinish() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+
+      await FirebaseFirestore.instance.collection("users").doc(uid).update({
+        "preferences": _selectedPreferences.toList(),
+        "firstLogin": false,
+      });
+
+      debugPrint("Preferences saved + first login flag updated.");
+      Navigator.pushNamed(context, '/done');
+    } catch (e) {
+      debugPrint("❌ Failed to update Firestore: $e");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Failed to save preferences: $e")));
+    }
   }
 
   @override
@@ -100,10 +123,7 @@ class PreferencesPageState extends State<PreferencesPage> {
                 ),
               ),
             ),
-            Text(
-              "/",
-              style: TextStyle(color: Colors.grey[700], fontSize: 16),
-            ),
+            Text("/", style: TextStyle(color: Colors.grey[700], fontSize: 16)),
             TextButton(
               onPressed: _skipPage,
               child: Text(
@@ -128,33 +148,31 @@ class PreferencesPageState extends State<PreferencesPage> {
                   const SizedBox(height: 10),
                   const Text(
                     "Choose your own tourism\nPreferences :",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     "Note: Long press for more information about the preferences",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
                   ),
                   const SizedBox(height: 20),
                   GridView.builder(
                     itemCount: _preferences.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16.0,
-                      mainAxisSpacing: 16.0,
-                      childAspectRatio: 0.85,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16.0,
+                          mainAxisSpacing: 16.0,
+                          childAspectRatio: 0.85,
+                        ),
                     itemBuilder: (context, index) {
                       final preference = _preferences[index];
-                      final isSelected = _selectedPreferences.contains(preference);
+                      final isSelected = _selectedPreferences.contains(
+                        preference,
+                      );
+
                       return PreferenceTile(
                         title: preference,
                         isSelected: isSelected,
@@ -167,6 +185,7 @@ class PreferencesPageState extends State<PreferencesPage> {
                 ],
               ),
             ),
+
             Positioned(
               bottom: 0,
               left: 0,
@@ -190,9 +209,7 @@ class PreferencesPageState extends State<PreferencesPage> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {
-                        debugPrint("Selected: $_selectedPreferences");
-                      },
+                      onTap: _savePreferencesAndFinish,
                       borderRadius: BorderRadius.circular(10.0),
                       child: const Center(
                         child: Text(
@@ -278,10 +295,7 @@ class PreferenceTile extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -290,5 +304,3 @@ class PreferenceTile extends StatelessWidget {
     );
   }
 }
-
-

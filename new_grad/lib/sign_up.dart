@@ -34,21 +34,19 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime(2000), // Start at a reasonable default
+      initialDate: DateTime(2000),
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(), // User cannot be born in the future
+      lastDate: DateTime.now(),
     );
     if (picked != null) {
       setState(() {
-        // Formatting the date for consistency
         _dateOfBirthController.text =
-        "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+            "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
   }
 
   Future<void> _signUp() async {
-    // Hide keyboard if it's open
     FocusScope.of(context).unfocus();
 
     final firstName = _firstNameController.text.trim();
@@ -88,7 +86,6 @@ class _SignUpPageState extends State<SignUpPage> {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      // Check if user is not null before proceeding
       if (credential.user == null) {
         throw Exception("User creation failed, user is null.");
       }
@@ -97,18 +94,17 @@ class _SignUpPageState extends State<SignUpPage> {
           .collection('users')
           .doc(credential.user!.uid)
           .set({
-        'firstName': firstName,
-        'lastName': lastName,
-        'username': username,
-        'dateOfBirth': dob,
-        'email': email,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+            'firstName': firstName,
+            'lastName': lastName,
+            'username': username,
+            'dateOfBirth': dob,
+            'email': email,
+            'createdAt': FieldValue.serverTimestamp(),
+            'firstLogin': true,
+          });
 
-      // Send verification email
       await credential.user!.sendEmailVerification();
 
-      // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Verification email sent! Please check your inbox.'),
@@ -116,8 +112,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
 
-      // Navigate to login page after a delay
-      // Ensure context is still valid if the widget is disposed
       if (mounted) {
         Future.delayed(const Duration(seconds: 2), () {
           if (mounted) {
@@ -137,12 +131,17 @@ class _SignUpPageState extends State<SignUpPage> {
         message = e.message ?? 'An unknown error occurred.';
       }
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
     } catch (e) {
       debugPrint('❌ Error during signup: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Signup failed: $e'), backgroundColor: Colors.red,));
+        SnackBar(
+          content: Text('Signup failed: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       // Ensure widget is still mounted before updating state
       if (mounted) {
@@ -164,23 +163,17 @@ class _SignUpPageState extends State<SignUpPage> {
     );
 
     return Scaffold(
-      // This remains true, which is correct.
       resizeToAvoidBottomInset: true,
       backgroundColor: pageBackgroundColor,
 
-
-      // 🔥🔥 FIXED BODY — NO MORE OVERFLOW 🔥🔥
       body: SafeArea(
-        // We use a LayoutBuilder to get the screen's constraints
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // This makes the column scrollable
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              // This ensures the scrollable area is at least as tall as the screen
+
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                // IntrinsicHeight ensures the Column children can fill the height
                 child: IntrinsicHeight(
                   child: Padding(
                     padding: const EdgeInsets.all(20),
@@ -193,8 +186,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               const CircleAvatar(
                                 radius: 60,
                                 backgroundColor: Colors.white,
-                                child: Icon(Icons.person,
-                                    size: 80, color: Colors.black),
+                                child: Icon(
+                                  Icons.person,
+                                  size: 80,
+                                  color: Colors.black,
+                                ),
                               ),
                               Positioned(
                                 bottom: 0,
@@ -265,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         _buildDateField(
                           "Date of Birth",
-                          "DD/MM/YYYY", // Hint updated for clarity
+                          "DD/MM/YYYY",
                           _dateOfBirthController,
                           enabledBorder,
                           focusedBorder,
@@ -308,8 +304,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           obscureText: true,
                         ),
 
-                        // Use a Spacer to push content up if space allows
-                        // but it will collapse when scrolling is needed
                         const Spacer(),
 
                         const SizedBox(height: 30),
@@ -335,15 +329,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Center(
                                 child: _loading
                                     ? const CircularProgressIndicator(
-                                    color: Colors.white)
+                                        color: Colors.white,
+                                      )
                                     : const Text(
-                                  "Next",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                        "Next",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -358,13 +353,17 @@ class _SignUpPageState extends State<SignUpPage> {
                               const Text(
                                 "Already have an Account?",
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 16),
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
                               ),
                               const SizedBox(width: 4),
                               TextButton(
-                                onPressed: _loading ? null : () { // Disable while loading
-                                  Navigator.pushNamed(context, '/login');
-                                },
+                                onPressed: _loading
+                                    ? null
+                                    : () {
+                                        Navigator.pushNamed(context, '/login');
+                                      },
                                 child: const Text(
                                   "Sign-in",
                                   style: TextStyle(
@@ -391,15 +390,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildTextField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      OutlineInputBorder enabledBorder,
-      OutlineInputBorder focusedBorder,
-      Color fillColor, {
-        TextInputType keyboardType = TextInputType.text,
-        bool obscureText = false,
-      }) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    OutlineInputBorder enabledBorder,
+    OutlineInputBorder focusedBorder,
+    Color fillColor, {
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -420,11 +419,13 @@ class _SignUpPageState extends State<SignUpPage> {
             hintText: hint,
             filled: true,
             fillColor: fillColor,
-            contentPadding:
-            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 15,
+            ),
             enabledBorder: enabledBorder,
             focusedBorder: focusedBorder,
-            border: enabledBorder, // Use enabledBorder as the default border
+            border: enabledBorder,
           ),
         ),
       ],
@@ -432,13 +433,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildDateField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      OutlineInputBorder enabledBorder,
-      OutlineInputBorder focusedBorder,
-      Color fillColor,
-      ) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    OutlineInputBorder enabledBorder,
+    OutlineInputBorder focusedBorder,
+    Color fillColor,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -451,11 +452,9 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         const SizedBox(height: 6),
-        // Use GestureDetector to detect taps on the whole field area
         GestureDetector(
           onTap: () => _selectDate(context),
-          // AbsorbPointer prevents the TextField from gaining focus,
-          // which would show the keyboard.
+
           child: AbsorbPointer(
             child: TextField(
               controller: controller,
@@ -463,13 +462,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 hintText: hint,
                 filled: true,
                 fillColor: fillColor,
-                contentPadding:
-                const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 15,
+                ),
                 enabledBorder: enabledBorder,
                 focusedBorder: focusedBorder,
                 border: enabledBorder,
-                suffixIcon:
-                const Icon(Icons.calendar_today, color: Colors.grey),
+                suffixIcon: const Icon(
+                  Icons.calendar_today,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),
