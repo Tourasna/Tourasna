@@ -16,6 +16,8 @@ dependencies:
   google_sign_in: ^7.2.0
   cupertino_icons: ^1.0.8
   icons_plus: ^5.0.0
+  google_generative_ai: ^0.4.7
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:
