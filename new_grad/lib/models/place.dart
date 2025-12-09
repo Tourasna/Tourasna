@@ -1,10 +1,10 @@
 class Place {
-  final int id;
+  final String id; // ✅ UUID MUST BE STRING
   final String name;
   final String description;
   final String category;
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
   final String imageUrl;
   final String glbUrl;
   final String mlLabel;
@@ -15,33 +15,26 @@ class Place {
     required this.name,
     required this.description,
     required this.category,
-    required this.latitude,
-    required this.longitude,
+    this.latitude,
+    this.longitude,
     required this.imageUrl,
     required this.glbUrl,
     required this.mlLabel,
-    required this.infoJson,
+    this.infoJson,
   });
 
   factory Place.fromJson(Map<String, dynamic> json) {
-    dynamic idValue = json['id'];
-
-    int parsedId;
-    if (idValue is int) {
-      parsedId = idValue;
-    } else if (idValue is String) {
-      parsedId = int.tryParse(idValue) ?? -1; // fallback
-    } else {
-      parsedId = -1; // completely wrong type
-    }
-
     return Place(
-      id: parsedId,
+      id: json['id'].toString(), // ✅ DIRECT UUID PASS
       name: json['name']?.toString() ?? '',
       description: json['description']?.toString() ?? '',
       category: json['category']?.toString() ?? '',
-      latitude: double.tryParse(json['latitude'].toString()) ?? 0.0,
-      longitude: double.tryParse(json['longitude'].toString()) ?? 0.0,
+      latitude: json['latitude'] == null
+          ? null
+          : double.tryParse(json['latitude'].toString()),
+      longitude: json['longitude'] == null
+          ? null
+          : double.tryParse(json['longitude'].toString()),
       imageUrl: json['image_url']?.toString() ?? '',
       glbUrl: json['glb_url']?.toString() ?? '',
       mlLabel: json['ml_label']?.toString() ?? '',
