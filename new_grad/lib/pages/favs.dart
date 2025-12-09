@@ -150,7 +150,9 @@ class _FavsPageState extends State<FavsPage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/profile.png',
                     label: 'Profile',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/profile');
+                    },
                   ),
                 ],
               ),
