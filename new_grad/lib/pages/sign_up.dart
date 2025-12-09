@@ -77,13 +77,11 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       final supabase = Supabase.instance.client;
 
-      /// Step 1: Create the user (no session yet!)
       final authRes = await supabase.auth.signUp(
         email: email,
         password: password,
       );
 
-      /// Step 2: Immediately sign in so auth.uid() is available
       final signInRes = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
@@ -94,7 +92,6 @@ class _SignUpPageState extends State<SignUpPage> {
         throw Exception("Could not create user session.");
       }
 
-      /// Step 3: Insert user profile (now allowed by RLS)
       await supabase.from('profiles').insert({
         'id': user.id,
         'first_name': firstName,
