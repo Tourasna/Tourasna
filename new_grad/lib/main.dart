@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/ai/landmark_classifier.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:new_grad/pages/favs.dart';
 import 'package:new_grad/pages/terms_and_conditions.dart';
 import 'package:new_grad/pages/done.dart';
@@ -11,7 +10,8 @@ import 'package:new_grad/pages/start_page.dart';
 import 'package:new_grad/pages/Login_page.dart';
 import 'package:new_grad/pages/welcome_page.dart';
 import 'package:new_grad/pages/preferences_page.dart';
-import 'package:new_grad/pages/cahtbot_page.dart';
+import 'package:new_grad/pages/chatbot_page.dart';
+import 'package:new_grad/pages/chatmock_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
