@@ -20,6 +20,11 @@ dependencies:
   tflite_flutter: ^0.12.1
   webview_flutter: ^4.4.0
   flutter_tts: ^3.8.5
+  googleapis: ^11.0.0
+  googleapis_auth: ^1.4.0
+  audioplayers: ^5.2.0
+  flutter_langdetect: ^0.0.2
+  http: ^1.2.0
 
 
 dev_dependencies:
