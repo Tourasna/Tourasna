@@ -16,7 +16,45 @@ class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
   bool _loading = false;
+
+  // NEW FIELDS
+  String? _selectedGender;
+  String? _selectedNationality;
+
+  final List<String> nationalities = [
+    "United States",
+    "United Kingdom",
+    "Germany",
+    "France",
+    "Italy",
+    "Spain",
+    "Russia",
+    "Saudi Arabia",
+    "United Arab Emirates",
+    "Kuwait",
+    "Qatar",
+    "Oman",
+    "Jordan",
+    "Lebanon",
+    "China",
+    "Japan",
+    "South Korea",
+    "Canada",
+    "Brazil",
+    "Australia",
+    "Netherlands",
+    "Sweden",
+    "Switzerland",
+    "Austria",
+    "Belgium",
+    "Poland",
+    "Czech Republic",
+    "Turkey",
+    "India",
+    "South Africa",
+  ];
 
   @override
   void dispose() {
@@ -40,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (picked != null) {
       setState(() {
         _dateOfBirthController.text =
-            "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+        "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
   }
@@ -62,7 +100,9 @@ class _SignUpPageState extends State<SignUpPage> {
         dob.isEmpty ||
         email.isEmpty ||
         password.isEmpty ||
-        confirmPassword.isEmpty) {
+        confirmPassword.isEmpty ||
+        _selectedGender == null ||
+        _selectedNationality == null) {
       _message("Please fill in all fields");
       return;
     }
@@ -77,24 +117,19 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       final supabase = Supabase.instance.client;
 
-      /// Step 1: Create the user (no session yet!)
       final authRes = await supabase.auth.signUp(
         email: email,
         password: password,
       );
 
-      /// Step 2: Immediately sign in so auth.uid() is available
       final signInRes = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
 
       final user = signInRes.user;
-      if (user == null) {
-        throw Exception("Could not create user session.");
-      }
+      if (user == null) throw Exception("Could not create user session.");
 
-      /// Step 3: Insert user profile (now allowed by RLS)
       await supabase.from('profiles').insert({
         'id': user.id,
         'first_name': firstName,
@@ -102,19 +137,16 @@ class _SignUpPageState extends State<SignUpPage> {
         'username': username,
         'dob': dob,
         'email': email,
+        'gender': _selectedGender,
+        'nationality': _selectedNationality,
         'first_login': true,
         'preferences': [],
-      }).select();
+      });
 
       _message("Account created!");
 
       await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
-      }
-    } on AuthException catch (e) {
-      _message(e.message, error: true);
+      if (mounted) Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       _message("Signup failed: $e", error: true);
     } finally {
@@ -138,9 +170,9 @@ class _SignUpPageState extends State<SignUpPage> {
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
     );
-    final focusedBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Colors.black, width: 1),
+    final focusedBorder = const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: Colors.black, width: 1),
     );
 
     return Scaffold(
@@ -159,6 +191,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+
+                        // ORIGINAL PROFILE AVATAR — NOT MODIFIED
                         Center(
                           child: Stack(
                             children: [
@@ -262,6 +296,32 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 16),
 
+                        // NEW: Gender dropdown
+                        _buildDropdownField(
+                          label: "Gender",
+                          value: _selectedGender,
+                          items: const ["Male", "Female"],
+                          onChanged: (val) => setState(() => _selectedGender = val),
+                          enabledBorder: enabledBorder,
+                          focusedBorder: focusedBorder,
+                          fillColor: pageBackgroundColor,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // NEW: Nationality dropdown
+                        _buildDropdownField(
+                          label: "Nationality",
+                          value: _selectedNationality,
+                          items: nationalities,
+                          onChanged: (val) => setState(() => _selectedNationality = val),
+                          enabledBorder: enabledBorder,
+                          focusedBorder: focusedBorder,
+                          fillColor: pageBackgroundColor,
+                        ),
+
+                        const SizedBox(height: 16),
+
                         _buildTextField(
                           "Password",
                           "Enter your Password",
@@ -308,16 +368,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Center(
                                 child: _loading
                                     ? const CircularProgressIndicator(
-                                        color: Colors.white,
-                                      )
+                                  color: Colors.white,
+                                )
                                     : const Text(
-                                        "Next",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                  "Next",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -341,8 +401,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 onPressed: _loading
                                     ? null
                                     : () {
-                                        Navigator.pushNamed(context, '/login');
-                                      },
+                                  Navigator.pushNamed(context, '/login');
+                                },
                                 child: const Text(
                                   "Sign-in",
                                   style: TextStyle(
@@ -369,15 +429,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildTextField(
-    String label,
-    String hint,
-    TextEditingController controller,
-    OutlineInputBorder enabledBorder,
-    OutlineInputBorder focusedBorder,
-    Color fillColor, {
-    TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false,
-  }) {
+      String label,
+      String hint,
+      TextEditingController controller,
+      OutlineInputBorder enabledBorder,
+      OutlineInputBorder focusedBorder,
+      Color fillColor, {
+        TextInputType keyboardType = TextInputType.text,
+        bool obscureText = false,
+      }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -412,13 +472,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildDateField(
-    String label,
-    String hint,
-    TextEditingController controller,
-    OutlineInputBorder enabledBorder,
-    OutlineInputBorder focusedBorder,
-    Color fillColor,
-  ) {
+      String label,
+      String hint,
+      TextEditingController controller,
+      OutlineInputBorder enabledBorder,
+      OutlineInputBorder focusedBorder,
+      Color fillColor,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -454,6 +514,55 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownField({
+    required String label,
+    required String? value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+    required OutlineInputBorder enabledBorder,
+    required OutlineInputBorder focusedBorder,
+    required Color fillColor,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 6),
+        DropdownButtonFormField<String>(
+          value: value,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: fillColor,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 12,
+            ),
+            enabledBorder: enabledBorder,
+            focusedBorder: focusedBorder,
+            border: enabledBorder,
+          ),
+          icon: const Icon(Icons.arrow_drop_down),
+          items: items
+              .map(
+                (e) => DropdownMenuItem<String>(
+              value: e,
+              child: Text(e),
+            ),
+          )
+              .toList(),
+          onChanged: onChanged,
         ),
       ],
     );
