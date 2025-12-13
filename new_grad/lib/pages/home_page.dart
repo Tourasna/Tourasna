@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:new_grad/pages/landmark_details_page.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
-import 'viewer_page.dart';
 
 final AILensService aiLens = AILensService();
 final PlacesRepo placesRepo = PlacesRepo();
@@ -22,7 +22,7 @@ Future<void> runAILens(BuildContext context) async {
 
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (_) => ViewerPage(place: place)),
+    MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
   );
 }
 
@@ -295,7 +295,9 @@ class _HomePageState extends State<HomePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/profile.png',
                     label: 'Profile',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/profile");
+                    },
                   ),
                 ],
               ),
