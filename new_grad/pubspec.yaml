@@ -16,8 +16,15 @@ dependencies:
   google_generative_ai: ^0.4.7
   image_picker: ^1.1.0
   image: ^4.0.0
-  model_viewer_plus: ^1.0.7
+  model_viewer_plus: ^1.10.0
   tflite_flutter: ^0.12.1
+  webview_flutter: ^4.4.0
+  flutter_tts: ^3.8.5
+  googleapis: ^11.0.0
+  googleapis_auth: ^1.4.0
+  audioplayers: ^5.2.0
+  flutter_langdetect: ^0.0.2
+  http: ^1.2.0
 
 
 dev_dependencies:

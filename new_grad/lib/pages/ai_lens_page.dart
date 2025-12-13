@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:new_grad/pages/landmark_details_page.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
 import '../models/place.dart';
-import 'viewer_page.dart';
 
 class AILensPage extends StatefulWidget {
   const AILensPage({super.key});
@@ -46,7 +46,7 @@ class _AILensPageState extends State<AILensPage> {
     // Step 3 → go to viewer
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ViewerPage(place: place)),
+      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
     );
   }
 

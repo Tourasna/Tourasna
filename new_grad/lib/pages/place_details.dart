@@ -28,9 +28,6 @@ class PlaceDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // -------------------------------
-            // 3D MODEL VIEWER
-            // -------------------------------
             if (glbUrl.isNotEmpty)
               SizedBox(
                 height: 350,
@@ -52,9 +49,6 @@ class PlaceDetailsPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // -------------------------------
-            // BASIC INFO
-            // -------------------------------
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -78,9 +72,6 @@ class PlaceDetailsPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // -------------------------------
-            // INFO JSON (Optional)
-            // -------------------------------
             if (infoJson != null && infoJson.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -111,9 +102,6 @@ class PlaceDetailsPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // -------------------------------
-            // SHOW LAT/LONG
-            // -------------------------------
             if (latitude != null && longitude != null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
