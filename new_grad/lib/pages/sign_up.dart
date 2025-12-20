@@ -24,6 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _selectedNationality;
 
   final List<String> nationalities = [
+    "Egypt",
     "United States",
     "United Kingdom",
     "Germany",
@@ -78,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (picked != null) {
       setState(() {
         _dateOfBirthController.text =
-        "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+            "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
   }
@@ -191,7 +192,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-
                         // ORIGINAL PROFILE AVATAR — NOT MODIFIED
                         Center(
                           child: Stack(
@@ -301,7 +301,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           label: "Gender",
                           value: _selectedGender,
                           items: const ["Male", "Female"],
-                          onChanged: (val) => setState(() => _selectedGender = val),
+                          onChanged: (val) =>
+                              setState(() => _selectedGender = val),
                           enabledBorder: enabledBorder,
                           focusedBorder: focusedBorder,
                           fillColor: pageBackgroundColor,
@@ -314,7 +315,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           label: "Nationality",
                           value: _selectedNationality,
                           items: nationalities,
-                          onChanged: (val) => setState(() => _selectedNationality = val),
+                          onChanged: (val) =>
+                              setState(() => _selectedNationality = val),
                           enabledBorder: enabledBorder,
                           focusedBorder: focusedBorder,
                           fillColor: pageBackgroundColor,
@@ -368,16 +370,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Center(
                                 child: _loading
                                     ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
+                                        color: Colors.white,
+                                      )
                                     : const Text(
-                                  "Next",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                        "Next",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -401,8 +403,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 onPressed: _loading
                                     ? null
                                     : () {
-                                  Navigator.pushNamed(context, '/login');
-                                },
+                                        Navigator.pushNamed(context, '/login');
+                                      },
                                 child: const Text(
                                   "Sign-in",
                                   style: TextStyle(
@@ -429,15 +431,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildTextField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      OutlineInputBorder enabledBorder,
-      OutlineInputBorder focusedBorder,
-      Color fillColor, {
-        TextInputType keyboardType = TextInputType.text,
-        bool obscureText = false,
-      }) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    OutlineInputBorder enabledBorder,
+    OutlineInputBorder focusedBorder,
+    Color fillColor, {
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -472,13 +474,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildDateField(
-      String label,
-      String hint,
-      TextEditingController controller,
-      OutlineInputBorder enabledBorder,
-      OutlineInputBorder focusedBorder,
-      Color fillColor,
-      ) {
+    String label,
+    String hint,
+    TextEditingController controller,
+    OutlineInputBorder enabledBorder,
+    OutlineInputBorder focusedBorder,
+    Color fillColor,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -555,12 +557,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           icon: const Icon(Icons.arrow_drop_down),
           items: items
-              .map(
-                (e) => DropdownMenuItem<String>(
-              value: e,
-              child: Text(e),
-            ),
-          )
+              .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
               .toList(),
           onChanged: onChanged,
         ),
