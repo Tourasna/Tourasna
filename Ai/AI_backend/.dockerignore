@@ -1,0 +1,36 @@
+# Python
+venv
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git
+.gitignore
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Data / training artifacts
+*.xlsx
+*.csv
+*.png
+*.jpg
+
+# If models are large and duplicated elsewhere
+training*
+accuracy*
+history*
+
+# Flutter / other projects (safety)
+android
+ios
+build
+lib

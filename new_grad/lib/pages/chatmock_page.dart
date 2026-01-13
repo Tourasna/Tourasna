@@ -1,6 +1,6 @@
-import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../services/chatbot_service.dart';
 
 class ChatMockPage extends StatefulWidget {
   const ChatMockPage({super.key});
@@ -12,38 +12,54 @@ class ChatMockPage extends StatefulWidget {
 class _ChatMockPageState extends State<ChatMockPage> {
   final List<_ChatMessage> messages = [];
   final TextEditingController controller = TextEditingController();
-  final random = Random();
+  final ChatbotService chatbotService = ChatbotService();
 
   bool showIntro = true;
+  bool sending = false;
 
-  final List<String> botReplies = [
-    "How can I help you?",
-    "I'm listening.",
-    "Tell me more.",
-    "Working on it...",
-  ];
+  /// ✅ GUARANTEE AUTH BEFORE SENDING
+  bool get isAuthenticated =>
+      Supabase.instance.client.auth.currentSession != null;
 
-  void sendMessage() {
+  Future<void> sendMessage() async {
+    if (!isAuthenticated) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please log in to use the chatbot")),
+      );
+      return;
+    }
+
     final text = controller.text.trim();
-    if (text.isEmpty) return;
+    if (text.isEmpty || sending) return;
 
     setState(() {
       messages.add(_ChatMessage(text, false));
-      showIntro = false; // hide avatar + title after first message
+      showIntro = false;
+      sending = true;
     });
 
     controller.clear();
 
-    Future.delayed(const Duration(milliseconds: 600), () {
+    try {
+      final result = await chatbotService.sendMessage(text);
+
+      setState(() {
+        messages.add(_ChatMessage(result.message, true));
+      });
+    } catch (e, stack) {
+      debugPrint("CHATBOT ERROR: $e");
+      debugPrint("STACK TRACE: $stack");
+
       setState(() {
         messages.add(
-          _ChatMessage(
-            botReplies[random.nextInt(botReplies.length)],
-            true,
-          ),
+          _ChatMessage("Something went wrong. Please try again.", true),
         );
       });
-    });
+    } finally {
+      setState(() {
+        sending = false;
+      });
+    }
   }
 
   @override
@@ -55,7 +71,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Column(
@@ -93,7 +109,9 @@ class _ChatMockPageState extends State<ChatMockPage> {
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final msg = messages[index];
@@ -124,17 +142,14 @@ class _ChatMockPageState extends State<ChatMockPage> {
                               const SizedBox(width: 8),
                             ],
                             Container(
-                              margin:
-                              const EdgeInsets.symmetric(vertical: 6),
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               padding: const EdgeInsets.all(12),
-                              constraints:
-                              const BoxConstraints(maxWidth: 260),
+                              constraints: const BoxConstraints(maxWidth: 260),
                               decoration: BoxDecoration(
                                 color: msg.isBot
                                     ? Colors.amber.shade300
                                     : Colors.grey.shade300,
-                                borderRadius:
-                                BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                               child: Text(
                                 msg.text,
@@ -161,42 +176,27 @@ class _ChatMockPageState extends State<ChatMockPage> {
               children: [
                 Expanded(
                   child: Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: Colors.black),
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: controller,
-                            decoration: const InputDecoration(
-                              hintText: "Type...",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
+                    child: TextField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        hintText: "Type...",
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(
-                  onTap: sendMessage,
+                  onTap: sending ? null : sendMessage,
                   child: const CircleAvatar(
                     radius: 22,
                     backgroundColor: Colors.black,
-                    child:
-                    Icon(Icons.send, color: Colors.white),
+                    child: Icon(Icons.send, color: Colors.white),
                   ),
                 ),
               ],

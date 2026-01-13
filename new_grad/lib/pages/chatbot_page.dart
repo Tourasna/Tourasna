@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/chatbot_service.dart';
+import '../models/chat_models.dart';
 
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
@@ -8,194 +10,213 @@ class ChatbotPage extends StatefulWidget {
 }
 
 class _ChatbotPageState extends State<ChatbotPage> {
-  final _messageController = TextEditingController();
+  final List<_ChatMessage> messages = [];
+  final TextEditingController controller = TextEditingController();
 
-  @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
+  final ChatbotService chatbotService = ChatbotService();
+  ChatSession session = ChatSession();
+  String? sessionId;
+  bool showIntro = true;
+  bool sending = false;
+
+  Future<void> sendMessage() async {
+    final text = controller.text.trim();
+    if (text.isEmpty || sending) return;
+
+    setState(() {
+      messages.add(_ChatMessage(text, false));
+      showIntro = false;
+      sending = true;
+    });
+
+    controller.clear();
+
+    try {
+      final result = await chatbotService.sendMessage(text);
+
+      sessionId = result.sessionId;
+
+      setState(() {
+        messages.add(_ChatMessage(result.message, true));
+      });
+    } catch (e, stack) {
+      debugPrint("CHATBOT ERROR: $e");
+      debugPrint("STACK TRACE: $stack");
+
+      setState(() {
+        messages.add(
+          _ChatMessage("Something went wrong. Please try again.", true),
+        );
+      });
+    }
+
+    setState(() {
+      sending = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    const pageBackgroundColor = Color(0xFFF5E5D1);
-
     return Scaffold(
-      backgroundColor: pageBackgroundColor,
+      backgroundColor: const Color(0xFFF5E8C7),
       appBar: AppBar(
-        backgroundColor: pageBackgroundColor,
+        backgroundColor: const Color(0xFFF5E8C7),
         elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-        // As requested, ignoring the top-right icons
       ),
-      body: SafeArea( // Using SafeArea to avoid notches and status bar
-        child: Stack( // Using Stack to position the bird image
-          clipBehavior: Clip.none, // Allows painting outside bounds if necessary (good practice for edge items)
-          children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center, // Ensure content is centered horizontally
-                children: [
-                  const SizedBox(height: 20),
-                  // 1. OVAL CONTAINER FOR MIDDLE LOGO
+      body: Column(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                if (showIntro) ...[
+                  const SizedBox(height: 16),
                   Container(
-                    width: 110, // Slightly wider for oval shape
-                    height: 100, // Keep original height
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50), // Adjust for oval shape
-                      border: Border.all(color: Colors.grey.shade400),
-                      image: const DecorationImage(
-                        image: AssetImage("assets/icons/Secondary_chatbot_logo.png"),
+                    width: 72,
+                    height: 72,
+                    decoration: const BoxDecoration(
+                      color: Colors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/icons/ChatmockAvatar.png",
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 8),
                   const Text(
-                    "Good Evening, User_Name",
+                    "Chat now with Horus",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  const Text(
-                    "Can I help you with anything?",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    "Choose a Prompt Below or Write Your\nOwn to Start Chatting with Chatbot",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center, // Center the row itself
-                    children: [
-                      Expanded(child: _buildSuggestedMessage("Suggested Message")),
-                      const SizedBox(width: 15),
-                      Expanded(child: _buildSuggestedMessage("Suggested Message")),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  TextButton.icon(
-                    onPressed: () {
-                      // Handle refresh prompts
-                    },
-                    icon: const Icon(Icons.refresh, color: Colors.black54),
-                    label: const Text(
-                      "Refresh prompts",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Placeholder to ensure scroll area extends below the bird
-                  const SizedBox(height: 200), // Adjusted height to make space for the bird and prevent scroll issues
+                  const SizedBox(height: 16),
                 ],
-              ),
-            ),
-            Positioned(
-              right: 0, // Align to the right edge
-              bottom: -40, // FIXED: Set to 0 so it sits on top of the input bar and isn't covered
-              child: Image(
-                image: const AssetImage("assets/images/Chatbot_Avatar.png"),
-                width: 200, // Set the exact width as in the original
-                height: 200, // Set the exact height as in the original
-                fit: BoxFit.contain,
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          top: 12.0,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 12.0,
-        ),
-        color: pageBackgroundColor,
-        child: Container(
-          decoration: BoxDecoration(
-            color: pageBackgroundColor,
-            borderRadius: BorderRadius.circular(30.0),
-            border: Border.all(color: Colors.black),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  decoration: const InputDecoration(
-                    hintText: "How Can Horus Help you ?",
-                    contentPadding: EdgeInsets.only(left: 20.0),
-                    border: InputBorder.none,
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final msg = messages[index];
+
+                      return Align(
+                        alignment: msg.isBot
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (msg.isBot) ...[
+                              Container(
+                                width: 32,
+                                height: 32,
+                                decoration: const BoxDecoration(
+                                  color: Colors.orange,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    "assets/icons/ChatmockAvatar.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 6),
+                              padding: const EdgeInsets.all(12),
+                              constraints: const BoxConstraints(maxWidth: 260),
+                              decoration: BoxDecoration(
+                                color: msg.isBot
+                                    ? Colors.amber.shade300
+                                    : Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: Text(
+                                msg.text,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.attach_file, color: Colors.black54),
-                onPressed: () {
-                  // Handle attach file
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.camera_alt_outlined, color: Colors.black54),
-                onPressed: () {
-                  // Handle camera
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.arrow_upward, color: Colors.black),
-                onPressed: () {
-                  // Handle send message
-                },
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildSuggestedMessage(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
+          // INPUT BAR (UNCHANGED)
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: controller,
+                            decoration: const InputDecoration(
+                              hintText: "Type...",
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: sendMessage,
+                  child: const CircleAvatar(
+                    radius: 22,
+                    backgroundColor: Colors.black,
+                    child: Icon(Icons.send, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
+}
+
+class _ChatMessage {
+  final String text;
+  final bool isBot;
+
+  _ChatMessage(this.text, this.isBot);
 }

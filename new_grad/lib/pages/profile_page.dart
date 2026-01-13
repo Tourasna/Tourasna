@@ -69,7 +69,6 @@ class _ProfilePageState extends State<ProfilePage> {
           'username': usernameCtl.text.trim(),
           'email': emailCtl.text.trim(),
           'preferences': preferences,
-          'avatar_url': avatarUrl,
         })
         .eq('id', user.id);
 

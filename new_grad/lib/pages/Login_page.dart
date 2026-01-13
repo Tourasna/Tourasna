@@ -49,6 +49,11 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      final session = Supabase.instance.client.auth.currentSession;
+
+      if (session != null) {
+        debugPrint('ACCESS TOKEN: ${session.accessToken}');
+      }
 
       final user = response.user;
       if (user == null) {

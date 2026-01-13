@@ -138,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
         'username': username,
         'dob': dob,
         'email': email,
-        'gender': _selectedGender,
+        'gender': _selectedGender?.toLowerCase(),
         'nationality': _selectedNationality,
         'first_login': true,
         'preferences': [],

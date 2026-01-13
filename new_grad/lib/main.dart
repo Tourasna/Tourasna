@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/ai/landmark_classifier.dart';
+import 'package:new_grad/pages/profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:new_grad/pages/favs.dart';
 import 'package:new_grad/pages/terms_and_conditions.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/chatbot': (context) => const ChatbotPage(),
         '/favs': (context) => const FavsPage(),
         '/mocka': (context) => const ChatMockPage(),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }
