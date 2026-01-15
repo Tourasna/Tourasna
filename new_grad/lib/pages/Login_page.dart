@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
+
+import '../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,28 +15,29 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final AuthService _authService = AuthService();
+
   bool _isLoading = false;
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+  static const String _baseUrl = 'http://10.0.2.2:4000';
 
+  // ─────────────────────────────────────────────
+  // RESET PASSWORD (FIREBASE)
+  // ─────────────────────────────────────────────
   Future<void> _resetPassword() async {
     final email = _emailController.text.trim();
 
     if (email.isEmpty) {
-      _msg("Enter your email first");
+      _msg('Enter your email first', error: true);
       return;
     }
 
     try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(email);
-      _msg("Password reset link sent");
+      await _authService.resetPassword(email);
+      _msg('Password reset email sent');
     } catch (e) {
-      _msg("Error: $e", error: true);
+      _msg(e.toString(), error: true);
     }
   }
 
@@ -43,36 +47,41 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isLoading = true);
 
     try {
-      final supabase = Supabase.instance.client;
-
-      final response = await supabase.auth.signInWithPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      // 1️⃣ Firebase login
+      await _authService.login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
       );
 
-      final user = response.user;
-      if (user == null) {
-        _msg("Login failed.", error: true);
-        return;
+      final token = _authService.token;
+      if (token == null) {
+        throw Exception('Login succeeded but token is null');
       }
 
-      final userData = await supabase
-          .from('profiles')
-          .select('first_login')
-          .eq('id', user.id)
-          .maybeSingle();
+      // 2️⃣ Load profile from backend
+      final res = await http.get(
+        Uri.parse('$_baseUrl/profiles/me'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
 
-      final bool firstLogin = userData?['first_login'] ?? true;
+      if (res.statusCode != 200) {
+        throw Exception('Failed to load profile');
+      }
 
-      if (firstLogin) {
-        Navigator.pushReplacementNamed(context, '/terms');
+      final profile = jsonDecode(res.body);
+      final firstName = profile['first_name'];
+
+      // 3️⃣ First-login routing
+      if (firstName == null) {
+        Navigator.pushReplacementNamed(context, '/preferences');
       } else {
         Navigator.pushReplacementNamed(context, '/homescreen');
       }
-    } on AuthException catch (e) {
-      _msg(e.message, error: true);
     } catch (e) {
-      _msg("Login failed. Try again.", error: true);
+      _msg(e.toString(), error: true);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -87,6 +96,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // ─────────────────────────────────────────────
+  // UI (UNCHANGED)
+  // ─────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(

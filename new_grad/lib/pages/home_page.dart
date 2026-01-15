@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/pages/landmark_details_page.dart';
+
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
+import '../services/auth_service.dart';
 
 final AILensService aiLens = AILensService();
-final PlacesRepo placesRepo = PlacesRepo();
+
+// 🔑 SINGLE shared AuthService instance
+final AuthService authService = AuthService();
+
+// 🔌 Repo depends on auth
+final PlacesRepo placesRepo = PlacesRepo(authService);
+
 bool _lensInitialized = false;
 
 Future<void> runAILens(BuildContext context) async {
@@ -22,7 +30,12 @@ Future<void> runAILens(BuildContext context) async {
 
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
+    MaterialPageRoute(
+      builder: (_) => LandmarkDetailsPage(
+        place: place,
+        authService: authService, // ✅ REQUIRED
+      ),
+    ),
   );
 }
 

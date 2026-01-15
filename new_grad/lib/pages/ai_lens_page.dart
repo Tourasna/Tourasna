@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/pages/landmark_details_page.dart';
+
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
+import '../services/auth_service.dart';
 import '../models/place.dart';
 
 class AILensPage extends StatefulWidget {
-  const AILensPage({super.key});
+  final AuthService authService;
+
+  const AILensPage({super.key, required this.authService});
 
   @override
   State<AILensPage> createState() => _AILensPageState();
@@ -13,14 +17,20 @@ class AILensPage extends StatefulWidget {
 
 class _AILensPageState extends State<AILensPage> {
   final AILensService _lens = AILensService();
-  final PlacesRepo _repo = PlacesRepo();
+  late final PlacesRepo _repo;
 
   bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _repo = PlacesRepo(widget.authService);
+  }
 
   Future<void> _scan() async {
     setState(() => _loading = true);
 
-    // Step 1 → run camera + tflite
+    // Step 1 → run camera + TFLite
     final label = await _lens.runCamera();
 
     if (label == null) {
@@ -31,7 +41,7 @@ class _AILensPageState extends State<AILensPage> {
       return;
     }
 
-    // Step 2 → get place from Supabase
+    // Step 2 → fetch place from backend
     final Place? place = await _repo.getByMLLabel(label);
 
     setState(() => _loading = false);
@@ -43,10 +53,13 @@ class _AILensPageState extends State<AILensPage> {
       return;
     }
 
-    // Step 3 → go to viewer
+    // Step 3 → details page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
+      MaterialPageRoute(
+        builder: (_) =>
+            LandmarkDetailsPage(place: place, authService: widget.authService),
+      ),
     );
   }
 
@@ -65,4 +78,3 @@ class _AILensPageState extends State<AILensPage> {
     );
   }
 }
-

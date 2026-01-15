@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { FirebaseAuthGuard } from 'auth/firebase-auth.guard';
+
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @UseGuards(FirebaseAuthGuard)
+  @Get('me')
+  getMe(@Req() req) {
+    return {
+      auth0_id: req.user.sub,
+      email: req.user.email,
+    };
   }
 }

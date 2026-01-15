@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DatabaseModule } from '../database/database.module';
+import { AuthModule } from '../auth/auth.module';
+import { ProfilesModule } from '../profiles/profiles.module';
+import { PlacesModule } from '../places/places.module';
+import { StorytellingModule } from '../storytelling/storytelling.module';
+import { ChatModule } from '../chat/chat.module';
+import { RecommendationsModule } from '../recommendation/recommendations.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    AuthModule,
+    DatabaseModule,
+    ProfilesModule,
+    PlacesModule,
+    StorytellingModule,
+    ChatModule,
+    RecommendationsModule,
+  ],
 })
 export class AppModule {}

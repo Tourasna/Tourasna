@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/auth_service.dart';
 
 class PreferencesPage extends StatefulWidget {
   const PreferencesPage({super.key});
@@ -10,6 +14,8 @@ class PreferencesPage extends StatefulWidget {
 }
 
 class PreferencesPageState extends State<PreferencesPage> {
+  static const String _baseUrl = 'http://10.0.2.2:4000';
+
   final List<String> _preferences = [
     "Fun & Games",
     "Water & Amusement Parks",
@@ -38,12 +44,20 @@ class PreferencesPageState extends State<PreferencesPage> {
 
   final Set<String> _selectedPreferences = {};
 
+  // ─────────────────────────────────────────────
+  // DATE NORMALIZER
+  // ─────────────────────────────────────────────
+  String _normalizeDate(String input) {
+    final parts = input.split('/');
+    return "${parts[2]}-${parts[1]}-${parts[0]}"; // YYYY-MM-DD
+  }
+
   void _clearSelections() {
     setState(() => _selectedPreferences.clear());
   }
 
   void _skipPage() {
-    debugPrint("Skip button pressed");
+    Navigator.pushReplacementNamed(context, '/homescreen');
   }
 
   void _toggleSelection(String preference) {
@@ -62,30 +76,82 @@ class PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
+  // ─────────────────────────────────────────────
+  // COMPLETE ONBOARDING (ONE CALL)
+  // ─────────────────────────────────────────────
   Future<void> _savePreferencesAndFinish() async {
-    try {
-      final supabase = Supabase.instance.client;
-      final user = supabase.auth.currentUser;
+    final token = AuthService().token;
 
-      if (user == null) {
-        throw Exception("Not logged in");
-      }
-
-      final response = await supabase
-          .from('profiles')
-          .update({
-            'preferences': _selectedPreferences.toList(),
-            'first_login': false,
-          })
-          .eq('id', user.id)
-          .select();
-
-      Navigator.pushNamed(context, '/done');
-    } catch (e) {
-      debugPrint("❌ Supabase update failed: $e");
+    if (token == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Failed to save: $e")));
+      ).showSnackBar(const SnackBar(content: Text("Not authenticated")));
+      return;
+    }
+
+    if (_selectedPreferences.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Select at least one preference")),
+      );
+      return;
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final firstName = prefs.getString('onboarding_firstName');
+      final lastName = prefs.getString('onboarding_lastName');
+      final username = prefs.getString('onboarding_username');
+      final gender = prefs.getString('onboarding_gender');
+      final nationality = prefs.getString('onboarding_nationality');
+      final dobRaw = prefs.getString('onboarding_dob');
+
+      if (firstName == null ||
+          lastName == null ||
+          username == null ||
+          gender == null ||
+          nationality == null ||
+          dobRaw == null) {
+        throw Exception('Missing cached signup data');
+      }
+
+      final body = {
+        "firstName": firstName,
+        "lastName": lastName,
+        "username": username,
+        "gender": gender,
+        "nationality": nationality,
+        "dateOfBirth": _normalizeDate(dobRaw),
+        "preferences": _selectedPreferences.toList(),
+      };
+
+      final res = await http.put(
+        Uri.parse('$_baseUrl/profiles/complete'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (res.statusCode != 200) {
+        throw Exception(res.body);
+      }
+
+      // 🧹 CLEAR CACHED SIGNUP DATA
+      await prefs.remove('onboarding_firstName');
+      await prefs.remove('onboarding_lastName');
+      await prefs.remove('onboarding_username');
+      await prefs.remove('onboarding_gender');
+      await prefs.remove('onboarding_nationality');
+      await prefs.remove('onboarding_dob');
+
+      Navigator.pushReplacementNamed(context, '/homescreen');
+    } catch (e) {
+      debugPrint("❌ Onboarding failed: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to complete onboarding")),
+      );
     }
   }
 
@@ -193,7 +259,6 @@ class PreferencesPageState extends State<PreferencesPage> {
               ),
             ),
 
-            /// Bottom Confirm Button
             Positioned(
               bottom: 0,
               left: 0,
@@ -275,7 +340,6 @@ class PreferenceTile extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 if (isSelected)
                   Positioned(
                     top: -8,
@@ -296,9 +360,7 @@ class PreferenceTile extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 8),
-
           Text(
             title,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),

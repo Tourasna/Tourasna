@@ -1,21 +1,39 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../models/place.dart';
+import '../services/auth_service.dart';
 
 class PlacesRepo {
-  final SupabaseClient _db = Supabase.instance.client;
+  static const String _baseUrl = 'http://10.0.2.2:4000';
+
+  final AuthService authService;
+
+  PlacesRepo(this.authService);
 
   Future<Place?> getByMLLabel(String label) async {
-    final res = await _db
-        .from('places')
-        .select()
-        .eq('ml_label', label)
-        .limit(1)
-        .maybeSingle();
+    final token = authService.token;
 
-    print("SUPABASE RESULT FOR label=[$label]: $res");
+    if (token == null) {
+      throw Exception('User is not authenticated');
+    }
 
-    if (res == null) return null;
+    final res = await http.get(
+      Uri.parse('$_baseUrl/places/by-ml-label/$label'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-    return Place.fromJson(res);
+    if (res.statusCode == 404) {
+      return null;
+    }
+
+    if (res.statusCode != 200) {
+      throw Exception('Failed to fetch place: ${res.body}');
+    }
+
+    final data = jsonDecode(res.body);
+    return Place.fromJson(data);
   }
 }

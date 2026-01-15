@@ -1,7 +1,8 @@
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
+import '../services/auth_singleton.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final supabase = Supabase.instance.client;
+  static const String _baseUrl = 'http://10.0.2.2:4000';
 
   bool loading = false;
   Map<String, dynamic>? data;
@@ -19,10 +20,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final firstNameCtl = TextEditingController();
   final lastNameCtl = TextEditingController();
   final usernameCtl = TextEditingController();
-  final emailCtl = TextEditingController();
-  List<String> preferences = [];
 
+  List<String> preferences = [];
   String? avatarUrl;
+
   final picker = ImagePicker();
 
   @override
@@ -31,86 +32,94 @@ class _ProfilePageState extends State<ProfilePage> {
     loadProfile();
   }
 
+  @override
+  void dispose() {
+    firstNameCtl.dispose();
+    lastNameCtl.dispose();
+    usernameCtl.dispose();
+    super.dispose();
+  }
+
+  // ─────────────────────────────────────────────
+  // LOAD PROFILE
+  // ─────────────────────────────────────────────
   Future<void> loadProfile() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
+    final token = authService.token;
+
+    if (token == null) return;
 
     setState(() => loading = true);
 
-    final res = await supabase
-        .from('profiles')
-        .select()
-        .eq('id', user.id)
-        .single();
+    final res = await http.get(
+      Uri.parse('$_baseUrl/profiles/me'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
 
-    data = res;
+    if (res.statusCode != 200) {
+      setState(() => loading = false);
+      return;
+    }
 
-    firstNameCtl.text = res['first_name'] ?? '';
-    lastNameCtl.text = res['last_name'] ?? '';
-    usernameCtl.text = res['username'] ?? '';
-    emailCtl.text = res['email'] ?? '';
-    avatarUrl = res['avatar_url'];
-    preferences = List<String>.from(res['preferences'] ?? []);
+    data = jsonDecode(res.body);
+
+    firstNameCtl.text = data?['first_name'] ?? '';
+    lastNameCtl.text = data?['last_name'] ?? '';
+
+    usernameCtl.text = data?['username'] ?? '';
+    avatarUrl = data?['avatar_url'];
+    preferences = List<String>.from(data?['preferences'] ?? []);
 
     setState(() => loading = false);
   }
 
+  // ─────────────────────────────────────────────
+  // UPDATE BASIC PROFILE INFO
+  // ─────────────────────────────────────────────
   Future<void> updateProfile() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
+    final token = authService.token;
+    if (token == null) return;
 
     setState(() => loading = true);
 
-    await supabase
-        .from('profiles')
-        .update({
-          'first_name': firstNameCtl.text.trim(),
-          'last_name': lastNameCtl.text.trim(),
-          'username': usernameCtl.text.trim(),
-          'email': emailCtl.text.trim(),
-          'preferences': preferences,
-          'avatar_url': avatarUrl,
-        })
-        .eq('id', user.id);
+    final res = await http.put(
+      Uri.parse('$_baseUrl/profiles/update'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'firstName': firstNameCtl.text.trim(),
+        'lastName': lastNameCtl.text.trim(),
+        'username': usernameCtl.text.trim(),
+      }),
+    );
 
     setState(() => loading = false);
+
+    if (res.statusCode != 200) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to update profile")));
+      return;
+    }
+
+    await loadProfile(); // ✅ keep UI in sync
 
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(const SnackBar(content: Text("Profile updated")));
   }
 
+  // ─────────────────────────────────────────────
+  // AVATAR (DEFERRED)
+  // ─────────────────────────────────────────────
   Future<void> pickImage() async {
-    final XFile? img = await picker.pickImage(source: ImageSource.gallery);
-    if (img == null) return;
-
-    final bytes = await img.readAsBytes();
-    await uploadAvatar(bytes, img.name);
-  }
-
-  Future<void> uploadAvatar(Uint8List bytes, String filename) async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-
-    setState(() => loading = true);
-
-    final path = "${user.id}/$filename";
-
-    await supabase.storage
-        .from('avatars')
-        .uploadBinary(
-          path,
-          bytes,
-          fileOptions: const FileOptions(upsert: true),
-        );
-
-    final publicUrl = supabase.storage.from('avatars').getPublicUrl(path);
-
-    avatarUrl = publicUrl;
-
-    await updateProfile();
-
-    setState(() => loading = false);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Avatar upload coming soon")));
   }
 
   @override
@@ -118,10 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5E5D1),
-
       body: Stack(
         children: [
           Container(
@@ -133,7 +140,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-
           Positioned(
             top: 150,
             left: 0,
@@ -154,13 +160,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-
           SingleChildScrollView(
             padding: const EdgeInsets.only(top: 260),
             child: Column(
               children: [
                 const SizedBox(height: 50),
-
                 Text(
                   "${firstNameCtl.text} ${lastNameCtl.text}",
                   style: const TextStyle(
@@ -168,9 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 6),
-
                 ElevatedButton.icon(
                   onPressed: () => showEditSheet(),
                   icon: const Icon(Icons.edit),
@@ -180,11 +182,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     foregroundColor: Colors.black87,
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 buildSectionTitle("Preferences"),
-
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -209,24 +208,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   }).toList(),
                 ),
-
                 const SizedBox(height: 20),
-
                 buildSectionTitle("Username"),
                 Text(usernameCtl.text, style: const TextStyle(fontSize: 16)),
-
                 const SizedBox(height: 16),
-
-                buildSectionTitle("Email"),
-                Text(emailCtl.text, style: const TextStyle(fontSize: 16)),
-
-                const SizedBox(height: 120),
               ],
             ),
           ),
         ],
       ),
-
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: const Color(0xFFF5E5D1),
@@ -319,13 +309,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   controller: usernameCtl,
                   decoration: const InputDecoration(labelText: "Username"),
                 ),
-                TextField(
-                  controller: emailCtl,
-                  decoration: const InputDecoration(labelText: "Email"),
-                ),
-
                 const SizedBox(height: 20),
-
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.pop(context);
