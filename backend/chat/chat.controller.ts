@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
@@ -16,40 +17,33 @@ import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
 export class ChatController {
   constructor(private readonly chat: ChatService) {}
 
-  @Post('start')
-  async start(@Req() req) {
-    const userId = req.user.uid;
-    const sessionId = await this.chat.startSession(userId);
-    return { session_id: sessionId };
-  }
-
+  // Main chat endpoint (ONLY entry point)
   @Post('message')
   async sendMessage(
     @Req() req,
-    @Body() body: { session_id: string; message: string },
+    @Body() body: { session_id?: string; message: string },
   ) {
     const userId = req.user.uid;
     const { session_id, message } = body;
 
-    // Ensure session belongs to user
-    await this.chat.getSession(session_id, userId);
+    if (!message || !message.trim()) {
+      throw new BadRequestException('Message cannot be empty');
+    }
 
-    // Save user message
-    await this.chat.addMessage(session_id, 'user', message);
-
-    // Placeholder assistant reply (AI comes later)
-    const reply = 'I understand. Tell me more.';
-
-    await this.chat.addMessage(session_id, 'assistant', reply);
-
-    return { reply };
+    return this.chat.handleMessage(
+      userId,
+      message.trim(),
+      session_id,
+    );
   }
 
+  // Fetch chat history
   @Get(':sessionId')
   async history(@Req() req, @Param('sessionId') sessionId: string) {
     const userId = req.user.uid;
 
-    await this.chat.getSession(sessionId, userId);
-    return this.chat.getHistory(sessionId);
+    const session = await this.chat.resolveSession(userId, sessionId);
+
+    return this.chat.getHistory(session.id);
   }
 }
