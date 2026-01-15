@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/pages/landmark_details_page.dart';
 
+import '../models/recommendation_item.dart';
+import '../services/recommendation_service.dart';
+import '../utils/recommendation_images.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
 import '../services/auth_service.dart';
@@ -13,7 +16,7 @@ final AuthService authService = AuthService();
 // 🔌 Repo depends on auth
 final PlacesRepo placesRepo = PlacesRepo(authService);
 
-bool _lensInitialized = false;
+final Set<String> favoriteTitles = {};
 
 Future<void> runAILens(BuildContext context) async {
   final label = await aiLens.runCamera();
@@ -24,17 +27,15 @@ Future<void> runAILens(BuildContext context) async {
   if (place == null) {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text("No match for: $label")));
+    ).showSnackBar(const SnackBar(content: Text("No match for label")));
     return;
   }
 
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (_) => LandmarkDetailsPage(
-        place: place,
-        authService: authService, // ✅ REQUIRED
-      ),
+      builder: (_) =>
+          LandmarkDetailsPage(place: place, authService: authService),
     ),
   );
 }
@@ -46,9 +47,35 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-final Set<String> favoriteTitles = {};
-
 class _HomePageState extends State<HomePage> {
+  late final RecommendationService recommendationService;
+
+  List<RecommendationItem> _recommendations = [];
+  bool _loadingRecs = true;
+  bool _recError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    recommendationService = RecommendationService(authService);
+    _loadRecommendations();
+  }
+
+  Future<void> _loadRecommendations() async {
+    try {
+      final data = await recommendationService.getRecommendations();
+      setState(() {
+        _recommendations = data;
+        _loadingRecs = false;
+      });
+    } catch (_) {
+      setState(() {
+        _recError = true;
+        _loadingRecs = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,21 +254,28 @@ class _HomePageState extends State<HomePage> {
 
                 SizedBox(
                   height: 220,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    children: [
-                      _recommendationCard(
-                        'assets/images/horsebacking.png',
-                        'Horseback riding',
-                      ),
-                      const SizedBox(width: 15),
-                      _recommendationCard(
-                        'assets/images/kayaking.png',
-                        'Kayaking',
-                      ),
-                    ],
-                  ),
+                  child: _loadingRecs
+                      ? const Center(child: CircularProgressIndicator())
+                      : _recError
+                      ? const Center(
+                          child: Text("Failed to load recommendations"),
+                        )
+                      : _recommendations.isEmpty
+                      ? const Center(child: Text("No recommendations yet"))
+                      : ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          itemCount: _recommendations.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(width: 15),
+                          itemBuilder: (context, index) {
+                            final item = _recommendations[index];
+                            return _recommendationCard(
+                              imageForCategory(item.category),
+                              item.name,
+                            );
+                          },
+                        ),
                 ),
 
                 const SizedBox(height: 90),

@@ -35,8 +35,19 @@ class AuthService {
       throw Exception('Email not verified');
     }
 
-    // Force refresh to always get a valid ID token
+    // Initial token fetch
     _idToken = await cred.user!.getIdToken(true);
+  }
+
+  // ─────────────────────────────────────────────
+  // ALWAYS GET A FRESH ID TOKEN
+  // ─────────────────────────────────────────────
+  Future<String?> getValidToken() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+
+    _idToken = await user.getIdToken(true);
+    return _idToken;
   }
 
   // ─────────────────────────────────────────────

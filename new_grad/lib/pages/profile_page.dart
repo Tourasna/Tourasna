@@ -44,8 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
   // LOAD PROFILE
   // ─────────────────────────────────────────────
   Future<void> loadProfile() async {
-    final token = authService.token;
-
+    final token = await authService.getValidToken();
     if (token == null) return;
 
     setState(() => loading = true);
@@ -79,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
   // UPDATE BASIC PROFILE INFO
   // ─────────────────────────────────────────────
   Future<void> updateProfile() async {
-    final token = authService.token;
+    final token = await authService.getValidToken();
     if (token == null) return;
 
     setState(() => loading = true);
