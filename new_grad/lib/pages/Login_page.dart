@@ -53,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text.trim(),
       );
 
-      final token = _authService.token;
+      final token = await _authService.getValidToken();
       if (token == null) {
-        throw Exception('Login succeeded but token is null');
+        throw Exception("Not authenticated");
       }
 
       // 2️⃣ Load profile from backend

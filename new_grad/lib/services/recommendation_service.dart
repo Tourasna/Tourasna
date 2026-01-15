@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../models/place.dart';
+import '../models/recommendation_item.dart';
 import '../services/auth_service.dart';
 
 class RecommendationService {
@@ -11,27 +11,24 @@ class RecommendationService {
 
   RecommendationService(this.authService);
 
-  Future<List<Place>> getProfileRecommendations() async {
+  Future<List<RecommendationItem>> getRecommendations() async {
     final token = authService.token;
 
     if (token == null) {
-      // Not logged in → no personalized recommendations
       return [];
     }
 
     final res = await http.get(
       Uri.parse('$_baseUrl/recommendations'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
+      headers: {'Authorization': 'Bearer $token'},
     );
 
     if (res.statusCode != 200) {
-      throw Exception('Failed to load recommendations: ${res.body}');
+      throw Exception('Failed to load recommendations');
     }
 
-    final List data = jsonDecode(res.body);
-    return data.map((e) => Place.fromJson(e)).toList();
+    final List<dynamic> data = jsonDecode(res.body);
+
+    return data.map((e) => RecommendationItem.fromJson(e)).toList();
   }
 }
