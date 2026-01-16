@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/pages/landmark_details_page.dart';
-
+import '../widgets/context_bottom_sheet.dart';
 import '../models/recommendation_item.dart';
 import '../services/recommendation_service.dart';
 import '../utils/recommendation_images.dart';
@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     recommendationService = RecommendationService(authService);
-    _loadRecommendations();
   }
 
   Future<void> _loadRecommendations() async {
@@ -73,6 +72,19 @@ class _HomePageState extends State<HomePage> {
         _recError = true;
         _loadingRecs = false;
       });
+    }
+  }
+
+  Future<void> _ensureContextThenLoadRecommendations() async {
+    final result = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const ContextBottomSheet(),
+    );
+
+    if (result == true) {
+      await _loadRecommendations();
     }
   }
 
@@ -192,7 +204,9 @@ class _HomePageState extends State<HomePage> {
                             child: _serviceButton(
                               iconPath: 'assets/images/personalized.png',
                               label: 'Recommendations',
-                              onTap: () {},
+                              onTap: () async {
+                                await _ensureContextThenLoadRecommendations();
+                              },
                             ),
                           ),
                           Flexible(

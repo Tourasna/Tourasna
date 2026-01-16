@@ -12,11 +12,8 @@ class RecommendationService {
   RecommendationService(this.authService);
 
   Future<List<RecommendationItem>> getRecommendations() async {
-    final token = authService.token;
-
-    if (token == null) {
-      return [];
-    }
+    final token = await authService.getValidToken();
+    if (token == null) return [];
 
     final res = await http.get(
       Uri.parse('$_baseUrl/recommendations'),
@@ -28,7 +25,6 @@ class RecommendationService {
     }
 
     final List<dynamic> data = jsonDecode(res.body);
-
     return data.map((e) => RecommendationItem.fromJson(e)).toList();
   }
 }
