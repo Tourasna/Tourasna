@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'auth_service.dart';
 
 class ContextService {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
   final AuthService authService;
 
   ContextService(this.authService);

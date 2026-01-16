@@ -567,10 +567,19 @@ class GoogleTTSService {
     } catch (e) {}
   }
 
-  Future<void> pause() async => await _audioPlayer.pause();
-  Future<void> resume() async => await _audioPlayer.resume();
+  Future<void> pause() async {
+    if (_isDisposed) return;
+    await _audioPlayer.pause();
+    _isSpeaking = false;
+  }
 
-  void dispose() {
+  Future<void> resume() async {
+    if (_isDisposed) return;
+    await _audioPlayer.resume();
+    _isSpeaking = true;
+  }
+
+  void shutdown() {
     _isDisposed = true;
     _isSpeaking = false;
     try {

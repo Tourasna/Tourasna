@@ -1,44 +1,78 @@
-// src/storytelling/storytelling.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MySQLService } from '../database/mysql.service';
-import { AIService } from '../ai/ai.service';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
+import { randomUUID } from 'crypto';
+import { RowDataPacket } from 'mysql2';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StorytellingService {
   constructor(
     private readonly db: MySQLService,
-    private readonly ai: AIService,
+    private readonly http: HttpService,
+    private readonly config: ConfigService,
   ) {}
 
-  async getStory(placeId: string) {
-    // 1. Check cache
-    const [rows] = await this.db.pool.query(
+  async getStory(placeId: string): Promise<{ story: string }> {
+    // 1️⃣ Cache check
+    const [cached] = await this.db.pool.query<RowDataPacket[]>(
       'SELECT story FROM storytelling WHERE place_id = ?',
       [placeId],
     );
 
-    if ((rows as any[]).length > 0) {
-      return (rows as any[])[0].story;
+    if (cached.length > 0) {
+      return { story: cached[0].story as string };
     }
 
-    // 2. Load place
-    const [places] = await this.db.pool.query(
-      'SELECT name, category, description FROM places WHERE id = ?',
+    // 2️⃣ Fetch place
+    const [places] = await this.db.pool.query<RowDataPacket[]>(
+      'SELECT name, description FROM places WHERE id = ?',
       [placeId],
     );
 
-    const place = (places as any[])[0];
-    if (!place) throw new NotFoundException('Place not found');
+    if (places.length === 0) {
+      throw new NotFoundException('Place not found');
+    }
 
-    // 3. Generate story
-    const story = await this.ai.generateStory({ place });
+    const name = places[0].name as string;
+    const description = places[0].description as string;
 
-    // 4. Save
-    await this.db.pool.query(
-      'INSERT INTO storytelling (place_id, story) VALUES (?, ?)',
-      [placeId, story],
+    // 3️⃣ Resolve AI service URL (STRICT)
+    const aiServiceUrl = this.config.get<string>('AI_SERVICE_URL');
+
+    if (!aiServiceUrl) {
+      throw new Error('AI_SERVICE_URL is not configured');
+    }
+
+    // 4️⃣ Call Python AI (Groq)
+    const aiRes = await firstValueFrom(
+      this.http.post(
+        `${aiServiceUrl}/storytelling`,
+        { name, description },
+        { timeout: 60_000 },
+      ),
     );
 
-    return story;
+    const story: string | undefined = aiRes.data?.story;
+
+    if (!story) {
+      throw new Error('AI storytelling service returned no story');
+    }
+
+    // 5️⃣ Persist (race-safe)
+    try {
+      await this.db.pool.query(
+        'INSERT INTO storytelling (id, place_id, story) VALUES (?, ?, ?)',
+        [randomUUID(), placeId, story],
+      );
+    } catch (err: any) {
+      // Duplicate entry → another request already inserted it
+      if (err?.code !== 'ER_DUP_ENTRY') {
+        throw err;
+      }
+    }
+
+    return { story };
   }
 }

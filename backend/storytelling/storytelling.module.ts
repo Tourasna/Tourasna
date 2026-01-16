@@ -1,13 +1,13 @@
-// src/storytelling/storytelling.module.ts
 import { Module } from '@nestjs/common';
 import { StorytellingController } from './storytelling.controller';
 import { StorytellingService } from './storytelling.service';
 import { DatabaseModule } from '../database/database.module';
-import { AIService } from '../ai/ai.service';
+import { AuthModule } from '../auth/auth.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, AuthModule, HttpModule],
   controllers: [StorytellingController],
-  providers: [StorytellingService, AIService],
+  providers: [StorytellingService],
 })
 export class StorytellingModule {}

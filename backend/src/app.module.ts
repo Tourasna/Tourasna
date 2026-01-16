@@ -8,6 +8,7 @@ import { RecommendationsModule } from '../recommendation/recommendations.module'
 import { ContextModule } from '../context/context.module';
 import { FavoritesModule } from '../favorites/favorites.module';
 import { ChatModule } from './chat/chat.module'
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -20,6 +21,9 @@ import { ChatModule } from './chat/chat.module'
     RecommendationsModule,
     ContextModule,
     FavoritesModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
 
   ],
 })

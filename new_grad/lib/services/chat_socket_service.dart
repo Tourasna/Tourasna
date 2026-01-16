@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'auth_service.dart';
 
 class ChatSocketService {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   final AuthService authService;
   IO.Socket? _socket;
