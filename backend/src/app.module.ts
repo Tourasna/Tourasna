@@ -6,6 +6,7 @@ import { PlacesModule } from '../places/places.module';
 import { StorytellingModule } from '../storytelling/storytelling.module';
 import { ChatModule } from '../chat/chat.module';
 import { RecommendationsModule } from '../recommendation/recommendations.module';
+import { ContextModule } from '../context/context.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RecommendationsModule } from '../recommendation/recommendations.module'
     StorytellingModule,
     ChatModule,
     RecommendationsModule,
+    ContextModule,
   ],
 })
 export class AppModule {}

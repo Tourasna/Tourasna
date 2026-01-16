@@ -13,8 +13,8 @@ export class RecommendationsService {
   async getRecommendations(userId: string) {
     console.log('▶️ GET RECOMMENDATIONS FOR USER:', userId);
 
-    // 1️⃣ Cache first
-    const [cached] = await this.db.pool.query(
+    // 1️⃣ CACHE FIRST
+    const [cached]: any = await this.db.pool.query(
       `
       SELECT ri.*, rc.score
       FROM recommendations_cache rc
@@ -25,29 +25,43 @@ export class RecommendationsService {
       [userId],
     );
 
-    if ((cached as any[]).length > 0) {
-      console.log('✅ RETURNING CACHED:', (cached as any[]).length);
+    if (cached.length > 0) {
+      console.log('✅ RETURNING CACHED:', cached.length);
       return cached;
     }
 
-    // 2️⃣ Load profile
-    const [profiles] = await this.db.pool.query(
+    // 2️⃣ LOAD PROFILE (IDENTITY DATA ONLY)
+    const [profiles]: any = await this.db.pool.query(
       `SELECT * FROM profiles WHERE id = ?`,
       [userId],
     );
 
-    const profile = (profiles as any[])[0];
+    const profile = profiles[0];
     if (!profile) {
       throw new InternalServerErrorException('Profile not found');
     }
 
-    console.log('📦 PROFILE LOADED:', profile);
+    // 3️⃣ LOAD USER CONTEXT (TRIP INTENT)
+    const [contexts]: any = await this.db.pool.query(
+      `
+      SELECT budget, travel_type
+      FROM user_context
+      WHERE user_id = ?
+      `,
+      [userId],
+    );
 
-    // 3️⃣ Build AI payload
-    const payload = this.buildAIPayload(profile);
+    const budget = contexts[0]?.budget ?? 'medium';
+    const travelType = contexts[0]?.travel_type ?? 'solo';
+
+    console.log('📦 PROFILE LOADED');
+    console.log('🧭 CONTEXT:', { budget, travelType });
+
+    // 4️⃣ BUILD AI PAYLOAD
+    const payload = this.buildAIPayload(profile, budget, travelType);
     console.log('🧠 AI PAYLOAD:', payload);
 
-    // 4️⃣ Call AI
+    // 5️⃣ CALL AI
     let aiResults: any[];
 
     try {
@@ -56,25 +70,23 @@ export class RecommendationsService {
         payload,
       );
 
-      console.log('🤖 RAW AI RESPONSE:', res.data);
-
       aiResults = res.data?.recommendations;
 
       if (!Array.isArray(aiResults)) {
         throw new Error('Invalid AI response format');
       }
 
-      console.log('✅ AI RESULTS COUNT:', aiResults.length);
+      console.log('🤖 AI RESULTS COUNT:', aiResults.length);
     } catch (err) {
       console.error('❌ AI CALL FAILED:', err);
       throw new InternalServerErrorException('Recommendation AI failed');
     }
 
-    // 5️⃣ Resolve names → IDs + cache
+    // 6️⃣ RESOLVE NAMES → IDS + CACHE
     for (const r of aiResults) {
-      const [items] = await this.db.pool.query(
+      const [items]: any = await this.db.pool.query(
         `
-        SELECT id, name
+        SELECT id
         FROM recommendation_items
         WHERE LOWER(name) LIKE CONCAT('%', LOWER(?), '%')
         LIMIT 1
@@ -82,8 +94,7 @@ export class RecommendationsService {
         [r.name],
       );
 
-      const item = (items as any[])[0];
-
+      const item = items[0];
       if (!item) {
         console.warn('⚠️ NO MATCH FOR AI ITEM:', r.name);
         continue;
@@ -101,8 +112,8 @@ export class RecommendationsService {
 
     console.log('💾 RECOMMENDATIONS CACHED');
 
-    // 6️⃣ Return final results
-    const [finalResults] = await this.db.pool.query(
+    // 7️⃣ RETURN FINAL RESULTS
+    const [finalResults]: any = await this.db.pool.query(
       `
       SELECT ri.*, rc.score
       FROM recommendations_cache rc
@@ -117,8 +128,13 @@ export class RecommendationsService {
   }
 
   // ─────────────────────────────────────────────
-
-  private buildAIPayload(profile: any) {
+  // BUILD AI PAYLOAD (FINAL, CLEAN)
+  // ─────────────────────────────────────────────
+  private buildAIPayload(
+    profile: any,
+    budget: string,
+    travelType: string,
+  ) {
     const age =
       profile.date_of_birth
         ? Math.floor(
@@ -137,8 +153,8 @@ export class RecommendationsService {
     return {
       user_age: age,
       user_gender: profile.gender || 'male',
-      user_budget: profile.budget || 'medium',
-      user_travel_type: profile.travel_type || 'solo',
+      user_budget: budget,
+      user_travel_type: travelType,
       user_preferences: preferences,
     };
   }
