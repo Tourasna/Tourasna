@@ -3,9 +3,9 @@ class RecommendationItem {
   final String name;
   final String category;
   final String budget;
-  final double rating;
+  final double? rating; // nullable
   final List<String> travelTypes;
-  final double score;
+  final double? score; // nullable
 
   RecommendationItem({
     required this.id,
@@ -23,9 +23,11 @@ class RecommendationItem {
       name: json['name'],
       category: json['category'],
       budget: json['budget'],
-      rating: (json['rating'] as num).toDouble(),
-      travelTypes: List<String>.from(json['travel_types']),
-      score: (json['score'] as num).toDouble(),
+      rating: json['rating'] != null
+          ? (json['rating'] as num).toDouble()
+          : null,
+      travelTypes: List<String>.from(json['travel_types'] ?? []),
+      score: json['score'] != null ? (json['score'] as num).toDouble() : null,
     );
   }
 }

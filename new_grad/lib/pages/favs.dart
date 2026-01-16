@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../models/recommendation_item.dart';
+import '../services/favorites_service.dart';
+import '../services/auth_service.dart';
+import '../utils/recommendation_images.dart';
+
 class FavsPage extends StatefulWidget {
   const FavsPage({super.key});
 
@@ -8,26 +13,36 @@ class FavsPage extends StatefulWidget {
 }
 
 class _FavsPageState extends State<FavsPage> {
-  List<Map<String, dynamic>> favItems = [
-    {
-      "image": "assets/images/horsebacking.png",
-      "title": "Horseback riding",
-      "isFav": true,
-    },
-    {"image": "assets/images/kayaking.png", "title": "Kayaking", "isFav": true},
-    {
-      "image": "assets/images/horsebacking.png",
-      "title": "Horseback riding",
-      "isFav": true,
-    },
-    {"image": "assets/images/kayaking.png", "title": "Kayaking", "isFav": true},
-  ];
+  final AuthService authService = AuthService();
+  late final FavoritesService favoritesService;
+
+  bool loading = true;
+  List<RecommendationItem> favorites = [];
+
+  @override
+  void initState() {
+    super.initState();
+    favoritesService = FavoritesService(authService);
+    _loadFavorites();
+  }
+
+  Future<void> _loadFavorites() async {
+    setState(() => loading = true);
+    favorites = await favoritesService.list();
+    setState(() => loading = false);
+  }
+
+  Future<void> _removeFavorite(RecommendationItem item) async {
+    await favoritesService.remove(item.id);
+    setState(() {
+      favorites.removeWhere((f) => f.id == item.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-
       body: Stack(
         children: [
           Container(
@@ -40,76 +55,61 @@ class _FavsPageState extends State<FavsPage> {
           ),
           Container(color: Colors.white.withOpacity(0.2)),
 
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 90),
+          if (loading)
+            const Center(child: CircularProgressIndicator())
+          else
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 90),
 
-                const Text(
-                  "FAVOURITES",
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.5,
-                    color: Colors.black,
-                  ),
-                ),
-
-                const SizedBox(height: 10),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 6,
+                  const Text(
+                    "FAVOURITES",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.5,
+                      color: Colors.black,
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.black54),
-                    ),
-                    child: const Text("Filter by"),
                   ),
-                ),
 
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.75,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: GridView.builder(
-                      padding: EdgeInsets.zero,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
-                            childAspectRatio: 0.82,
-                          ),
-                      itemCount: favItems.length,
-                      itemBuilder: (context, index) {
-                        final item = favItems[index];
-                        return _favCard(
-                          imagePath: item["image"],
-                          title: item["title"],
-                          isFavorite: item["isFav"],
-                          onFavoriteToggle: () {
-                            setState(() {
-                              item["isFav"] = !item["isFav"];
-                            });
+                  if (favorites.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 80),
+                      child: Text(
+                        "No favorites yet",
+                        style: TextStyle(fontSize: 16, color: Colors.black54),
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.75,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: GridView.builder(
+                          padding: EdgeInsets.zero,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                childAspectRatio: 0.82,
+                              ),
+                          itemCount: favorites.length,
+                          itemBuilder: (context, index) {
+                            final item = favorites[index];
+                            return _favCard(item);
                           },
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
 
-                const SizedBox(height: 40),
-              ],
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
-          ),
         ],
       ),
 
@@ -163,12 +163,11 @@ class _FavsPageState extends State<FavsPage> {
     );
   }
 
-  Widget _favCard({
-    required String imagePath,
-    required String title,
-    required bool isFavorite,
-    required VoidCallback onFavoriteToggle,
-  }) {
+  // ─────────────────────────────────────────────
+
+  Widget _favCard(RecommendationItem item) {
+    final imagePath = imageForCategory(item.category);
+
     return Stack(
       children: [
         Container(
@@ -196,7 +195,7 @@ class _FavsPageState extends State<FavsPage> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  title,
+                  item.name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
@@ -212,20 +211,17 @@ class _FavsPageState extends State<FavsPage> {
           top: 10,
           right: 10,
           child: GestureDetector(
-            onTap: onFavoriteToggle,
-            child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.black,
-              size: 28,
-              shadows: [
-                Shadow(blurRadius: 6, color: Colors.white.withOpacity(0.8)),
-              ],
-            ),
+            onTap: () async {
+              await _removeFavorite(item);
+            },
+            child: const Icon(Icons.favorite, color: Colors.black, size: 28),
           ),
         ),
       ],
     );
   }
+
+  // ─────────────────────────────────────────────
 
   Widget _buildNavItem({
     required String iconPath,
@@ -241,7 +237,7 @@ class _FavsPageState extends State<FavsPage> {
             width: 62,
             height: 40,
             alignment: Alignment.center,
-            decoration: label == 'Favs'
+            decoration: label == 'FAVs'
                 ? BoxDecoration(
                     color: const Color(0xFFE9DDC9),
                     borderRadius: BorderRadius.circular(20),
