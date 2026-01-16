@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
 import '../services/auth_service.dart';
+import '../services/chat_socket_service.dart';
 
 class ChatMockPage extends StatefulWidget {
   final AuthService authService;
@@ -16,75 +14,115 @@ class ChatMockPage extends StatefulWidget {
 class _ChatMockPageState extends State<ChatMockPage> {
   final List<_ChatMessage> messages = [];
   final TextEditingController controller = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+
+  late final ChatSocketService chatService;
 
   bool showIntro = true;
-  String? _sessionId;
-
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  int? _streamingIndex;
 
   @override
   void initState() {
     super.initState();
-    _startSession();
-  }
 
-  Future<void> _startSession() async {
-    final token = widget.authService.token;
-    if (token == null) return;
+    chatService = ChatSocketService(widget.authService);
 
-    final res = await http.post(
-      Uri.parse('$_baseUrl/chat/start'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+    chatService.connect(
+      onConnected: () async {
+        debugPrint("✅ Chat connected");
+
+        final history = await chatService.fetchHistory();
+        if (!mounted) return;
+
+        if (history.isNotEmpty) {
+          setState(() {
+            messages.addAll(
+              history.map(
+                (m) => _ChatMessage(
+                  m['content'] ?? '',
+                  m['sender'] == 'assistant',
+                ),
+              ),
+            );
+            showIntro = false; // hide intro once we have messages
+          });
+          _scrollToBottom();
+        }
       },
+      onDisconnected: () {
+        debugPrint("❌ Chat disconnected");
+      },
+      onStream: _handleStreamChunk,
+      onStreamEnd: _handleStreamEnd,
     );
-
-    if (res.statusCode == 200) {
-      _sessionId = jsonDecode(res.body)['session_id'];
-    }
   }
 
-  Future<void> sendMessage() async {
+  // ─────────────────────────────────────────────
+  // STREAM HANDLING (UX)
+  // ─────────────────────────────────────────────
+  void _handleStreamChunk(String chunk) {
+    if (!mounted) return;
+
+    setState(() {
+      showIntro = false;
+
+      if (_streamingIndex == null) {
+        messages.add(_ChatMessage(chunk, true));
+        _streamingIndex = messages.length - 1;
+      } else {
+        final current = messages[_streamingIndex!];
+        messages[_streamingIndex!] = _ChatMessage(current.text + chunk, true);
+      }
+    });
+
+    _scrollToBottom();
+  }
+
+  void _handleStreamEnd() {
+    _streamingIndex = null;
+  }
+
+  // ─────────────────────────────────────────────
+  // SEND MESSAGE (UX)
+  // ─────────────────────────────────────────────
+  void sendMessage() {
     final text = controller.text.trim();
-    if (text.isEmpty || _sessionId == null) return;
+    if (text.isEmpty) return;
 
     setState(() {
       messages.add(_ChatMessage(text, false));
       showIntro = false;
+      _streamingIndex = null;
     });
 
     controller.clear();
+    chatService.sendMessage(text);
 
-    final token = widget.authService.token;
-    if (token == null) return;
-
-    try {
-      final res = await http.post(
-        Uri.parse('$_baseUrl/chat/message'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({'session_id': _sessionId, 'message': text}),
-      );
-
-      if (res.statusCode != 200) {
-        throw Exception(res.body);
-      }
-
-      final reply = jsonDecode(res.body)['reply'];
-
-      setState(() {
-        messages.add(_ChatMessage(reply, true));
-      });
-    } catch (_) {
-      setState(() {
-        messages.add(_ChatMessage("Sorry, something went wrong.", true));
-      });
-    }
+    _scrollToBottom();
   }
 
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!scrollController.hasClients) return;
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent + 120,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    chatService.disconnect();
+    controller.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  // ─────────────────────────────────────────────
+  // UI (from the UI mock)
+  // ─────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,6 +169,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
                 ],
                 Expanded(
                   child: ListView.builder(
+                    controller: scrollController,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 12,
@@ -192,7 +231,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
             ),
           ),
 
-          // INPUT BAR
+          // INPUT BAR (from the UI mock, UX: submit-to-send kept)
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
@@ -209,6 +248,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
                         Expanded(
                           child: TextField(
                             controller: controller,
+                            onSubmitted: (_) => sendMessage(),
                             decoration: const InputDecoration(
                               hintText: "Type...",
                               border: InputBorder.none,
@@ -220,7 +260,9 @@ class _ChatMockPageState extends State<ChatMockPage> {
                             Icons.camera_alt,
                             color: Colors.black,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            // keep your UI behavior here if you want
+                          },
                         ),
                       ],
                     ),

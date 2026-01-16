@@ -7,11 +7,16 @@ import '../utils/recommendation_images.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
 import '../services/auth_service.dart';
+import '../services/favorites_service.dart';
 
 final AILensService aiLens = AILensService();
 
 // 🔑 SINGLE shared AuthService instance
 final AuthService authService = AuthService();
+
+final FavoritesService favoritesService = FavoritesService(authService);
+
+final Set<int> favoriteIds = {};
 
 // 🔌 Repo depends on auth
 final PlacesRepo placesRepo = PlacesRepo(authService);
@@ -60,6 +65,19 @@ class _HomePageState extends State<HomePage> {
     recommendationService = RecommendationService(authService);
   }
 
+  Future<void> _loadFavoriteIds() async {
+    try {
+      final favs = await favoritesService.list();
+      setState(() {
+        favoriteIds
+          ..clear()
+          ..addAll(favs.map((f) => f.id));
+      });
+    } catch (_) {
+      // Fail silently — favorites are non-critical
+    }
+  }
+
   Future<void> _loadRecommendations() async {
     try {
       final data = await recommendationService.getRecommendations();
@@ -67,6 +85,9 @@ class _HomePageState extends State<HomePage> {
         _recommendations = data;
         _loadingRecs = false;
       });
+
+      // 🔥 Prefill hearts AFTER recommendations exist
+      await _loadFavoriteIds();
     } catch (_) {
       setState(() {
         _recError = true;
@@ -209,13 +230,6 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ),
-                          Flexible(
-                            child: _serviceButton(
-                              iconPath: 'assets/images/contextual.png',
-                              label: 'Contextual Awareness',
-                              onTap: () {},
-                            ),
-                          ),
                         ],
                       ),
                     ],
@@ -230,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(15),
                     onTap: () {
-                      Navigator.pushNamed(context, '/chatbot');
+                      Navigator.pushNamed(context, '/mocka');
                     },
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -284,10 +298,7 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(width: 15),
                           itemBuilder: (context, index) {
                             final item = _recommendations[index];
-                            return _recommendationCard(
-                              imageForCategory(item.category),
-                              item.name,
-                            );
+                            return _recommendationCard(item);
                           },
                         ),
                 ),
@@ -395,8 +406,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _recommendationCard(String imagePath, String title) {
-    final bool isFavorite = favoriteTitles.contains(title);
+  Widget _recommendationCard(RecommendationItem item) {
+    final bool isFavorite = favoriteIds.contains(item.id);
+    final String imagePath = imageForCategory(item.category);
 
     return GestureDetector(
       onTap: () {},
@@ -413,6 +425,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // Gradient + title
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -428,7 +441,7 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    title,
+                    item.name,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -439,18 +452,26 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // ❤️ Favorite button
           Positioned(
             top: 8,
             right: 8,
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 setState(() {
                   if (isFavorite) {
-                    favoriteTitles.remove(title);
+                    favoriteIds.remove(item.id);
                   } else {
-                    favoriteTitles.add(title);
+                    favoriteIds.add(item.id);
                   }
                 });
+
+                // Backend sync
+                if (isFavorite) {
+                  await favoritesService.remove(item.id);
+                } else {
+                  await favoritesService.add(item.id);
+                }
               },
               child: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,
