@@ -5,7 +5,7 @@ import '../models/recommendation_item.dart';
 import '../services/auth_service.dart';
 
 class RecommendationService {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   final AuthService authService;
 

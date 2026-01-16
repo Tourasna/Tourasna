@@ -4,7 +4,7 @@ import 'auth_service.dart';
 import '../models/recommendation_item.dart';
 
 class FavoritesService {
-  static const _baseUrl = 'http://10.0.2.2:4000';
+  static const _baseUrl = 'http://192.168.1.9:4000';
   final AuthService authService;
 
   FavoritesService(this.authService);

@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   bool loading = false;
   Map<String, dynamic>? data;

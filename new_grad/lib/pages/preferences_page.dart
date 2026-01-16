@@ -14,7 +14,7 @@ class PreferencesPage extends StatefulWidget {
 }
 
 class PreferencesPageState extends State<PreferencesPage> {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   final List<String> _preferences = [
     "Fun & Games",

@@ -1,22 +1,47 @@
-// src/places/places.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MySQLService } from '../database/mysql.service';
+import { PlaceResponseDto } from './dto/place-response.dto';
+import { RowDataPacket } from 'mysql2';
 
 @Injectable()
 export class PlacesService {
   constructor(private readonly db: MySQLService) {}
 
-  async findByMlLabel(mlLabel: string) {
-    const [rows] = await this.db.pool.query(
-      'SELECT * FROM places WHERE ml_label = ?',
-      [mlLabel],
+  async findByMlLabel(mlLabel: string): Promise<PlaceResponseDto> {
+    const [rows] = await this.db.pool.query<RowDataPacket[]>(
+      `
+      SELECT id, name, description, category,
+            glb_url, ml_label
+      FROM places
+      WHERE ml_label = ?
+      LIMIT 1
+      `,
+      [mlLabel]
     );
 
-    const place = (rows as any[])[0];
-    if (!place) {
+    if (rows.length === 0) {
       throw new NotFoundException('Place not found');
     }
 
-    return place;
+    return rows[0] as PlaceResponseDto;
+  }
+
+  async findById(id: string): Promise<PlaceResponseDto> {
+    const [rows] = await this.db.pool.query<RowDataPacket[]>(
+      `
+      SELECT id, name, description, category,
+            glb_url, ml_label
+      FROM places
+      WHERE id = ?
+      LIMIT 1
+      `,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      throw new NotFoundException('Place not found');
+    }
+
+    return rows[0] as PlaceResponseDto;
   }
 }

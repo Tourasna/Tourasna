@@ -4,7 +4,7 @@ import '../models/place.dart';
 import '../services/auth_service.dart';
 
 class PlacesRepo {
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   final AuthService authService;
 

@@ -1,4 +1,3 @@
-// src/places/places.module.ts
 import { Module } from '@nestjs/common';
 import { PlacesController } from './places.controller';
 import { PlacesService } from './places.service';

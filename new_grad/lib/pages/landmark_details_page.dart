@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/place.dart';
 import 'viewer_page.dart';
@@ -22,111 +23,246 @@ class LandmarkDetailsPage extends StatefulWidget {
   State<LandmarkDetailsPage> createState() => _LandmarkDetailsPageState();
 }
 
-class _LandmarkDetailsPageState extends State<LandmarkDetailsPage> {
+class _LandmarkDetailsPageState extends State<LandmarkDetailsPage>
+    with WidgetsBindingObserver {
   late final GoogleTTSService _tts;
 
   bool _storyLoading = false;
   bool _isPlaying = false;
+  bool _isPaused = false;
 
-  String _selectedVoiceDisplayName = 'Charon';
-  String _selectedVoiceGender = 'male';
+  String? _cachedStory;
+
+  /// User preference (PERSISTED)
+  String _preferredGender = 'male'; // male = Charon, female = Kore
   String _detectedLanguage = 'en-US';
 
-  static const String _baseUrl = 'http://10.0.2.2:4000';
+  static const String _baseUrl = 'http://192.168.1.9:4000';
+  static const String _voicePrefKey = 'tts_preferred_gender';
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _tts = GoogleTTSService(apiKey: ApiKeys.googleMapsApiKey);
+    _loadVoicePreference();
+  }
+
+  Future<void> _loadVoicePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString(_voicePrefKey);
+    if (saved != null && mounted) {
+      setState(() => _preferredGender = saved);
+    }
+  }
+
+  Future<void> _saveVoicePreference(String gender) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_voicePrefKey, gender);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _tts.stop();
-    _tts.dispose();
+    _tts.shutdown();
     super.dispose();
   }
 
-  // ─────────────────────────────────────────────
-  // 🎭 STORY FLOW (BACKEND)
-  // ─────────────────────────────────────────────
-
-  Future<void> _startStoryFlow() async {
-    if (_isPlaying) {
-      await _tts.stop();
-      if (mounted) setState(() => _isPlaying = false);
-      return;
-    }
-
-    try {
-      setState(() => _storyLoading = true);
-
-      final token = widget.authService.token;
-      if (token == null) {
-        throw Exception('User is not authenticated');
-      }
-
-      final res = await http.get(
-        Uri.parse('$_baseUrl/storytelling/${widget.place.id}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (res.statusCode != 200) {
-        throw Exception('Story fetch failed: ${res.body}');
-      }
-
-      final storyText = jsonDecode(res.body)['story'] as String;
-
-      _detectedLanguage = _tts.detectLanguage(storyText);
-      final voices = _tts.getVoicesForLanguage(_detectedLanguage);
-
-      if (voices.isNotEmpty) {
-        final selectedVoice = voices.firstWhere(
-          (v) => v['gender'] == _selectedVoiceGender,
-          orElse: () => voices.first,
-        );
-        _tts.setVoice(selectedVoice['code']!);
-        _selectedVoiceDisplayName =
-            selectedVoice['displayName'] ?? selectedVoice['name']!;
-      }
-
-      setState(() {
-        _storyLoading = false;
-        _isPlaying = true;
-      });
-
-      await _tts.speakStory(storyText);
-    } catch (e) {
-      debugPrint('❌ STORY ERROR: $e');
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Story error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      _tts.stop();
       if (mounted) {
         setState(() {
-          _storyLoading = false;
           _isPlaying = false;
+          _isPaused = false;
         });
       }
     }
   }
 
   // ─────────────────────────────────────────────
-  // 🎨 UI (UNCHANGED)
+  // 🎭 STORY FLOW
+  // ─────────────────────────────────────────────
+
+  Future<void> _startStoryFlow() async {
+    if (_storyLoading) return;
+
+    // Pause
+    if (_isPlaying && !_isPaused) {
+      await _tts.pause();
+      setState(() => _isPaused = true);
+      return;
+    }
+
+    // Resume
+    if (_isPlaying && _isPaused) {
+      await _tts.resume();
+      setState(() => _isPaused = false);
+      return;
+    }
+
+    final token = widget.authService.token;
+    if (token == null) {
+      _showError('User not authenticated');
+      return;
+    }
+
+    try {
+      setState(() => _storyLoading = true);
+
+      // Fetch & cache story once
+      if (_cachedStory == null) {
+        final res = await http.get(
+          Uri.parse('$_baseUrl/storytelling/${widget.place.id}'),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        );
+
+        if (res.statusCode != 200) {
+          throw Exception(res.body);
+        }
+
+        _cachedStory = jsonDecode(res.body)['story'] as String;
+      }
+
+      final storyText = _cachedStory!;
+
+      /// Apply voice ONLY ONCE
+      if (_tts.getCurrentVoice().isEmpty) {
+        _detectedLanguage = _tts.detectLanguage(storyText);
+        _tts.setVoiceForText(storyText, preferredGender: _preferredGender);
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        _storyLoading = false;
+        _isPlaying = true;
+        _isPaused = false;
+      });
+
+      await _tts.speakStory(storyText);
+
+      if (mounted) {
+        setState(() {
+          _isPlaying = false;
+          _isPaused = false;
+        });
+      }
+    } catch (e) {
+      _showError('Story error: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _storyLoading = false);
+      }
+    }
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  // ─────────────────────────────────────────────
+  // 🎤 VOICE SELECTOR (CHARON / KORE)
+  // ─────────────────────────────────────────────
+
+  void _showVoiceSelector() {
+    _tts.stop();
+    setState(() {
+      _isPlaying = false;
+      _isPaused = false;
+    });
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Choose Narrator',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ChoiceChip(
+                  label: const Text('Charon'),
+                  selected: _preferredGender == 'male',
+                  onSelected: (v) {
+                    if (!v) return;
+                    _preferredGender = 'male';
+                    _saveVoicePreference('male');
+                    _tts.setVoiceForText(
+                      widget.place.description ?? widget.place.name,
+                      preferredGender: 'male',
+                    );
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+                const SizedBox(width: 16),
+                ChoiceChip(
+                  label: const Text('Kore'),
+                  selected: _preferredGender == 'female',
+                  onSelected: (v) {
+                    if (!v) return;
+                    _preferredGender = 'female';
+                    _saveVoicePreference('female');
+                    _tts.setVoiceForText(
+                      widget.place.description ?? widget.place.name,
+                      preferredGender: 'female',
+                    );
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────
+  // 🎨 UI
   // ─────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
     final description = widget.place.description ?? 'No description available.';
+
+    IconData icon;
+    String label;
+
+    if (_storyLoading) {
+      icon = Icons.hourglass_top;
+      label = 'Loading Story...';
+    } else if (_isPlaying && !_isPaused) {
+      icon = Icons.pause;
+      label = 'Pause Story';
+    } else if (_isPlaying && _isPaused) {
+      icon = Icons.play_arrow;
+      label = 'Resume Story';
+    } else {
+      icon = Icons.volume_up;
+      label = 'Play Story';
+    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -139,6 +275,15 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           elevation: 0,
+          actions: [
+            TextButton(
+              onPressed: _showVoiceSelector,
+              child: Text(
+                _preferredGender == 'male' ? 'Charon' : 'Kore',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
@@ -162,30 +307,18 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage> {
                 ),
               ),
               const SizedBox(height: 20),
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  icon: _storyLoading
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Icon(_isPlaying ? Icons.stop : Icons.volume_up),
-                  label: Text(
-                    _storyLoading
-                        ? 'Loading Story...'
-                        : _isPlaying
-                        ? 'Stop Story'
-                        : 'Start Story',
-                  ),
-                  onPressed: _storyLoading ? null : _startStoryFlow,
+                  icon: Icon(icon),
+                  label: Text(label),
+                  onPressed: _startStoryFlow,
                 ),
               ),
+
               const SizedBox(height: 12),
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
