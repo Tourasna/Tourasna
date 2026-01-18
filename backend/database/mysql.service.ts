@@ -1,20 +1,44 @@
-// src/database/mysql.service.ts
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import mysql from 'mysql2/promise';
+import mysql, { Pool } from 'mysql2/promise';
 
 @Injectable()
 export class MySQLService implements OnModuleInit {
-  pool: mysql.Pool;
+  public pool: Pool;
+
+  private async createPool() {
+    this.pool = mysql.createPool({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      port: Number(process.env.DB_PORT),
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
+  }
 
   async onModuleInit() {
-    this.pool = mysql.createPool({
-      host: process.env.MYSQL_HOST,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE,
-    });
+    const maxRetries = 20;
+    const delay = 3000;
 
-    await this.pool.query('SELECT 1');
-    console.log('MySQL connected');
+    for (let i = 1; i <= maxRetries; i++) {
+      try {
+        await this.createPool();
+        await this.pool.query('SELECT 1');
+        console.log('MySQL connected');
+        return;
+      } catch (err) {
+        console.log(`MySQL not ready (attempt ${i}/${maxRetries})`);
+        if (i === maxRetries) {
+          throw err;
+        }
+        await new Promise(res => setTimeout(res, delay));
+      }
+    }
+  }
+
+  getPool(): Pool {
+    return this.pool;
   }
 }
