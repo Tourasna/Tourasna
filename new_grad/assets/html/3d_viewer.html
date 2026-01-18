@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <model-viewer
+    id="viewer"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1">
+  </model-viewer>
+
+  <script>
+    const viewer = document.getElementById('viewer');
+
+    window.setModel = (url) => {
+      viewer.src = url;
+
+      viewer.addEventListener('load', () => {
+        Viewer.postMessage('loaded');
+      }, { once: true });
+
+      viewer.addEventListener('error', () => {
+        Viewer.postMessage('error: failed to load model');
+      }, { once: true });
+    };
+  </script>
+</body>
+</html>

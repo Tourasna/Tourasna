@@ -14,7 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -205,6 +204,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+<<<<<<< HEAD
 # Flutter / Dart
 **/.dart_tool/
 **/build/
@@ -229,3 +229,6 @@ __marimo__/
 # Logs
 *.log
 
+=======
+# Ignore all CSV datasets in ai-service
+ai-service/**/*.csv

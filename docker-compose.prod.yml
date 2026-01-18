@@ -1,0 +1,39 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tourasna-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: tourasna
+      MYSQL_USER: tourasna
+      MYSQL_PASSWORD: strongpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"
+
+  backend:
+    build: ./backend
+    container_name: tourasna-backend
+    restart: always
+    env_file:
+      - ./backend/.env.production
+    depends_on:
+      - mysql
+      - ai-service
+    ports:
+      - "3000:3000"
+
+  ai-service:
+    build: ./ai-service
+    container_name: tourasna-ai
+    restart: always
+    env_file:
+      - ./ai-service/.env.production
+    ports:
+      - "8000:8000"
+
+volumes:
+  mysql_data:

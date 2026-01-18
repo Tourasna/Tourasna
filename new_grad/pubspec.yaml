@@ -1,0 +1,57 @@
+name: new_grad
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  supabase_flutter: ^2.5.0
+  cupertino_icons: ^1.0.8
+  icons_plus: ^5.0.0
+  google_generative_ai: ^0.4.7
+  image_picker: ^1.1.0
+  image: ^4.0.0
+  model_viewer_plus: ^1.10.0
+  tflite_flutter: ^0.12.1
+  webview_flutter: ^4.4.0
+  flutter_tts: ^3.8.5
+  googleapis: ^11.0.0
+  googleapis_auth: ^1.4.0
+  audioplayers: ^5.2.0
+  flutter_langdetect: ^0.0.2
+  http: ^1.2.0
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.1
+  shared_preferences: ^2.2.2
+  socket_io_client: ^2.0.3
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/ml/
+    - assets/html/
+
+  fonts:
+    - family: Sail
+      fonts:
+        - asset: assets/fonts/Sail-Regular.ttf
