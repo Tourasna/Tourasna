@@ -5,3 +5,4 @@ pandas
 tensorflow
 keras
 scikit-learn
+python-dotenv
