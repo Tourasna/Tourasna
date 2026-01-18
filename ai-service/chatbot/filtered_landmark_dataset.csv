@@ -1,0 +1,478 @@
+city,name,subcategory,rating,address,latitude,longitude
+Cairo,The Egyptian Museum in Cairo,Museums,4.5,"Midan El Tahrir Geographical Society Building, Cairo 11511 Egypt",30.047327,31.233646
+Cairo,Nile River,Nature & Parks,4.5,Cairo 15662 Egypt,23.972813,32.87494
+Cairo,Coptic Cairo,Sights & Landmarks,4.5,"Kasr Al Shama'e, Cairo Egypt",30.005342,31.232689
+Cairo,Mosque of Muhammad Ali,Sights & Landmarks,4.5,"Al Abageyah El Khalifa, Cairo 4252360 Egypt",30.0291,31.25982
+Cairo,Al-Azhar Park,Nature & Parks,4.5,"Salah Salem St Al Darassa Hill, Cairo 4294010 Egypt",30.040789,31.264729
+Cairo,Khan Al-Khalili,Shopping,4.1,"El Gamaleya, Cairo 4331302 Egypt",30.047728,31.262253
+Cairo,Cairo Citadel,Sights & Landmarks,4.3,"Salah Salem St, Cairo 11511 Egypt",30.028755,31.259718
+Cairo,Cave Church,Sights & Landmarks,4.6,Cairo 4421240 Egypt,30.030224,31.276834
+Cairo,Cairo Festival City Mall,Shopping,4.4,"Ring Road, Cairo 4730020 Egypt",30.02868,31.407446
+Cairo,Al-Azhar Mosque,Sights & Landmarks,4.5,"Salah Salem Street next to Al-Khalidin Park, Cairo 4293024 Egypt",30.04569,31.262688
+Cairo,Islamic Cairo,Sights & Landmarks,4.6,Cairo Egypt,30.061935,31.268362
+Cairo,Sharia Al Mu'izz Li-Din Allah,Sights & Landmarks,4.6,"Al Moez Ldin Allah Al Fatmi, Cairo 11511 Egypt",30.049873,31.261278
+Cairo,The Coptic Museum,Museums,4.4,"3 Mar Girgis street, Cairo 4244001 Egypt",30.00576,31.230396
+Cairo,The Hanging Church,Sights & Landmarks,4.5,"Kars Al Shama'e, Cairo 4244001 Egypt",30.005266,31.230183
+Cairo,Mosque and Madrasa of Sultan Hassan,Sights & Landmarks,4.6,"Maydan Salah al-Din, Cairo 11511 Egypt",30.032282,31.25617
+Cairo,Zamalek,Sights & Landmarks,4.3,Cairo Egypt,30.054823,31.22138
+Cairo,Mosque of Ibn Tulun,Sights & Landmarks,4.6,"Ahmed Ibn Tolon Sq. Tolon, El Sayeda Zeinab, Cairo 11511 Egypt",30.030449,31.250893
+Cairo,Museum of Islamic Arts,Museums,4.6,"Port Said St. Bab AL- Khalq, Cairo 11638 Egypt",30.044697,31.252563
+Cairo,Manial Palace Museum,Museums,4.5,"1 Al Saraya Street Manyal, Cairo 4240291 Egypt",30.028923,31.23005
+Cairo,Cairo Tower,Sights & Landmarks,3.9,"Kasr Al Nile Zamalek, Cairo 4270024 Egypt",30.045965,31.224298
+Cairo,Gayer-Anderson Museum (Bayt al-Kiritliya),Museums,4.6,"Ahmad Bin Tulun Tulun As Sayedah, Cairo 11617 Egypt",30.028646,31.250698
+Cairo,Wekalet El Ghouri Arts Center,Traveler Resources,4.5,"3 Mohamed Abdo St, Cairo 12411 Egypt",30.046133,31.260284
+Cairo,Church of St. Sergius and Bacchus,Sights & Landmarks,4.5,"Mari Gerges, Kom Ghorab, Cairo 11511 Egypt",30.006294,31.230675
+Cairo,Abdeen Palace Museum,Museums,4.1,"El-Gomhoreya Square Off Abdeen Square, Cairo 11511 Egypt",30.043215,31.247217
+Cairo,Al Rifai Mosque,Sights & Landmarks,4.5,Cairo Egypt,30.033144,31.257345
+Cairo,Coptic Orthodox Church of St. George (Mari Girgis),Sights & Landmarks,4.4,"Nearby Roman Fortress Old (Coptic) Cairo, Cairo 11511 Egypt",30.006384,31.229975
+Cairo,Heliopolis,Sights & Landmarks,4.3,Cairo 4470351 Egypt,30.11237,31.34399
+Cairo,Nilometer,Nature & Parks,4.3,"Roda Island, Cairo 11511 Egypt",30.00736,31.22499
+Cairo,Synagogue Ben Ezra,Sights & Landmarks,4.1,"Kom Ghorab, Cairo 11511 Egypt",30.005732,31.231033
+Cairo,St Simon the Tanner Monastery,Sights & Landmarks,4.5,"Mokattam Hills, Cairo 11511 Egypt",30.030916,31.276522
+Cairo,Cairo Opera House,Concerts & Shows,4.2,"Opera Square, Zamalek, Cairo 4270020 Egypt",30.04236,31.223665
+Cairo,City of the Dead (Northern Cemetery),Sights & Landmarks,4,"East of Sharia Salah Salem, Cairo 11511 Egypt",30.0467,31.2764
+Cairo,Downtown Katameya,Shopping,4.2,"90 5th District Road, Cairo 11211 Egypt",30.017174,31.412857
+Cairo,Street of the Tentmakers (Sharia Khayamiya),Shopping,4.9,"Islamic Cairo, Cairo 11511 Egypt",30.05148,31.2693
+Cairo,Bab Zuweila,Sights & Landmarks,4.3,"Darb el Ahmar, Cairo 11511 Egypt",30.042747,31.257614
+Cairo,Wadi Degla,Nature & Parks,3.9,Cairo Egypt,,
+Cairo,Mosque of Syeda Zainab,Sights & Landmarks,4.5,"El-Sayeda Zainab Square, Cairo 11617 Egypt",30.031921,31.242212
+Cairo,Mosque of Amr Ibn Al-As,Sights & Landmarks,4.3,Cairo Egypt,30.010132,31.232883
+Cairo,Qalawun Complex,Sights & Landmarks,4.5,"El-Gamaleya, Qism El-Gamaleya, Cairo 11511 Egypt",30.049404,31.260967
+Cairo,Midan Hussein,Sights & Landmarks,4.2,Cairo Egypt,30.047216,31.262814
+Cairo,Baron Palace,Sights & Landmarks,4.3,"El-Orouba Street Heliopolis, Cairo 11757 Egypt",30.086702,31.330305
+Cairo,National Museum Of Egyptian Civilization NEMC,Museums,4.5,Cairo 4245001 Egypt,30.008549,31.248276
+Cairo,Bayt Al-Suhaymi,Museums,4.3,"Haret Al Darb al Asfar, Cairo 11511 Egypt",30.052176,31.262556
+Cairo,Umm Kolthoum Museum,Museums,3.9,"1 El Malek El Saleh St. Manial El Roda, Cairo 11511 Egypt",30.007347,31.22592
+Cairo,Al-Hakim Mosque,Sights & Landmarks,4.2,Cairo Egypt,30.054693,31.263363
+Cairo,Suuq el Ataba,Shopping,4.2,Cairo Egypt,30.050611,31.251678
+Cairo,Elegant Voyage - Day Tours,Museums,4.2,Cairo Egypt,,
+Cairo,Egyptian Textile Museum,Museums,4.6,"121 El Muez St. Behind Wekalet Sobhy Zakaria, Cairo 11511 Egypt",30.12671,31.32498
+Cairo,Genena Mall,Shopping,3.3,"9 El-Batrawy st Off Abas El Akad st, Cairo 11511 Egypt",30.060595,31.331926
+Cairo,Fort of Babylon,Sights & Landmarks,4,"Coptic Cairo, Cairo 11511 Egypt",30.00574,31.229845
+Cairo,St. Mark's Coptic Orthodox Church,Sights & Landmarks,4.6,"Cleopatra Street Heliopolis, Cairo 11511 Egypt",30.09235,31.32923
+Cairo,Liberation Square (Midan El-Tahreer),Sights & Landmarks,3.6,"In Front of the Egyptian Museum, Cairo 11511 Egypt",30.04606,31.234583
+Cairo,SunCity Mall,Shopping,3.5,"1258 El-Nasr Rd, Cairo 4471434 Egypt",30.10257,31.386337
+Cairo,Church of St. Barbara,Sights & Landmarks,4.2,"Near the Roman Fortress, Cairo 11511 Egypt",30.07151,31.25893
+Cairo,Foustat Traditional Crafts Center,Museums,4.6,"1 El Emam St. El Fustat, Cairo 11511 Egypt",30.006954,31.235327
+Cairo,Wadi Natrun,Sights & Landmarks,4.4,Cairo Egypt,,
+Cairo,The District,Shopping,4.2,"Wadi Degla, Cairo 11361 Egypt",30.091389,31.383947
+Cairo,Bab al-Futuh,Sights & Landmarks,3.9,"154 Al Moez Ldin Allah Al Fatmi 154 المعز لدين الله الفاطمي, Cairo 11511 Egypt",,
+Cairo,Phi Salt Cave,Sights & Landmarks,4.6,"1122 Abd El-Hameed Badawi Street Extension, Masr Al Nour Building,Sheraton Heliopolis ,Cairo , Egypt, Cairo 11511 Egypt",30.105165,31.376898
+Cairo,Western Desert,Nature & Parks,4.8,Cairo Egypt,,
+Cairo,Sixth of October Bridge,Sights & Landmarks,3.4,Cairo Egypt,30.049114,31.229258
+Cairo,National Geographic Society Museum,Museums,4.3,"Kasr El Aini Street El Shura Council Compound, Cairo 11511 Egypt",30.03399,31.23344
+Cairo,Souk al Fustat,Shopping,4.1,"Corner el Emam Street and Hassan al Anwar Street Old Cairo, Cairo 11511 Egypt",30.008413,31.231256
+Cairo,Egyptian Air Force Museum,Sights & Landmarks,4.7,"El-Orouba Street Heliopolis, Cairo 11511 Egypt",30.09982,31.35106
+Cairo,Mosque of Sultan Al-Ashraf Barsbay,Sights & Landmarks,4.4,"Muizz Street El-Gamaleya, Cairo 11511 Egypt",30.03281,31.25613
+Cairo,Unknown Soldier Memorial,Museums,4,"Al Nasr Road Nasr City, Cairo 11511 Egypt",30.065,31.3139
+Cairo,Al Emam Al Hussein Mosque,Sights & Landmarks,3.8,"94 Al-Aini Palace Kafr El-Shorafa, Cairo 11511 Egypt",30.144682,31.340336
+Cairo,Manshiyat Naser,Sights & Landmarks,4.2,Cairo Egypt,,
+Cairo,Abu Sir Pyramids,Sights & Landmarks,4.4,"Outside of Cairo, Cairo 11511 Egypt",,
+Cairo,October War Panorama,Museums,3.9,Cairo Egypt,30.074827,31.306326
+Cairo,Child Museum,Museums,3.8,"34 Abou Bakr El Seddik St. Heliopolis Heliopolis, Cairo 11511 Egypt",30.100883,31.3336
+Cairo,Tent Market,Shopping,4.4,"Qasaba of Radwan Bay, Cairo 11511 Egypt",30.042114,31.257498
+Cairo,St. Mary's Coptic Orthodox Church,Sights & Landmarks,4.7,"El Maraashly Street, Cairo 11511 Egypt",,
+Cairo,Assawi Wheel,Sights & Landmarks,4.7,"26th of July Street, Cairo 11511 Egypt",30.052603,31.242292
+Cairo,Military Museum,Museums,3.6,"Citadel, Cairo 11511 Egypt",30.029757,31.261002
+Cairo,St. Mercurius Church (Abu Seifien),Sights & Landmarks,4.5,"Mari Girgis Street, Cairo 11511 Egypt",30.006802,31.230036
+Cairo,El Amir Taz Palace,Museums,4,"27 El Seyoufeya St. El Khalifa, Cairo 11511 Egypt",30.032202,31.253353
+Cairo,Sunny Land,Shopping,4.6,"68 Gohar El Kaed street. Khan El Khalili, Cairo 11511 Egypt",,
+Cairo,Tiba Outlet Mall,Shopping,3,"75 Al Nasr Road, Cairo 11511 Egypt",30.067694,31.330034
+Cairo,Mosque-Madrassa of al Ghouri,Sights & Landmarks,4.4,"In front of al Ghouri Mausoleum In front of al Ghouri Mausoleum, south of Khan al-Khalili, Cairo 11511 Egypt",30.046162,31.259747
+Cairo,Manzil Zienab Khatoon,Sights & Landmarks,4.1,"El-Darb EL-Ahmar, behind Al-Azhar Mosque, Cairo 11511 Egypt",30.044724,31.263496
+Cairo,Arkadia Mall,Shopping,2.6,"4 A Nile Corniche, Maspero, Cairo 11511 Egypt",30.06924,31.226992
+Cairo,El Muayyad Mosque,Sights & Landmarks,4.2,"Next to Bab Zuwaila, Cairo 11511 Egypt",29.97295,31.38953
+Cairo,The Tree of Virgin Mary,Sights & Landmarks,3.5,Cairo 11511 Egypt,30.04442,31.235712
+Cairo,Cairo International Convention & Exhibition Centre,Traveler Resources,3.7,"Nasr Road, Cairo 11511 Egypt",30.069849,31.30137
+Cairo,Mokkatom Mountain,Nature & Parks,4.1,Cairo Egypt,,
+Cairo,Townhouse Gallery,Shopping,4.8,"Hussein El Me'mar Pasha Street, Cairo 11511 Egypt",,
+Cairo,Gray Mosque (El-Aqmar Mosque),Sights & Landmarks,4.1,Cairo Egypt,,
+Cairo,Qait Bey Madrassa,Sights & Landmarks,4.6,"Darb Al Naya, Qal'at al-Kabsh, Cairo 11511 Egypt",29.81667,31.43333
+Cairo,Makan Egyptian Center for Culture and Art,Traveler Resources,4.2,"1 Saad Zaghloul street, Cairo 11511 Egypt",30.038046,31.238392
+Cairo,Aisha Fahmi Palace,Sights & Landmarks,4.7,"Mohammed Abd El-Wahab Zamalek, Cairo 11511 Egypt",30.05913,31.225037
+Cairo,Mahmoud Mokhtar Museum,Museums,4.1,"5 El Tahrir St., El Gezirah, Cairo 11511 Egypt",30.10258,31.2543
+Cairo,Bab al-Azab,Sights & Landmarks,3.5,"Al Fustat Khan el Kahlili Market Area, Cairo 11511 Egypt",30.0037,31.23641
+Cairo,Museum of Islamic Ceramics,Museums,3.1,"Prince Ibrahim's Palace, Cairo 11511 Egypt",30.056381,31.22308
+Cairo,Railway Museum,Museums,4,"Ramses Square, Cairo 11511 Egypt",30.16968,31.77346
+Cairo,Japanese Garden,Nature & Parks,4.2,"Fayzi St Helwan, Cairo 11511 Egypt",,
+Cairo,Old Egypt For Fine Art,Shopping,4.5,"El Moez Ledin Allah El Fatemy st. Azhar, Cairo 11511 Egypt",30.05326,31.262377
+Cairo,Tomb of Shah of Iran,Sights & Landmarks,4,"Al-Rifai mosque, Cairo 11511 Egypt",,
+Cairo,Gabalaya Park and Aquarium,Zoos & Aquariums,1.7,"Between Om Kalthoum Street and Hassan Sabri Street Zamalek, Cairo 11511 Egypt",30.05258,31.21848
+Cairo,Helwan Wax Museum,Museums,4,"Ain Helwan Helwan, Cairo 11511 Egypt",29.8603,31.3258
+Cairo,Obelisk of Ramses II,Sights & Landmarks,3.2,"Oruba Road, Cairo 11511 Egypt",30.09842,31.34768
+Cairo,Children's Civilization and Creativity Center,Museums,4.7,"36 Abu Bakr El Seddiq St. Heliopolis, Cairo 11511 Egypt",30.10372,31.25866
+Cairo,Al Fustat Garden,Water & Amusement Parks,3.3,"Salah Salem Street, Cairo 11511 Egypt",30.013487,31.24285
+Cairo,Egyptian Geology Museum,Museums,3.7,"Misr Helwan Agricultural Rd. Zahraa Misr El Kadima, Misr El Kadima, Cairo 11511 Egypt",29.97755,31.24486
+Cairo,Manasterly Palace,Concerts & Shows,3.3,"1 El Malek El Saleh St. Manial El Roda, Cairo 11511 Egypt",30.086,31.24571
+Cairo,Zamalek Art Gallery,Shopping,4.3,"11 Brazil St. Zamalek, Cairo 11511 Egypt",30.061367,31.222958
+Cairo,Mosque-Sabil of Sulayman Agha al-Silahdar,Sights & Landmarks,4.3,"Muizz Street, Cairo 11511 Egypt",30.07206,31.3711
+Cairo,Suleiman Pasha Mosque,Sights & Landmarks,5,"Inside the Citadel, Cairo 11511 Egypt",,
+Cairo,Picasso East art gallery,Shopping,4.5,Cairo Egypt,30.01736,31.447748
+Cairo,Talaat Harb Culture Center,Traveler Resources,4.3,"1 El Sayeda Nafisa St. El Sayeda Nafissa, Cairo 11511 Egypt",30.02287,31.24938
+Cairo,University Bridge,Sights & Landmarks,3.3,Cairo Egypt,,
+Cairo,Wash n Coffee,Sights & Landmarks,4,"# 200 36 Road, Cairo 11511 Egypt",29.956055,31.275717
+Cairo,Sindbad,Water & Amusement Parks,3.1,"Terminal of el-Nozha Metro Heliopolis, Cairo 11511 Egypt",30.08974,31.34139
+Cairo,Madrassa of Al-Nasir Muhammad,Sights & Landmarks,3.6,"Passage Inside Salah Al Din, Cairo 11511 Egypt",30.02934,31.26055
+Cairo,Cairo International Stadium,Fun & Games,5,"El Estad El Bahary Street, Cairo 11511 Egypt",30.06887,31.31126
+Cairo,Market Mix  Egyptian Handcrafts,Shopping,4.5,"19 Mansour Mohamed Street First Floor - Office, Cairo 11511 Egypt",30.063145,31.21828
+Cairo,El Gomhoureya Theatre,Concerts & Shows,5,Cairo Egypt,,
+Cairo,Madrassa of Amir Sarghitmish,Sights & Landmarks,4,"Northwest Wall of the Ibn Tulun Mosque, Cairo 11511 Egypt",30.02821,31.25004
+Cairo,Khalil Museum,Museums,4.4,Cairo Egypt,,
+Cairo,Qa'a of Muhhib Al-Din (Uthman Kathkhuda),Sights & Landmarks,4.3,"Shar'a al-Mu'iz, Cairo 11511 Egypt",,
+Cairo,Galleria Le Petit Louvre - Antique,Shopping,5,"18 Mahmoud Azmy St. Zamalek, Cairo 11511 Egypt",30.057531,31.222107
+Cairo,Madrasa of Sultan Barquq,Sights & Landmarks,3.8,"El-Gamaleya Bayn al-Qasrayn, al-Mu'izz street, Cairo 11511 Egypt",30.050064,31.26119
+Cairo,St. Fatima's Catholic Church,Sights & Landmarks,4,"St. Fatima's Square, Cairo 11511 Egypt",,
+Cairo,Qasr El Nil Bridge,Sights & Landmarks,3.8,"50 Kasr Al Nile, Cairo 11511 Egypt",30.04948,31.24522
+Cairo,Ramsis Railway Station,Sights & Landmarks,3.7,"Ramsis Square Al Fagalah, Al Azbakeya, Cairo 11511 Egypt",,
+Cairo,Aqsunqur Mosque,Sights & Landmarks,4.7,"El-Darb El-Ahmar, Cairo 11511 Egypt",30.036453,31.259935
+Cairo,Gallery Noun,Shopping,5,"4 Mahmoud Abou El Oyoun St. Off El Hegaz St. Heliopolis, Cairo 11511 Egypt",,
+Cairo,Mostafa Kamel Museum,Museums,3.3,"Salah El Din Sq. Qalaa, Cairo 11511 Egypt",30.03101,31.25699
+Cairo,Arabisque Mall,Shopping,5,Cairo Egypt,30.02593,31.46482
+Cairo,El Gawhara (Jewel) Palace Museum,Museums,4,"Citadel Historic Area, Cairo 11511 Egypt",30.02745,31.22988
+Cairo,Picasso Art Gallery Egypt,Shopping,5,"30 Hassan Assem St. Zamalek, Cairo 11511 Egypt",30.061506,31.22242
+Cairo,al-Salih Tala'i Mosque,Sights & Landmarks,4,"Facing Bab Zuwaila Islamic Cairo District, Cairo 11511 Egypt",30.042353,31.258106
+Cairo,Orman Park,Sights & Landmarks,1.7,"Cairo University Street, Cairo 11511 Egypt",30.04475,31.24561
+Cairo,Deir Amba Bischoi,Sights & Landmarks,4.7,"Wadi el-Natrun, Cairo 11511 Egypt",29.96203,31.42708
+Cairo,Royal Chariots Museum,Museums,4.7,"82 26th of July St. Boulak, Cairo 11511 Egypt",,
+Cairo,Mosque and Khanqah of Shaykhu,Sights & Landmarks,4,"Al Saliba, Cairo 11511 Egypt",30.04334,31.33311
+Cairo,Palace of Amir Beshtak,Sights & Landmarks,3,"Darb Kirmiz Fatimid Cairo, Cairo 11511 Egypt",30.05044,31.26185
+Cairo,House of the People Beit El-Umma Museum,Museums,4.5,"Munira Kasr el-Eini, Cairo 11511 Egypt",30.0375,31.2378
+Cairo,Church of the Virgin (Al-Adra),Sights & Landmarks,5,"Near the Babylon Fort Coptic Cairo, Cairo 11511 Egypt",,
+Cairo,Center Of Arts,Shopping,4,"1 El Maahad El Swesri St. Zamalek, Cairo 11511 Egypt",,
+Cairo,Al Matariya Obelisk Museum,Sights & Landmarks,3,"Matariya المطرية, Cairo 11511 Egypt",,
+Cairo,Sha'ar Hashamayim Synagogue,Sights & Landmarks,4.3,"14 Adly Opposite Kodak Passage, Cairo 0000000 Egypt",30.050896,31.244797
+Cairo,German Evangelical Church,Sights & Landmarks,4,"6 Gaber Ibn Hayyan Dokki, Cairo 11511 Egypt",30.033276,31.208548
+Cairo,Sayyed Zeinab Cultural Park,Nature & Parks,3.3,"Qadri Street, Cairo 11511 Egypt",,
+Cairo,Sun Temples of Abu Ghurab,Sights & Landmarks,1,"1km North East of Sahure's Pyramid, Cairo 11511 Egypt",29.99658,31.24894
+Cairo,Lenhert & Landrock,Shopping,4,"44 Sherif Street, Cairo 11511 Egypt",30.0943,31.32272
+Cairo,Tourism Cairo Office,Traveler Resources,2.5,"Adly Street - Downtown, Cairo 11511 Egypt",30.04475,31.24561
+Cairo,El Set Wasela House,Sights & Landmarks,5,"3 Mohammed Abdu St, Cairo 11511 Egypt",30.044558,31.263235
+Cairo,Fine Art Gallery,Shopping,4,"8 Gezeeret Badran St. Shoubra Shoubra, Cairo 11511 Egypt",30.06916,31.24477
+Cairo,St Shenuti Church,Sights & Landmarks,5,"Within Deir Abu Seifien Convent Old Cairo, Cairo 11511 Egypt",,
+Cairo,Mosque of Abo El Dahab,Sights & Landmarks,3,"Gameaa Al Azhar, Cairo 11511 Egypt",30.04618,31.26192
+Cairo,Egyptian Library,Traveler Resources,3,"8 Sabttiya, Corniche El-Nil, Ramlet Boulac, Cairo 11511 Egypt",30.07183,31.22763
+Cairo,Mashrabia Gallery of fine arts,Shopping,,"8th Building,Champollion Street In Front of QNB bank - Downtown, Cairo 11511 Egypt",30.047499,31.23548
+Cairo,Safaris,Outdoor Activities,,,,
+Cairo,Boat Tours,Outdoor Activities,,,30.081625,31.327703
+Cairo,"4WD, ATV & Off-Road Tours",Outdoor Activities,,,,
+Cairo,Balloon Rides,Outdoor Activities,,,,
+Cairo,Adrenaline & Extreme Tours,Outdoor Activities,,,,
+Cairo,Hiking & Camping Tours,Outdoor Activities,,,,
+Cairo,Nature & Wildlife Tours,Outdoor Activities,,,,
+Cairo,Eco Tours,Outdoor Activities,,,30.04404,31.23578
+Cairo,Bike Tours,Outdoor Activities,,,,
+Cairo,Horseback Riding Tours,Outdoor Activities,,,,
+Cairo,Air Tours,Outdoor Activities,,,,
+Cairo,Scuba & Snorkeling,Outdoor Activities,,,,
+Cairo,Gift & Specialty Shops,Shopping,,,30.014757,31.242105
+Cairo,Horse-Drawn Carriage Tours,Outdoor Activities,,,30.04404,31.23578
+Cairo,Submarine Tours,Outdoor Activities,,,,
+Cairo,Boat Rentals,Outdoor Activities,,,,
+Cairo,Canyoning & Rappelling Tours,Outdoor Activities,,,,
+Cairo,Kayaking & Canoeing,Outdoor Activities,,,29.987217,31.14932
+Cairo,Fishing Charters & Tours,Outdoor Activities,,,,
+Cairo,Room Escape Games,Fun & Games,,,30.064762,31.478106
+Cairo,Climbing Tours,Outdoor Activities,,,,
+Cairo,Dolphin & Whale Watching,Outdoor Activities,,,,
+Cairo,Barsoum Tours,Sights & Landmarks,4.8,"29 Rue Nasre, Cairo Egypt",30.104134,31.265736
+Cairo,Performances,Concerts & Shows,,,30.045639,31.260832
+Cairo,Majestic Tours,Sights & Landmarks,5,Cairo Egypt,30.081394,31.266651
+Cairo,Ski & Snow Tours,Outdoor Activities,,,29.994228,31.24136
+Cairo,Parasailing & Paragliding,Outdoor Activities,,,,
+Cairo,Open Air Mall - Madinaty,Shopping,4.9,"Second New Cairo, Cairo 4770203 Egypt",30.108627,31.626526
+Cairo,Game & Entertainment Centers,Fun & Games,,,30.016703,31.420942
+Cairo,Hany Tours,Sights & Landmarks,5,"Degla Plaza, St 199 Maadi, Cairo Egypt",29.952835,31.27245
+Cairo,District 5 Mall,Shopping,5,Cairo 4064051 Egypt,29.956959,31.45119
+Cairo,Golf Courses,Outdoor Activities,,,,
+Cairo,Gezira Sporting Club,Fun & Games,4.1,"5 Saray El Gezirah St, Cairo 11511 Egypt",29.97576,31.26271
+Cairo,Gear Rentals,Outdoor Activities,,,31.27267,32.27199
+Cairo,Paint & Pottery Studios,Fun & Games,,,,
+Cairo,Speed Boats Tours,Outdoor Activities,,,,
+Cairo,Tahrir Square,Sights & Landmarks,3.9,Cairo Egypt,30.044538,31.235266
+Cairo,Old Cairo,Sights & Landmarks,4.5,"Ramses Down Town Street, Cairo Egypt",30.04998,31.2486
+Cairo,The Police National Museum,Museums,4.3,"Saladin Al-Ayyubi Citadel Passage Inside Salah Al Din, Al Abageyah, Cairo 4252360 Egypt",31.016539,29.794374
+Cairo,Grace Baptist Church Cairo,Sights & Landmarks,5,"38, July 26 Street Oraby, Al Azbakeya,, Cairo 4272121 Egypt",30.053555,31.238134
+Cairo,Kimet Kids,Museums,5,"The National Museum Of Egyptian Civilization Ein As Seirah, Old Cairo, Cairo Governorate, Cairo 17611 Egypt",30.05,31.65
+Cairo,Merryland Park,Nature & Parks,5,"El Montaza, Heliopolis, Cairo Egypt",30.06263,31.24967
+Cairo,Egyptian Postal museum,Museums,5,"Abdel khalek tharwat, street Ataba Square, Cairo Egypt",30.04998,31.2486
+Cairo,"Surfing, Windsurfing & Kitesurfing",Outdoor Activities,,,30.0809,31.25564
+Cairo,Monument To Umm Kulthum,Sights & Landmarks,4,"El-malek El-fadl, Abu Al Feda, Zamalek, Cairo Governorate, Cairo 4271001 Egypt",30.064112,31.215708
+Cairo,Gallery Fanous,Shopping,5,"173 26th of July Corridor Zamalek, Cairo 11568 Egypt",30.06017,31.222378
+Cairo,Tut Ankh Amon Jewellery,Shopping,4.3,"Abdul Aziz Alsauod, Cairo 11511 Egypt",30.02261,31.223135
+Cairo,Museum Of Illusions,Museums,4.5,"Walk of Cairo, 38km Cairo-Alexandria Desert Road, Cairo 11511 Egypt",30.02387,31.002153
+Cairo,Statue Of Abdel Moneim Riad,Sights & Landmarks,4.5,"Ismailia, Qasr El Nil, Cairo Governorate 4272083, Cairo 4272083 Egypt",30.048779,31.234196
+Cairo,El-moez Street,Sights & Landmarks,5,"Downtown, Cairo 11511 Egypt",30.046715,31.234713
+Cairo,People of Egypt Walkway,Nature & Parks,5,"Mnia Al Kmh  - Cairo Rd, Cairo Egypt",30.062466,31.22702
+Cairo,Carpetopia-persian Carpets-persian Rugs,Shopping,5,"73 Akhnaton St. Ground Floor, Cairo 11511 Egypt",30.004232,31.41948
+Cairo,Egyptian National Library Museum,Museums,5,"Al Darb El Kutub Street, Cairo, Cairo Egypt",30.044727,31.252428
+Cairo,Odyssey Art Gallery,Shopping,5,"8 Al Sheikh Al Marsafi Street, Zamalek, , Egypt, Cairo 11568 EGY Egypt",30.05729,31.2227
+Cairo,Running Tours,Outdoor Activities,,,,
+Cairo,John Alan Edward MulganGrave,Sights & Landmarks,5,"Heliopolis War Cemetery, Cairo Egypt",30.080791,31.331947
+Cairo,Complex Of Sultan Al Ashraf Qaytbey,Sights & Landmarks,5,"City Of The Dead (northern Section) 30.043759, 31.274946, Cairo 11511 Egypt",30.043758,31.27496
+Cairo,Statue of Ibrahim Pasha,Sights & Landmarks,4,"Abdeen Square Ghayt Al Adah, Cairo 4284001 Egypt",30.043062,31.244852
+Cairo,Madrasa Al-salih Ayyub,Sights & Landmarks,5,"Muizz Street, Cairo 11511 Egypt",30.052658,31.262186
+Cairo,Masjid Al-shaykh Mutahhar,Sights & Landmarks,5,"Muizz Street, Cairo 11511 Egypt",30.04831,31.26062
+Cairo,Tut Ankh Amon Jewellery Shop,Shopping,5,"Grand Nile Tower Hotel Mall, Cairo 11511 Egypt",30.0348,31.2276
+Cairo,National Museum Of Egyptian Civilization,Museums,5,"El Fustat National Museum Of Egyptian Civilization Ain Alsira, Cairo 11511 Egypt",30.008148,31.24826
+Cairo,Maimonides Synagogue,Sights & Landmarks,5,"10 Darb Kormoz, Cairo 11511 Egypt",30.050714,31.26239
+Cairo,Sabil of Muhammad Ali Pasha,Sights & Landmarks,5,"Haret Al Room, Cairo 11511 Egypt",30.0291,31.25982
+Cairo,"St. Simon ""The Tanner"" Monastery",Sights & Landmarks,,"The bottom of the cliffs Manshiet Nasser, Cairo 4421241 Egypt",30.019012,31.27988
+Cairo,El Khawanky Gallery,Shopping,5,"17 B El Obour Bldgs Nasr City, Cairo 11511 Egypt",,
+Cairo,Sultan Baybars Al-Jashankir Khanqah and Mausoleum,Sights & Landmarks,4,Cairo Egypt,,
+Cairo,Lebon Building (libun Building),Sights & Landmarks,4,"19 Al Gabalaya Street Zamalek Next To The Aquarium Grotto Park, Cairo 11511 Egypt",30.046864,31.219898
+Cairo,El Sakakini Palace,Sights & Landmarks,4,"6 Al Sakakini Sq., As Sakakeni, Daher, Cairo 11511 Egypt",30.06574,31.2662
+Cairo,Gamal Abdel Nasser Mosque And Mausoleum,Sights & Landmarks,4,"23 Sharia El-Khalifa El-maamoun Near Sharia Al Qoobah, Cairo 11511 Egypt",30.080858,31.29257
+Cairo,Magra Al Ayoun (Cairo Aqueduct),Sights & Landmarks,4,"Along Magra Al Ayoun Street, Cairo 11511 Egypt",30.018284,31.25178
+Cairo,Gamal Abdul Nasser Museum,Museums,4,"4 El-khalifa El-Maamoun Mansheya El-Bakry, Heliopolis, Cairo 11511 Egypt",30.086908,31.300644
+Cairo,Hosh Al-basha,Sights & Landmarks,4,"Near Imam Shafi'i Mosque And Mausoleum In Southern City Of The Dead, Cairo Egypt",30.04442,31.235712
+Cairo,City Of The Dead (Southern Cemetery),Sights & Landmarks,3.5,"South Of The Citadel, Cairo 11511 Egypt",30.028746,31.259714
+Cairo,Imam Shafi'i Mosque,Sights & Landmarks,4,"Al Abageyah, Cairo 11511 Egypt",,
+Cairo,Bab Al-nasr,Sights & Landmarks,3,"Bab El-nasr, El-gamaleya, El Gamaliya, Cairo Governorate 11681, Cairo Egypt",30.05426,31.265194
+Cairo,Tomb Of King Farouk,Sights & Landmarks,3,"El-Refaey Inside the Mosque of Al Rifai, Adjacent to the Cairo Citadel, Cairo 4292008 Egypt",30.03271,31.257004
+Cairo,Serag Eldin Pasha Palace,Sights & Landmarks,3,"Garden City, Cairo 4272035 Egypt",30.037931,31.231216
+Cairo,Museo Mevlevi,Museums,3,"41 Al Soufeya, El Darb El Ahmar, Cairo 4292007 Egypt",30.033451,31.254133
+Cairo,Atelier Du Caire,Shopping,3,"2 Karim El Dawla St. Downtown, Cairo 11511 Egypt",30.04834,31.23782
+Cairo,Protestant Church,Sights & Landmarks,3,"Cleopatra Street Heliopolis, Cairo 11511 Egypt",30.09235,31.32923
+Cairo,Water Sports,Outdoor Activities,,,29.96122,31.27695
+Cairo,Shark Diving,Outdoor Activities,,,,
+Cairo,River Rafting & Tubing,Outdoor Activities,,,,
+Cairo,Zipline & Aerial Adventure Parks,Outdoor Activities,,,,
+Cairo,Bazar Khan El-Khalili,Shopping,2,"El-Gamaleya, Cairo 4331302 Egypt",30.04442,31.235712
+Cairo,Scavenger Hunts,Fun & Games,,,,
+Cairo,The Pool Club,Outdoor Activities,1,Cairo Egypt,,
+Cairo,Waterskiing & Jetskiing,Outdoor Activities,,,,
+Cairo,Gondola Cruises,Outdoor Activities,,,,
+Cairo,Dinner Theaters,Concerts & Shows,,,30.16964,31.40323
+Cairo,Golf Central Mall,Shopping,1,"Palm Hills 6th Of October Golf Central Mall, Cairo 3295501 Egypt",29.994402,31.043903
+Cairo,Bowling Alleys,Fun & Games,,,30.07642,31.30813
+Cairo,Movie Theaters,Fun & Games,,,30.081787,31.363028
+Cairo,Duck Tours,Outdoor Activities,,,,
+Cairo,Mini Golf,Fun & Games,,,,
+Cairo,Ahlan Lounge,Traveler Resources,1.8,"Cairo International Airport Oruba Road, Heliopolis, Cairo, Egypt, Cairo 11511 Egypt",30.11192,31.400652
+Cairo,Stand-Up Paddleboarding,Outdoor Activities,,,,
+Cairo,Sara Coffee Art,Shopping,,"2, El Nady Al Gadid Street Maadi, Cairo 11639 Egypt",30.074533,31.164953
+Cairo,Gallery Misr,Museums,,"4a Ibn Znki Street Zamalek Cairo Egypt, Cairo Egypt",31.198948,29.897654
+Cairo,Egyotamor,Museums,,"Egypt, Cairo Egypt",30.06263,31.24967
+Cairo,Alaa Monuir,Sights & Landmarks,,"New Cairo Egypt 8, Cairo 00000 Egypt",30.06263,31.24967
+Cairo,Alyaa Kilany,Museums,,"Cairo, Cairo 11511 Egypt",30.06263,31.24967
+Cairo,Egypt Tours Portal W/abanoub Raafat,Sights & Landmarks,,"Cairo, Egypt, Cairo Egypt",30.06263,31.24967
+Cairo,Sem Elegant Voyage.,Sights & Landmarks,,"El Haram Street, Cairo 81511 Egypt",30.05,31.65
+Cairo,Ciudad De Los Muertos,Sights & Landmarks,5,"2739+jfc Al Kadereya, Al Abageyah, El Khalifa, Cairo 4252020 Egypt",30.06263,31.24967
+Cairo,Mohamed Farid Square,Sights & Landmarks,,Cairo 11522 Egypt,30.06263,31.24967
+Cairo,Luxor Alabaster,Shopping,,"Cairo, Cairo Egypt",30.06263,31.24967
+Cairo,The Digger Hub,Fun & Games,,"New Cairo The Digger Hub Cairo Festival City New Cairo The Digger Hub Emaar Mivida Compound, Cairo Egypt",30.06263,31.24967
+Cairo,Mazhar Botanic Garden,Nature & Parks,,"26th of July Corridor, Cairo 12511 Egypt",30.065859,31.144007
+Cairo,The Diggerhub,Water & Amusement Parks,,"Cairo Festival City The Digger  Hub Compound Mivida New Cairo The Digger Hub, Cairo Egypt",30.06263,31.24967
+Cairo,Meyr Biton Synagogue,Sights & Landmarks,,"Synagogue, Cairo Egypt",30.06263,31.24967
+Cairo,Episcopal Diocese Of Egypt,Sights & Landmarks,,"5 Michel Lutfallah St., Cairo Egypt",30.05849,31.22375
+Cairo,National Museum Of Egyptian Civilisation,Museums,,"El-fustat Road Cairo Ein Elsira, Cairo Egypt",30.06263,31.24967
+Cairo,El Sawy Culturewheel,Concerts & Shows,,"26th of July Street, Cairo 4270110 Egypt",30.062239,31.216303
+Cairo,St. George's Church,Sights & Landmarks,5,"Mar Girgis, Cairo Egypt",25.8,32.75
+Cairo,Cairo By Omran,Sights & Landmarks,,Cairo Egypt,30.107237,31.253767
+Cairo,Odyssey,Shopping,,"8 Al Sheikh Al Marsafi, St, Zamalek, Cairo 11561 Egypt",30.06263,31.24967
+Cairo,Wadi Degla Sheraton,Fun & Games,,"Near Wadi Degla Club, Sheraton The District Mall, Cairo 11799 Egypt",30.080723,31.365
+Cairo,Islamic Cairo Sky,Sights & Landmarks,,Cairo Egypt,30.080723,31.365
+Cairo,Aly Alaa Ali,Sights & Landmarks,,"Cairo, Cairo Egypt",30.104443,31.253649
+Cairo,Cairo Trip Elmalahy,Nature & Parks,,"New Cairo 3, Cairo Governorate, Cairo 42511 Egypt",30.851833,32.311836
+Cairo,Sabil-kuttab Of Abd Al-rahman Katkhuda,Sights & Landmarks,,"2 Al Moez Ldin Allah Al Fatmi, El-Gamaleya, El Gamaliya,, Cairo Egypt",30.05077,31.261654
+Cairo,Madrasa Of Sultan Al-nasir Muhammad,Sights & Landmarks,,"Al Moez Ldin Allah Al Fatmi Not To Be Confused With Al Nasir Muhammed Mosque On The Citadel, Cairo Egypt",30.049717,31.261183
+Cairo,Anubis's Egypt Tours,Sights & Landmarks,,"El Tahrir Square, Cairo, Egypt, Cairo 11512 Egypt",29.960133,31.275455
+Cairo,Souq Al-Gomaa,Shopping,,"Al-Tonis bridge, Cairo Egypt",30.04998,31.2486
+Cairo,Heliopolis Evangelical Church,Sights & Landmarks,,"18 Cleopatra St., Cairo Egypt",30.091316,31.327986
+Cairo,Al FAKHORY TRADING,Shopping,,"42 abotakia st., El sahel Shobra Misr, Cairo 11241 Egypt",30.087927,31.243586
+Cairo,Arcade Art GAllery,Shopping,,"25 Oraby street Maadi Off Portsaid street, El Qahwa Khan, Cairo 11431 Egypt",29.960997,31.265228
+Cairo,Cairo Puppet Theater,Concerts & Shows,,"26 Ywliu El-Ataba Square, Cairo 4284001 Egypt",30.049929,31.2503
+Cairo,Open air mall,Shopping,,"Talaat Mustafa Road, Cairo Egypt",30.04998,31.2486
+Cairo,Liwan Gallery,Shopping,,"23 Hassan Assem street, Zamalek., Cairo Egypt",30.04998,31.2486
+Cairo,Egypt explores,Sights & Landmarks,,"Cairo _Egypt, Cairo Egypt",30.04442,31.235712
+Cairo,Mary tourGaide,Sights & Landmarks,,"Giza, Cairo 11223 Egypt",30.04442,31.235712
+Cairo,Sara's Organic Farm,Sights & Landmarks,,"Sara's Organic Farm, 74km Cairo Alexandria Road, Cairo 11511 Egypt",30.254969,30.65285
+Cairo,Reise Nach Agypten,Sights & Landmarks,,"City Center, Cairo 11511 Egypt",30.052809,31.24289
+Cairo,El 3am Daniel Gallery,Shopping,,"2 Al Masry Towers, Cairo 11511 Egypt",30.062248,31.231333
+Cairo,Sinan Pasha Mosque,Sights & Landmarks,,"No. 5 Boulaq, Cairo 11511 Egypt",30.063131,31.231157
+Cairo,The Arts Hub Gallery,Shopping,,"11 El Kamel Mohamed, Zamalek, Cairo 11511 Egypt",30.06033,31.22037
+Cairo,Lotus Viaggi,Sights & Landmarks,,"474 Zayed, Cairo 11511 Egypt",30.04442,31.235712
+Cairo,Egypt Enigma,Sights & Landmarks,,"Mohamed El Gammal, Shobra Cairo, Cairo 11511 Egypt",30.085522,31.24421
+Cairo,Ets Hayim Synagogue,Sights & Landmarks,,"3 Kantaret Ghamra, Cairo 4336003 Egypt",30.063402,31.263828
+Cairo,City of 15 May,Sights & Landmarks,,"3 Madrasat Alduktur Tah Husayn Bimujawirat, Cairo 11511 Egypt",29.85794,31.388468
+Cairo,Hub 50 Mall,Shopping,,"Ezbet Fahmy, El Basatin, Cairo 11511 Egypt",29.968584,31.294107
+Cairo,Nile Mall,Shopping,,"Nile Mall, Cairo 11511 Egypt",29.962873,31.245995
+Cairo,Sayeda Aisha Mosque,Sights & Landmarks,,"Sayeda Aisha Square, Cairo 11511 Egypt",,
+Cairo,Tintera,Shopping,,"17 Bahgat Aly Street, Second Floor Apartment 14, Cairo 11511 Egypt",30.069632,31.22029
+Cairo,Amir Ghanim Al-Bahlawan Funerary Complex,Sights & Landmarks,,"Mosque, Cairo Egypt",,
+Cairo,Sabil-Kuttab of Sultan Qayt Bay,Sights & Landmarks,,"Sheikhoun Street, Cairo 11511 Egypt",30.03875,31.24989
+Cairo,Amir Sarghatmish Mosque and Madrasa,Sights & Landmarks,,"Saliba, Cairo 11511 Egypt",30.07282,31.23667
+Cairo,Mosque of Taghribirdi,Sights & Landmarks,,"Al Saleeba Street, Cairo 11511 Egypt",30.07206,31.3711
+Cairo,Kemet Egypt Travel - Ket,Sights & Landmarks,,Cairo Egypt,,
+Cairo,Biblioteca dell'Istituto Italiano di Cultura Il Cairo,Traveler Resources,,"3 El Sheikh El Marsafi St. Zamalek, Cairo 11511 Egypt",29.86429,31.30592
+Cairo,The Netherlands-Flemish Institute Library,Traveler Resources,,Cairo Egypt,,
+Cairo,Cave chursh,Sights & Landmarks,,"It has no reviews and you already have a well-reviewed entry for the cave church, Cairo Egypt",30.035286,31.27628
+Cairo,Silver Smith,Shopping,,"Le meridien Heliopolis Hotel Heliopolis, Cairo 11511 Egypt",30.0581,31.2289
+Cairo,Gallery Finesse,Shopping,,"31 Ahmed Fouad St. Heliopolis, Cairo 11511 Egypt",30.08594,31.25987
+Cairo,Art Corner Gallery,Shopping,,"12 El Sayed El Bakry St. Zamalek, Cairo 11511 Egypt",30.060247,31.222712
+Cairo,Al Noubi For Fine Art,Shopping,,"4 Aly El Kordy St. Maadi, Cairo 11511 Egypt",29.996763,31.258394
+Cairo,The Photographic Gallery,Shopping,,"New Cairo, Cairo 11511 Egypt",,
+Cairo,Gallery Fathy,Shopping,,"231 32 Rd. Maadi, Cairo 11511 Egypt",30.0789,31.23308
+Cairo,Gallery Taji,Shopping,,"19 Baghdad St. Heliopolis, Cairo 11511 Egypt",30.09152,31.32506
+Cairo,Ebdaa Art Gallery,Shopping,,"23 B Ismail Mohamed St. Zamalek, Cairo 11511 Egypt",30.0637,31.219576
+Cairo,El Kenz Gallary,Shopping,,"70 Rd. 9, Floor 2, Maadi, Cairo 11511 Egypt",29.956745,31.260773
+Cairo,Artist Sayed El Bibany Atelier,Shopping,,"45 El Doudeya St. Bab El Khalk, Cairo 11511 Egypt",,
+Cairo,Falaki Gallery,Shopping,,"113 Kasr El Ainy St. Downtown, Cairo 11511 Egypt",30.0387,31.234634
+Cairo,Kamilia Art,Shopping,,"8 El Borsa El Gadida St. Off Kasr El Nil st. Downtown, Cairo 11511 Egypt",30.04883,31.23994
+Cairo,El Batal Gallery,Shopping,,"76 Ahmed Essmat St. Ain Shams, Cairo 11511 Egypt",30.127563,31.327087
+Cairo,Egyptian Arts Gallery,Shopping,,"5 Abdel Qader Hamza St. Off Corniche El Nil Garden City, Cairo 11511 Egypt",,
+Cairo,Modern Nefertiti,Shopping,,"69 Manial St. El Manyal, Cairo 11511 Egypt",30.0213,31.22589
+Cairo,Salma Art,Shopping,,"17 El Taamir Bldgs Maadi, Cairo 11511 Egypt",30.14779,31.42039
+Cairo,Orabi Gallery,Shopping,,"4 El Sheikh Mohamed Salama St. Heliopolis, Cairo 11511 Egypt",30.12671,31.37477
+Cairo,El Salamlek Art Gallery,Shopping,,"216 61 Rd. 206 Intersection of Rd. Maadi, Cairo 11511 Egypt",,
+Cairo,Gauguin Gallery,Shopping,,"8 Samir Zaky St. Zamalek, Cairo 11511 Egypt",30.06931,31.22193
+Cairo,Art Gallery,Shopping,,"3 Housh El Fahm, off Azhar St. Ataba, Cairo 11511 Egypt",30.04845,31.25301
+Cairo,Bait Shoury Gallery,Shopping,,"1 El Sheikh Ghorab St. Hadayek El Kobba, Cairo 11511 Egypt",30.08718,31.28842
+Cairo,Art Man Gallery,Shopping,,"283 Ramsis St. Ghamrah, Cairo 11511 Egypt",30.06883,31.26731
+Cairo,Adel Helmi Gallery,Shopping,,"13 Almaza St. Off El Thawra St. Heliopolis, Cairo 11511 Egypt",30.09014,31.32343
+Cairo,Al Masar Gallery,Shopping,,"0 157 B 26th of July St. Floor Zamalek, Cairo 11511 Egypt",,
+Cairo,Bakr Khan Design,Shopping,,"9 Showikar Bldgs Khan El Khalili, Cairo 11511 Egypt",30.091,31.30449
+Cairo,Gallery Hamada,Shopping,,"44 Kasr El Nil St. Downtown, Cairo 11511 Egypt",30.049442,31.243603
+Cairo,Grant Gallery,Shopping,,"6 El Gomhoureya St. Downtown, Cairo 11511 Egypt",29.99526,31.23605
+Cairo,Espace Karim Francis Contemporary Art Gallery,Shopping,,"1 El Sharifain St. Bab El Louk, Cairo 11511 Egypt",,
+Cairo,Mashrabeya Gallery,Shopping,,"8 Champillion St. Downtown, Cairo 11511 Egypt",,
+Cairo,Rubens Chimchidian,Shopping,,"19 Talaat Harb St. Downtown, Cairo 11511 Egypt",30.04817,31.23919
+Cairo,Bashayerstyle,Shopping,,"33 Melsa Bldgs. Hassan Aflatoun st. Heliopolis, Cairo 11511 Egypt",30.07863,31.34254
+Cairo,Ayyam Gallery Cairo,Shopping,,"19 Abou El Feda St. Zamalek, Cairo 11511 Egypt",30.063503,31.3277
+Cairo,Sabil Qitas,Sights & Landmarks,,"El Darb El Asfar Alley Azhar, Cairo 11511 Egypt",30.05198,31.26277
+Cairo,Gallery Ghazal,Shopping,,"18 Alexandria St. Intersection Of El Mansoura St. Heliopolis, Cairo 11511 Egypt",30.0972,31.32852
+Cairo,Easel & Camera Contemporary Art Gallery,Shopping,,"11 2 Nasr St. Maadi, Cairo 11511 Egypt",30.07974,31.26216
+Cairo,Gallery Fann,Shopping,,"12 6 Extension of Abou Dawoud El Zahery St. Nasr City, Cairo 11511 Egypt",,
+Cairo,Fine Arts Gallery,Shopping,,"173 26th of July St. Zamalek, Cairo 11511 Egypt",30.060108,31.222994
+Cairo,Black Gallery,Shopping,,"3 Sidi Gaber St. Off Othman Ibn Affan St. Heliopolis, Cairo 11511 Egypt",30.09493,31.32713
+Cairo,Gallery Rizq,Shopping,,"14 Ibrahim Nawar St. Nasr City, Cairo 11511 Egypt",30.06533,31.350391
+Cairo,Safar Khan Gallery,Shopping,,"6 Brazil St. Zamalek, Cairo 11511 Egypt",30.060741,31.222355
+Cairo,El Kharazaty,Museums,,"El Darb El Asfar Alley Azhar, Cairo 11511 Egypt",30.05198,31.26277
+Cairo,Gallery Alex Creation,Shopping,,"41 Ahmed Hosny St. Nasr City, Cairo 11511 Egypt",30.0603,31.32929
+Cairo,El Khawwas,Shopping,,"27 A El Hegaz St. Heliopolis, Cairo 11511 Egypt",30.13442,31.32606
+Cairo,Gallery Wamadat,Shopping,,"21 Ahmed Amin St. Heliopolis, Cairo 11511 Egypt",30.08431,31.18976
+Cairo,Gallery Ayam Zaman,Shopping,,"5 El maqrizy st. Zamalek, Cairo 11511 Egypt",30.09015,31.30474
+Cairo,Nashwa Art Store,Shopping,,"Block 55 B , 10th Neighbourhood , 1st Compound, New Cairo, Cairo 11511 Egypt",,
+Cairo,Layaly Gallery,Shopping,,"92 Abdel Aziz Fahmy St. Heliopolis, Cairo 11511 Egypt",30.10711,31.34139
+Cairo,Fadel Gallery,Shopping,,"157 26th of July St. Zamalek, Cairo 11511 Egypt",,
+Cairo,Gallery Cascomry,Shopping,,"94 Sayed Dawoud St. Maadi, Cairo 11511 Egypt",30.071644,31.243734
+Cairo,Gallery Shehab,Shopping,,"10 Salah Magdy St. Heliopolis, Cairo 11511 Egypt",30.0845,31.33705
+Cairo,Sameh Gallery,Shopping,,"1 Bobastas St. Off El Mansoura St. Heliopolis, Cairo 11511 Egypt",30.09593,31.33054
+Cairo,Heliopolis Gallery,Shopping,,"7 Talkha St. Heliopolis, Cairo 11511 Egypt",30.09559,31.32781
+Cairo,Saint Andrew's United Church of Cairo,Sights & Landmarks,,"38 26th of July Street (Near Nasser Metro Station), Cairo 11511 Egypt",,
+Cairo,Musafirkhana Palace,Sights & Landmarks,,"Cairo EG, Cairo 11511 Egypt",30.050451,31.23981
+Cairo,George and the Dragon,Sights & Landmarks,,Cairo Egypt,,
+Giza,Pyramids of Giza,Sights & Landmarks,4.6,"Al Haram Str., Giza 12611 Egypt",29.9773,31.132498
+Giza,Great Pyramid of Cheops (Khufu),Sights & Landmarks,4.7,Giza Egypt,29.979586,31.134918
+Giza,Great Sphinx,Sights & Landmarks,4.7,"Al-Haram, Giza 3512201 Egypt",29.97527,31.137568
+Giza,Gizeh Plateau,Sights & Landmarks,4.6,Giza 3512201 Egypt,29.976946,31.13265
+Giza,Khafre's Pyramid,Sights & Landmarks,4.7,"Al Haram, Giza Egypt",29.97631,31.130676
+Giza,Pyramids of Dahshour,Sights & Landmarks,4.7,Giza Egypt,29.809166,31.206112
+Giza,Statue of Ramses II,Sights & Landmarks,4.5,"Grand Egyptian Museum, Alexandria Desert Rd, Giza 11511 Egypt",29.849438,31.254354
+Giza,Valley of the Whales (Wadi Al-Hitan),Sights & Landmarks,4.6,"Western Desert, Giza Egypt",29.263914,30.022596
+Giza,Pharaonic Village,Sights & Landmarks,3.9,"3 El Bahr El Aazam St, Giza 12519 Egypt",29.997332,31.214783
+Giza,Ramses Wissa Wassef Art Centre,Shopping,4.9,"Sakkara Road Harrania Village, Giza 12556 Egypt",29.969791,31.17672
+Giza,Pyramid of Menkaure,Sights & Landmarks,4.5,Giza 3512201 Egypt,29.972527,31.128574
+Giza,Dream Park,Water & Amusement Parks,3.8,"El Wahat Road, Giza Egypt",29.96601,31.058086
+Giza,Black Desert,Nature & Parks,4.4,Giza Egypt,,
+Giza,Dandy Mega Mall,Shopping,3.4,"Cairo-Alex Desert Road,, Giza Egypt",30.063194,31.026943
+Giza,Dahshur lake,Nature & Parks,4.4,"Menshet Dahshur Giza, Giza Egypt",,
+Giza,Giza Zoo,Zoos & Aquariums,2.5,"Charles De Gaulle Street, Giza 11511 Egypt",30.02769,31.213572
+Giza,Panoramic View of the Pyramids,Sights & Landmarks,4.7,"Al Omraneyah, Giza 3512201 Egypt",29.972446,31.12077
+Giza,The First Mall,Shopping,3.6,"35 Giza Street, Giza 12612 Egypt",,
+Giza,Taha Hussein Museum,Museums,4.5,"11 Dr. Taha Hussein St. El Haram, Giza Egypt",29.970385,31.21024
+Giza,Sarandeep Tours,Sights & Landmarks,5,"42 Ezz Eldeen Omar Street, Giza Egypt",29.992464,31.161392
+Giza,Golden Eagle Papyrus,Shopping,3.2,"Sakkara Road, Giza Egypt",29.68687,31.24774
+Giza,Gallery Mansour,Shopping,4.8,"64 El Mariouteya St. El Haram, Giza Egypt",,
+Giza,Cityscape Mall,Shopping,4,"Elmehwar Elmarkazy, Giza Egypt",,
+Giza,Mena Papyrus,Sights & Landmarks,4,"3 Mena Street, Desert Road, Giza Egypt",,
+Giza,International Equestrian Club,Nature & Parks,3.5,"El Moneeb Ring Rd El Haram, Giza Egypt",29.97595,31.01419
+Giza,IL Campo,Nature & Parks,4.9,"Emtedad Bahr Aazam street in front of Abou Al Nomros Police Office, Giza 12912 Egypt",29.961512,31.231274
+Giza,The Egyptian Renaissance Sculpture,Sights & Landmarks,3.6,"Nahdet Masr st./ Charles De Gaulle st., Giza Egypt",30.02186,31.21727
+Giza,Gallery Set El Hosn,Shopping,4.7,"384 Faisal St. Faisal, Giza Egypt",,
+Giza,Ahmed Shawki Museum (Karmat Ibn Hani'),Museums,5,"6 Ahmed Shawki Street, Giza 11511 Egypt",30.021263,31.21743
+Giza,"4WD, ATV & Off-Road Tours",Outdoor Activities,,,,
+Giza,Boat Tours,Outdoor Activities,,,,
+Giza,Safaris,Outdoor Activities,,,,
+Giza,Stand-Up Paddleboarding,Outdoor Activities,,,,
+Giza,Gift & Specialty Shops,Shopping,,,29.98335,31.14603
+Giza,Adrenaline & Extreme Tours,Outdoor Activities,,,,
+Giza,Balloon Rides,Outdoor Activities,,,,
+Giza,Horseback Riding Tours,Outdoor Activities,,,,
+Giza,Cleopatra Palace Perfume Giza,Shopping,5,"52 Abu El Houl Street , Haram, Giza 12557 Egypt",29.980103,31.143745
+Giza,Air Tours,Outdoor Activities,,,,
+Giza,Nature & Wildlife Tours,Outdoor Activities,,,,
+Giza,Hiking & Camping Tours,Outdoor Activities,,,,
+Giza,Bike Tours,Outdoor Activities,,,,
+Giza,Submarine Tours,Outdoor Activities,,,29.98215,31.20636
+Giza,Eco Tours,Outdoor Activities,,,,
+Giza,Egypt Historical Tours,Sights & Landmarks,5,"10 El-amir Youssefel-darb El-ahmar, Cairo Governorate, Giza 11655 Egypt",30.00808,31.21093
+Giza,Boat Rentals,Outdoor Activities,,,,
+Giza,Wiiwii's Farm,Nature & Parks,5,"Kilo 58 Cairo Alexandria Desert Road, Giza Egypt",30.211983,30.811584
+Giza,Sun Pyramids Vip Tours,Sights & Landmarks,5,Giza 12555 Egypt,,
+Giza,Night Club Luxury,Concerts & Shows,5,"Kornish Al Nil Street El Agouza, Giza Egypt",30.057373,31.216003
+Giza,Mazhar Botanic Garden,Nature & Parks,5,"26th of July Corridor Nahia, Imbaba, Giza 3648030 Egypt",30.00944,31.20861
+Giza,Hamada Desert,Nature & Parks,5,Giza Egypt,29.99776,31.05286
+Giza,Halfa handmade store,Shopping,5,"Manshut dahshur,, Giza 12991 Egypt",29.797148,31.243317
+Giza,Adam Henein Museum,Museums,5,"Villa Adam Henein, Haraneya, Giza Next To Weesa Wassef Arts Center,, Giza 01200 Egypt",29.971893,31.175138
+Giza,Scuba & Snorkeling,Outdoor Activities,,,,
+Giza,Marian Nosshi's Studio,Shopping,5,Giza Egypt,29.9687,31.17594
+Giza,Royal Pyramids,Sights & Landmarks,5,Giza Egypt,,
+Giza,Gallery Loutfy,Shopping,4,"9 Ahmed El Meligy St. Dokki, Giza Egypt",30.05257,31.20416
+Giza,Bahrya Oasis,Sights & Landmarks,4,Giza Egypt,,
+Giza,Climbing Tours,Outdoor Activities,,,,
+Giza,Performances,Concerts & Shows,,,29.97464,31.14068
+Giza,Zipline & Aerial Adventure Parks,Outdoor Activities,,,28.347355,28.864525
+Giza,Speed Boats Tours,Outdoor Activities,,,,
+Giza,Canyoning & Rappelling Tours,Outdoor Activities,,,,
+Giza,Horse-Drawn Carriage Tours,Outdoor Activities,,,,
+Giza,Kayaking & Canoeing,Outdoor Activities,,,,
+Giza,Ski & Snow Tours,Outdoor Activities,,,,
+Giza,Parasailing & Paragliding,Outdoor Activities,,,29.98215,31.20636
+Giza,Fishing Charters & Tours,Outdoor Activities,,,,
+Giza,Golf Courses,Outdoor Activities,,,,
+Giza,Water Sports,Outdoor Activities,,,,
+Giza,Gear Rentals,Outdoor Activities,,,,
+Giza,Dolphin & Whale Watching,Outdoor Activities,,,,
+Giza,Running Tours,Outdoor Activities,,,,
+Giza,"Surfing, Windsurfing & Kitesurfing",Outdoor Activities,,,,
+Giza,Gondola Cruises,Outdoor Activities,,,,
+Giza,Waterskiing & Jetskiing,Outdoor Activities,,,,
+Giza,Duck Tours,Outdoor Activities,,,,
+Giza,Shark Diving,Outdoor Activities,,,,
+Giza,Cairo,Shopping,,"Faisl street, Giza Egypt",30.00944,31.20861
+Giza,Cairo By Night Tour,Sights & Landmarks,,"El-helw Canal Tower3 Building, Giza 3520501 Egypt",30.00944,31.20861
+Giza,Rahal Tours,Sights & Landmarks,,"28 Youssef Hendy, Giza 12431 Egypt",30.09619,31.211832
+Giza,Pyramids,Shopping,,"Ahmed Lotfy El - Sayed St, Industrial Area, Giza Egypt",30.00944,31.20861
+Giza,The Grand Egyptian Museum (GEM),Museums,5,"El Remaya square Cairo - Alexandria Desert Rd, Giza 3513204 Egypt",29.993473,31.119585
+Giza,Giza Plateau,Sights & Landmarks,,Giza Egypt,29.97693,31.132692
+Giza,Mohamed Mahmoud Khalil Museum,Museums,,"1 Kafor Ad Doqi A, Giza 3750410 Egypt",30.035498,31.219536
+Giza,Step Pyramid,Sights & Landmarks,,"V6c8+gp2 Badrashin Center, Giza Egypt",30.04431,31.178938
+Giza,Mody Tours,Sights & Landmarks,,"9 Al Ashwal Street, Giza Egypt",29.98898,31.141672
+Giza,Bahariya Oasis,Nature & Parks,4.5,Giza Egypt,29.99776,31.05286
+Giza,Yaro Tours,Museums,,"8 Pharo Building Floor 9 Ap.6, Giza 12512 Egypt",29.975224,31.159897
+Giza,Galleria40,Shopping,,"26th of July Corridor, Sheikh Zayed City, Giza 12578 Egypt",30.129301,31.454603
+Giza,Khan Alkhalili Osiris Center,Shopping,,"X4GV+3R3, Sayed Gabir, Al Haram, Giza Governorate, Giza Egypt",29.975313,31.14397
+Giza,Mars Ankh Tomb,Sights & Landmarks,,"Plateau deGizeh, Giza Egypt",29.976934,31.13265
+Giza,The Great Pyramids Tour,Sights & Landmarks,,"Haram, Giza Egypt",30.001913,31.181631
+Giza,Ancient Pyramids Tour,Sights & Landmarks,,"Haram Street, Giza Egypt",30.001913,31.181631
+Giza,Thefalcon.tours,Sights & Landmarks,,"114 Ashgar Town, Giza 12111 Egypt",30.053116,31.20517
+Giza,Mustafa Mahmoud Mosque,Sights & Landmarks,,"Jameaat Al-Dowal Al-Arabia Street, Giza Egypt",,
+Giza,Tout,Shopping,,"80 Mohy El Din Abou El Ezz St. Mohandeseen, Giza Egypt",29.98738,31.1423
+Giza,Ebdaa Art Gallery,Shopping,,"17 Aswan Sq. Mohandeseen, Giza Egypt",30.05664,31.20835
+Giza,Gallery Miro,Shopping,,"16 Sphinx Sq. Mohandeseen, Giza Egypt",,
+Giza,El Kahila Art Gallery,Shopping,,"15 El Batal Ahmed Abdel Aziz St. Mohandeseen, Giza Egypt",29.98125,31.20968
+Giza,Mohamed Nagy Museum,Museums,,"8 Mahmoud El Gendy St. El Remaya Sq. El Haram, Giza Egypt",30.00848,31.12275
+Giza,El Mahy Atelier,Shopping,,"145 Saqqara Rd. El Haram, Giza Egypt",29.97175,30.91893
+Giza,El Abd Gallery,Shopping,,"29 Goal Gamal St. Agouza, Giza Egypt",30.0535,31.20726
+Giza,El Sokary Gallery,Shopping,,"45 Ahmed Lotfy El Sayed St. Faisal, Giza Egypt",30.00692,31.19398
+Giza,Dar El Fan Gallery,Shopping,,"75 El Hussein St. Dokki, Giza Egypt",29.98867,31.1945
+Giza,El Naghy Gallery,Shopping,,"124 Mohy El Din Abou El Ezz St. Mohandeseen, Giza Egypt",29.98738,31.1423
+Giza,Salama Gallery,Shopping,,"36 A Ahmed Orabi St, Giza Egypt",29.98218,31.20635
+Giza,El Mashrabia Art Gallery,Shopping,,"80 Mohy El Din Abou El Ezz St. Mohandeseen, Giza Egypt",29.98738,31.1423
+Giza,Le Sommet Gallery,Shopping,,"1 Abou Bakr El Seddik St. Off Oman St. Dokki, Giza Egypt",,
+Giza,Design Centre Cairo,Shopping,,"48 Giza St. Dokki, Giza Egypt",,
+Giza,Maisa Gallery,Shopping,,"13 El Batal Ahmed Abdel Aziz St. Mohandeseen, Giza Egypt",29.98169,31.20959
+Giza,Didi Gallery,Shopping,,"84 Shehab St. Mohandeseen, Giza Egypt",30.0585,31.19891
+Giza,Gallery Albert,Shopping,,"12 Yemen St. Mohandeseen, Giza Egypt",30.00906,31.19898
+Giza,River Rafting & Tubing,Outdoor Activities,,,,
