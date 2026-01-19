@@ -1,30 +1,18 @@
 import 'dart:convert';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
-import 'auth_service.dart';
+import 'api_client.dart';
 
 class ChatSocketService {
-  static const String _baseUrl = 'http://192.168.1.9:4000';
-
-  final AuthService authService;
   IO.Socket? _socket;
 
-  ChatSocketService(this.authService);
-
   // ─────────────────────────────────────────────
-  // FETCH CHAT HISTORY (SAFE NO-OP)
+  // FETCH CHAT HISTORY
   // ─────────────────────────────────────────────
   Future<List<Map<String, dynamic>>> fetchHistory() async {
-    final token = authService.token;
-    if (token == null) return [];
-
     try {
-      final res = await http.get(
-        Uri.parse('$_baseUrl/chat/history'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await ApiClient.get('/api/chat/history');
 
       if (res.statusCode != 200) return [];
 
@@ -40,19 +28,19 @@ class ChatSocketService {
   // ─────────────────────────────────────────────
   // CONNECT SOCKET
   // ─────────────────────────────────────────────
-  void connect({
+  Future<void> connect({
     required VoidCallback onConnected,
     required VoidCallback onDisconnected,
     required void Function(String chunk) onStream,
     required VoidCallback onStreamEnd,
-  }) {
-    final token = authService.token;
+  }) async {
+    final token = await ApiClient.getToken();
     if (token == null) {
       throw Exception('No auth token');
     }
 
     _socket = IO.io(
-      _baseUrl,
+      ApiClient.socketBaseUrl,
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setAuth({'token': token})
@@ -63,15 +51,16 @@ class ChatSocketService {
     _socket!.connect();
 
     _socket!.onConnect((_) => onConnected());
-    _socket!.onDisconnect((_) => onDisconnected());
+    _socket!.onDisconnect((_) {
+      _socket = null;
+      onDisconnected();
+    });
 
     _socket!.on('stream', (data) {
       if (data is String) onStream(data);
     });
 
-    _socket!.on('end', (_) {
-      onStreamEnd();
-    });
+    _socket!.on('end', (_) => onStreamEnd());
 
     _socket!.onError((err) {
       debugPrint('❌ Socket error: $err');

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import '../services/api_client.dart';
 
 import '../services/auth_service.dart';
 
@@ -19,8 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
 
   bool _isLoading = false;
-
-  static const String _baseUrl = 'http://192.168.1.9:4000';
 
   // ─────────────────────────────────────────────
   // RESET PASSWORD (FIREBASE)
@@ -53,19 +51,8 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text.trim(),
       );
 
-      final token = await _authService.getValidToken();
-      if (token == null) {
-        throw Exception("Not authenticated");
-      }
-
       // 2️⃣ Load profile from backend
-      final res = await http.get(
-        Uri.parse('$_baseUrl/profiles/me'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      );
+      final res = await ApiClient.get('/api/profiles/me');
 
       if (res.statusCode != 200) {
         throw Exception('Failed to load profile');

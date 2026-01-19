@@ -60,12 +60,13 @@ class _ViewerPageState extends State<ViewerPage> {
   }
 
   void _reload() {
-    if (_error != null) {
-      setState(() {
-        _loading = true;
-        _error = null;
-      });
-    }
+    if (!_loading && _error == null) return;
+
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+
     _controller.reload();
   }
 

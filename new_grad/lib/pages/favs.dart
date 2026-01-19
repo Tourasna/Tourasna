@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/recommendation_item.dart';
 import '../services/favorites_service.dart';
-import '../services/auth_service.dart';
 import '../utils/recommendation_images.dart';
 
 class FavsPage extends StatefulWidget {
@@ -13,8 +12,7 @@ class FavsPage extends StatefulWidget {
 }
 
 class _FavsPageState extends State<FavsPage> {
-  final AuthService authService = AuthService();
-  late final FavoritesService favoritesService;
+  final FavoritesService favoritesService = FavoritesService();
 
   bool loading = true;
   List<RecommendationItem> favorites = [];
@@ -22,7 +20,6 @@ class _FavsPageState extends State<FavsPage> {
   @override
   void initState() {
     super.initState();
-    favoritesService = FavoritesService(authService);
     _loadFavorites();
   }
 

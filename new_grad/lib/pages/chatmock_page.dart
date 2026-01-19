@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
 import '../services/chat_socket_service.dart';
 
 class ChatMockPage extends StatefulWidget {
-  final AuthService authService;
-
-  const ChatMockPage({super.key, required this.authService});
+  const ChatMockPage({super.key});
 
   @override
   State<ChatMockPage> createState() => _ChatMockPageState();
@@ -25,7 +22,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
   void initState() {
     super.initState();
 
-    chatService = ChatSocketService(widget.authService);
+    chatService = ChatSocketService();
 
     chatService.connect(
       onConnected: () async {
@@ -50,8 +47,11 @@ class _ChatMockPageState extends State<ChatMockPage> {
         }
       },
       onDisconnected: () {
-        debugPrint("❌ Chat disconnected");
+        if (mounted) {
+          debugPrint("❌ Chat disconnected");
+        }
       },
+
       onStream: _handleStreamChunk,
       onStreamEnd: _handleStreamEnd,
     );

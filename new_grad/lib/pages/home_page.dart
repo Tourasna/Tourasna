@@ -10,25 +10,6 @@ import '../services/favorites_service.dart';
 
 final AILensService aiLens = AILensService();
 
-Future<void> runAILens(BuildContext context) async {
-  final label = await aiLens.runCamera();
-  if (label == null) return;
-
-  final place = await _placesRepo.getByMLLabel(label);
-
-  if (place == null) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("No match for label")));
-    return;
-  }
-
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
-  );
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -37,22 +18,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final RecommendationService _recommendationService;
-  late final FavoritesService _favoritesService;
-  late final PlacesRepo _placesRepo;
+  final RecommendationService _recommendationService = RecommendationService();
+  final FavoritesService _favoritesService = FavoritesService();
+  final PlacesRepo _placesRepo = PlacesRepo();
 
   final Set<int> _favoriteIds = {};
 
   List<RecommendationItem> _recommendations = [];
-  bool _loadingRecs = true;
+  bool _loadingRecs = false;
   bool _recError = false;
 
   @override
   void initState() {
     super.initState();
-    _recommendationService = RecommendationService();
-    _favoritesService = FavoritesService();
-    _placesRepo = PlacesRepo();
+  }
+
+  Future<void> _runAILens(BuildContext context) async {
+    final label = await aiLens.runCamera();
+    if (label == null) return;
+
+    final place = await _placesRepo.getByMLLabel(label);
+
+    if (place == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("No match for label")));
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
+    );
   }
 
   Future<void> _loadFavoriteIds() async {
@@ -187,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                               iconPath: 'assets/images/lens.png',
                               label: 'AI Lens',
                               onTap: () async {
-                                await runAILens(context);
+                                await _runAILens(context);
                               },
                             ),
                           ),
@@ -302,7 +299,7 @@ class _HomePageState extends State<HomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await runAILens(context);
+          await _runAILens(context);
         },
         backgroundColor: const Color(0xFFF5E5D1),
         elevation: 8.0,
