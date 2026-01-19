@@ -6,28 +6,15 @@ import '../services/recommendation_service.dart';
 import '../utils/recommendation_images.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
-import '../services/auth_service.dart';
 import '../services/favorites_service.dart';
 
 final AILensService aiLens = AILensService();
-
-// 🔑 SINGLE shared AuthService instance
-final AuthService authService = AuthService();
-
-final FavoritesService favoritesService = FavoritesService(authService);
-
-final Set<int> favoriteIds = {};
-
-// 🔌 Repo depends on auth
-final PlacesRepo placesRepo = PlacesRepo(authService);
-
-final Set<String> favoriteTitles = {};
 
 Future<void> runAILens(BuildContext context) async {
   final label = await aiLens.runCamera();
   if (label == null) return;
 
-  final place = await placesRepo.getByMLLabel(label);
+  final place = await _placesRepo.getByMLLabel(label);
 
   if (place == null) {
     ScaffoldMessenger.of(
@@ -38,10 +25,7 @@ Future<void> runAILens(BuildContext context) async {
 
   Navigator.push(
     context,
-    MaterialPageRoute(
-      builder: (_) =>
-          LandmarkDetailsPage(place: place, authService: authService),
-    ),
+    MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
   );
 }
 
@@ -53,7 +37,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final RecommendationService recommendationService;
+  late final RecommendationService _recommendationService;
+  late final FavoritesService _favoritesService;
+  late final PlacesRepo _placesRepo;
+
+  final Set<int> _favoriteIds = {};
 
   List<RecommendationItem> _recommendations = [];
   bool _loadingRecs = true;
@@ -62,14 +50,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    recommendationService = RecommendationService(authService);
+    _recommendationService = RecommendationService();
+    _favoritesService = FavoritesService();
+    _placesRepo = PlacesRepo();
   }
 
   Future<void> _loadFavoriteIds() async {
     try {
-      final favs = await favoritesService.list();
+      final favs = await _favoritesService.list();
       setState(() {
-        favoriteIds
+        _favoriteIds
           ..clear()
           ..addAll(favs.map((f) => f.id));
       });
@@ -80,7 +70,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadRecommendations() async {
     try {
-      final data = await recommendationService.getRecommendations();
+      final data = await _recommendationService.getRecommendations();
       setState(() {
         _recommendations = data;
         _loadingRecs = false;
@@ -407,7 +397,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _recommendationCard(RecommendationItem item) {
-    final bool isFavorite = favoriteIds.contains(item.id);
+    final bool isFavorite = _favoriteIds.contains(item.id);
     final String imagePath = imageForCategory(item.category);
 
     return GestureDetector(
@@ -460,17 +450,17 @@ class _HomePageState extends State<HomePage> {
               onTap: () async {
                 setState(() {
                   if (isFavorite) {
-                    favoriteIds.remove(item.id);
+                    _favoriteIds.remove(item.id);
                   } else {
-                    favoriteIds.add(item.id);
+                    _favoriteIds.add(item.id);
                   }
                 });
 
                 // Backend sync
                 if (isFavorite) {
-                  await favoritesService.remove(item.id);
+                  await _favoritesService.remove(item.id);
                 } else {
-                  await favoritesService.add(item.id);
+                  await _favoritesService.add(item.id);
                 }
               },
               child: Icon(

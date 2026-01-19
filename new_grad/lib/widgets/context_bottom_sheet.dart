@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/context_service.dart';
-import '../services/auth_service.dart';
 
 class ContextBottomSheet extends StatefulWidget {
   const ContextBottomSheet({super.key});
@@ -10,7 +9,7 @@ class ContextBottomSheet extends StatefulWidget {
 }
 
 class _ContextBottomSheetState extends State<ContextBottomSheet> {
-  final ContextService contextService = ContextService(AuthService());
+  final ContextService contextService = ContextService();
 
   String? _selectedBudget;
   String? _selectedTravelType;

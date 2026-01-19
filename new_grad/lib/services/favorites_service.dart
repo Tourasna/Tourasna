@@ -1,42 +1,31 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'auth_service.dart';
+import '../services/api_client.dart';
 import '../models/recommendation_item.dart';
 
 class FavoritesService {
-  static const _baseUrl = 'http://192.168.1.9:4000';
-  final AuthService authService;
-
-  FavoritesService(this.authService);
-
   Future<void> add(int itemId) async {
-    final token = await authService.getValidToken();
-    if (token == null) return;
+    final res = await ApiClient.post('/api/favorites/$itemId');
 
-    await http.post(
-      Uri.parse('$_baseUrl/favorites/$itemId'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    if (res.statusCode != 200 && res.statusCode != 201) {
+      throw Exception(res.body);
+    }
   }
 
   Future<void> remove(int itemId) async {
-    final token = await authService.getValidToken();
-    if (token == null) return;
+    final res = await ApiClient.delete('/api/favorites/$itemId');
 
-    await http.delete(
-      Uri.parse('$_baseUrl/favorites/$itemId'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    if (res.statusCode != 200) {
+      throw Exception(res.body);
+    }
   }
 
   Future<List<RecommendationItem>> list() async {
-    final token = await authService.getValidToken();
-    if (token == null) return [];
+    final res = await ApiClient.get('/api/favorites');
 
-    final res = await http.get(
-      Uri.parse('$_baseUrl/favorites'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    if (res.statusCode != 200) {
+      throw Exception(res.body);
+    }
 
     final List data = jsonDecode(res.body);
     return data.map((e) => RecommendationItem.fromJson(e)).toList();
