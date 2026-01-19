@@ -1,23 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/place.dart';
 import 'viewer_page.dart';
 import '../services/google_tts_service.dart';
-import '../services/auth_service.dart';
 import '../services/api_keys.dart';
+import '../services/storytelling_service.dart';
 
 class LandmarkDetailsPage extends StatefulWidget {
   final Place place;
-  final AuthService authService;
 
-  const LandmarkDetailsPage({
-    super.key,
-    required this.place,
-    required this.authService,
-  });
+  const LandmarkDetailsPage({super.key, required this.place});
 
   @override
   State<LandmarkDetailsPage> createState() => _LandmarkDetailsPageState();
@@ -37,7 +30,6 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage>
   String _preferredGender = 'male'; // male = Charon, female = Kore
   String _detectedLanguage = 'en-US';
 
-  static const String _baseUrl = 'http://192.168.1.9:4000';
   static const String _voicePrefKey = 'tts_preferred_gender';
 
   @override
@@ -104,33 +96,13 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage>
       return;
     }
 
-    final token = widget.authService.token;
-    if (token == null) {
-      _showError('User not authenticated');
-      return;
-    }
-
     try {
       setState(() => _storyLoading = true);
 
       // Fetch & cache story once
-      if (_cachedStory == null) {
-        final res = await http.get(
-          Uri.parse('$_baseUrl/storytelling/${widget.place.id}'),
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json',
-          },
-        );
-
-        if (res.statusCode != 200) {
-          throw Exception(res.body);
-        }
-
-        _cachedStory = jsonDecode(res.body)['story'] as String;
-      }
-
-      final storyText = _cachedStory!;
+      final storyText = _cachedStory ??= await StorytellingService.getStory(
+        widget.place.id,
+      );
 
       /// Apply voice ONLY ONCE
       if (_tts.getCurrentVoice().isEmpty) {
