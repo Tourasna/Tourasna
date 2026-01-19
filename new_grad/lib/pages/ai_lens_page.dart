@@ -3,13 +3,10 @@ import 'package:new_grad/pages/landmark_details_page.dart';
 
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
-import '../services/auth_service.dart';
 import '../models/place.dart';
 
 class AILensPage extends StatefulWidget {
-  final AuthService authService;
-
-  const AILensPage({super.key, required this.authService});
+  const AILensPage({super.key});
 
   @override
   State<AILensPage> createState() => _AILensPageState();
@@ -17,15 +14,9 @@ class AILensPage extends StatefulWidget {
 
 class _AILensPageState extends State<AILensPage> {
   final AILensService _lens = AILensService();
-  late final PlacesRepo _repo;
+  final PlacesRepo _repo = PlacesRepo();
 
   bool _loading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _repo = PlacesRepo(widget.authService);
-  }
 
   Future<void> _scan() async {
     setState(() => _loading = true);
@@ -56,10 +47,7 @@ class _AILensPageState extends State<AILensPage> {
     // Step 3 → details page
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) =>
-            LandmarkDetailsPage(place: place, authService: widget.authService),
-      ),
+      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
     );
   }
 

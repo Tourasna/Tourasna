@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/done': (context) => const DonePage(),
         '/chatbot': (context) => const ChatbotPage(),
         '/favs': (context) => const FavsPage(),
-        '/mocka': (context) => ChatMockPage(authService: authService),
+        '/mocka': (context) => ChatMockPage(),
       },
     );
   }

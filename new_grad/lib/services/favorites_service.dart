@@ -1,4 +1,3 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services/api_client.dart';
 import '../models/recommendation_item.dart';

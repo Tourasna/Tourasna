@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import '../services/auth_singleton.dart';
+
+import '../services/api_client.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,8 +12,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  static const String _baseUrl = 'http://192.168.1.9:4000';
-
   bool loading = false;
   Map<String, dynamic>? data;
 
@@ -44,18 +42,9 @@ class _ProfilePageState extends State<ProfilePage> {
   // LOAD PROFILE
   // ─────────────────────────────────────────────
   Future<void> loadProfile() async {
-    final token = await authService.getValidToken();
-    if (token == null) return;
-
     setState(() => loading = true);
 
-    final res = await http.get(
-      Uri.parse('$_baseUrl/profiles/me'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
+    final res = await ApiClient.get('/api/profiles/me');
 
     if (res.statusCode != 200) {
       setState(() => loading = false);
@@ -78,17 +67,10 @@ class _ProfilePageState extends State<ProfilePage> {
   // UPDATE BASIC PROFILE INFO
   // ─────────────────────────────────────────────
   Future<void> updateProfile() async {
-    final token = await authService.getValidToken();
-    if (token == null) return;
-
     setState(() => loading = true);
 
-    final res = await http.put(
-      Uri.parse('$_baseUrl/profiles/update'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
+    final res = await ApiClient.put(
+      '/api/profiles/update',
       body: jsonEncode({
         'firstName': firstNameCtl.text.trim(),
         'lastName': lastNameCtl.text.trim(),

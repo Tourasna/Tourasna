@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/api_client.dart';
 import '../services/auth_service.dart';
 
 class PreferencesPage extends StatefulWidget {
@@ -14,8 +14,6 @@ class PreferencesPage extends StatefulWidget {
 }
 
 class PreferencesPageState extends State<PreferencesPage> {
-  static const String _baseUrl = 'http://192.168.1.9:4000';
-
   final List<String> _preferences = [
     "Fun & Games",
     "Water & Amusement Parks",
@@ -80,7 +78,7 @@ class PreferencesPageState extends State<PreferencesPage> {
   // COMPLETE ONBOARDING (ONE CALL)
   // ─────────────────────────────────────────────
   Future<void> _savePreferencesAndFinish() async {
-    final token = AuthService().token;
+    final token = await AuthService().getValidToken();
 
     if (token == null) {
       ScaffoldMessenger.of(
@@ -125,12 +123,8 @@ class PreferencesPageState extends State<PreferencesPage> {
         "preferences": _selectedPreferences.toList(),
       };
 
-      final res = await http.put(
-        Uri.parse('$_baseUrl/profiles/complete'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
+      final res = await ApiClient.put(
+        '/api/profiles/complete',
         body: jsonEncode(body),
       );
 

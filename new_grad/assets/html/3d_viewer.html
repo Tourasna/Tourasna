@@ -39,6 +39,9 @@
     window.setModel = (url) => {
       viewer.src = url;
 
+      viewer.onload = null;
+      viewer.onerror = null;
+
       viewer.addEventListener('load', () => {
         Viewer.postMessage('loaded');
       }, { once: true });
@@ -46,6 +49,7 @@
       viewer.addEventListener('error', () => {
         Viewer.postMessage('error: failed to load model');
       }, { once: true });
+
     };
   </script>
 </body>
