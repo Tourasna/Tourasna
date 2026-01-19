@@ -18,8 +18,13 @@ def ensure_csv_exists():
     os.makedirs("assets", exist_ok=True)
 
     print("⬇️ Downloading landmarks.csv from S3 (data_loader)...")
-    boto3.client("s3").download_file(S3_BUCKET, S3_KEY, CSV_PATH)
-    print("✅ landmarks.csv ready")
+    try:
+        s3_client = boto3.client("s3")
+        s3_client.download_file(S3_BUCKET, S3_KEY, CSV_PATH)
+        print("✅ landmarks.csv ready")
+    except Exception as e:
+        print(f"❌ S3 download failed: {e}")
+        raise
 
 
 def load_landmarks():

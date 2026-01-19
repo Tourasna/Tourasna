@@ -22,11 +22,11 @@ services:
       - ./backend/.env.production
     depends_on:
       - mysql
-      - ai-service
+      - tourasna-ai
     ports:
       - "3000:3000"
 
-  ai-service:
+  tourasna-ai:
     build: ./ai-service
     container_name: tourasna-ai
     restart: always
