@@ -104,11 +104,9 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage>
         widget.place.id,
       );
 
-      /// Apply voice ONLY ONCE
-      if (_tts.getCurrentVoice().isEmpty) {
-        _detectedLanguage = _tts.detectLanguage(storyText);
-        _tts.setVoiceForText(storyText, preferredGender: _preferredGender);
-      }
+      // 🔥 ALWAYS apply preferred voice
+      _detectedLanguage = _tts.detectLanguage(storyText);
+      _tts.setVoiceForText(storyText, preferredGender: _preferredGender);
 
       if (!mounted) return;
 

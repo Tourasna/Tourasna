@@ -484,7 +484,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             width: 62,
-            height: 40,
+            height: 38,
             alignment: Alignment.center,
             decoration: label == 'Explore'
                 ? BoxDecoration(
@@ -494,18 +494,19 @@ class _HomePageState extends State<HomePage> {
                 : null,
             child: Image.asset(
               iconPath,
-              width: 42,
-              height: 42,
+              width: 40,
+              height: 40,
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 0),
           Text(
             label,
             style: const TextStyle(
               color: Color(0xFF1F1F1F),
-              fontSize: 14.0,
+              fontSize: 12.5,
               fontWeight: FontWeight.w700,
+              height: 1.0,
               letterSpacing: 0.1,
             ),
           ),

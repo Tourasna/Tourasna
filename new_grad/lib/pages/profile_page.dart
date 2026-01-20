@@ -71,11 +71,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
     final res = await ApiClient.put(
       '/api/profiles/update',
-      body: jsonEncode({
+      body: {
         'firstName': firstNameCtl.text.trim(),
         'lastName': lastNameCtl.text.trim(),
         'username': usernameCtl.text.trim(),
-      }),
+      },
     );
 
     setState(() => loading = false);
@@ -319,7 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Container(
             width: 62,
-            height: 40,
+            height: 38,
             alignment: Alignment.center,
             decoration: label == 'Profile'
                 ? BoxDecoration(
@@ -329,18 +329,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 : null,
             child: Image.asset(
               iconPath,
-              width: 42,
-              height: 42,
+              width: 40,
+              height: 40,
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 0),
           Text(
             label,
             style: const TextStyle(
               color: Color(0xFF1F1F1F),
-              fontSize: 14.0,
+              fontSize: 12.5,
               fontWeight: FontWeight.w700,
+              height: 1.0,
               letterSpacing: 0.1,
             ),
           ),

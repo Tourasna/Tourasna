@@ -25,10 +25,12 @@ services:
       - ai-service
     ports:
       - "3000:3000"
+    enviroment:
+      -AI_CHAT_WS_URL=ws://tourasna-ai:8000
 
   ai-service:
     build: ./ai-service
-    container_name: tourasna-ai
+    container_name: ai-service
     restart: always
     env_file:
       - ./ai-service/.env.production

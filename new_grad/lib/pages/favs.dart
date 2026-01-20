@@ -232,7 +232,7 @@ class _FavsPageState extends State<FavsPage> {
         children: [
           Container(
             width: 62,
-            height: 40,
+            height: 38,
             alignment: Alignment.center,
             decoration: label == 'FAVs'
                 ? BoxDecoration(
@@ -242,18 +242,19 @@ class _FavsPageState extends State<FavsPage> {
                 : null,
             child: Image.asset(
               iconPath,
-              width: 42,
-              height: 42,
+              width: 40,
+              height: 40,
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 0),
           Text(
             label,
             style: const TextStyle(
               color: Color(0xFF1F1F1F),
               fontSize: 14.0,
               fontWeight: FontWeight.w700,
+              height: 1.0,
               letterSpacing: 0.1,
             ),
           ),
