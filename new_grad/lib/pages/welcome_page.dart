@@ -19,12 +19,13 @@ class WelcomePage extends StatelessWidget {
           Container(color: Colors.white.withOpacity(0.5)),
 
           const Positioned(
-            left: 40,
+            left: 20,
             top: 80,
             child: Text(
               "Hello,",
               style: TextStyle(
-                fontSize: 40,
+                fontFamily: 'Cinzel',
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
                 letterSpacing: 2.0,
@@ -33,12 +34,13 @@ class WelcomePage extends StatelessWidget {
           ),
 
           const Positioned(
-            left: 40,
-            top: 200,
+            left: 20,
+            top: 135,
             child: Text(
-              "Our legacy, \nyour journey.",
+              "Welcome to TOURASNA",
               style: TextStyle(
-                fontSize: 40,
+                fontFamily: 'Cinzel',
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
                 letterSpacing: 2.0,

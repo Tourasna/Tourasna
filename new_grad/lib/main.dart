@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:new_grad/ai/landmark_classifier.dart';
+import 'package:new_grad/interactive_map_feature.dart';
+import 'package:new_grad/pages/agenda_page.dart';
 import 'package:new_grad/pages/favs.dart';
 import 'package:new_grad/pages/profile_page.dart';
 import 'package:new_grad/pages/terms_and_conditions.dart';
@@ -51,6 +53,15 @@ class MyApp extends StatelessWidget {
         '/chatbot': (context) => const ChatbotPage(),
         '/favs': (context) => const FavsPage(),
         '/mocka': (context) => ChatMockPage(),
+        '/agenda': (context) => AgendaPage(),
+        '/interactive_map': (context) {
+          final args =
+              ModalRoute.of(context)?.settings.arguments
+                  as Map<String, dynamic>?;
+          final placeIds = args?['placeIds'] as List<String>? ?? [];
+
+          return InteractiveMapScreen(placeIds: placeIds);
+        },
       },
     );
   }

@@ -123,10 +123,7 @@ class PreferencesPageState extends State<PreferencesPage> {
         "preferences": _selectedPreferences.toList(),
       };
 
-      final res = await ApiClient.put(
-        '/api/profiles/complete',
-        body: jsonEncode(body),
-      );
+      final res = await ApiClient.put('/api/profiles/complete', body: body);
 
       if (res.statusCode != 200) {
         throw Exception(res.body);

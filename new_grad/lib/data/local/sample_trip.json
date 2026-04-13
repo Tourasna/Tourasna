@@ -1,0 +1,61 @@
+{
+  "user_id": "u123",
+  "tripType": "journey",
+  "meta": {
+    "title": "Cairo Highlights",
+    "created_at": "2025-10-30T12:00:00Z"
+  },
+  "days": [
+    {
+      "day": 1,
+      "date": "2025-11-10",
+      "locations": [
+        {
+          "id": "p1",
+          "name": "Power GYM",
+          "latitude": 29.95292865204971,
+          "longitude": 31.102385347069745,
+          "description": "You stand at the entrance of the Aisha Fahmy Palace in Cairo. The atmosphere shifts immediately as you pass through the gates, leaving the city behind. This palace was built in the early 20th century, a time of grand change and refinement. You are here because of Aisha Fahmy, a woman of prominence in Egyptian society who once called this magnificent place home.As you look up, you notice the palace's most famous feature: a unique blend of architectural styles. The building beautifully combines the formality of European design with the intricate beauty of Islamic art. You step inside and imagine the dazzling social calendar this building once kept. Countless cultural and social events unfolded here. The palace remains a strong symbol of Cairo's artistic heritage and offers you a tangible glimpse into the luxurious lifestyle of the Egyptian elite from that dynamic era.",
+          "image": "",
+          "time": "09:00",
+          "category": "GYM",
+          "stay_minutes": 150
+        },
+         
+        {
+          "id": "p2",
+          "name": "Mall of Egypt – Labesh Restaurant",
+          "latitude": 30.0300,
+          "longitude": 31.0100,
+          "description": "انا بحب مصر اوي تحيا مصر .",
+          "image": "",
+          "time": "12:00",
+          "category": "Food/Shopping",
+          "stay_minutes": 60
+        },
+        {
+          "id": "p3",
+          "name": "Zewail City",
+          "latitude": 30.0340,
+          "longitude": 31.0105,
+          "description": "Egipto es un país lleno de historia, cultura y maravillas que impresionan al mundo.",
+          "image": "",
+          "time": "13:30",
+          "category": "Leisure",
+          "stay_minutes": 45
+        },
+        {
+          "id": "p4",
+          "name": "Pyramids Gardens – Horus Gate",
+          "latitude": 29.9765,
+          "longitude": 31.1300,
+          "description": "L’Égypte est un pays riche en histoire, en culture et en merveilles qui fascinent le monde entier.",
+          "image": "",
+          "time": "14:30",
+          "category": "Nature/Park",
+          "stay_minutes": 90
+        }
+      ]
+    }
+  ]
+}
