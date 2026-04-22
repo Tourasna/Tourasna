@@ -1,0 +1,46 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# ===== Virtual Environments =====
+venv/
+env/
+.venv/
+.env
+
+# ===== IDEs =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== ML Models (too large for Git) =====
+models/
+*.pt
+*.pth
+*.onnx
+
+# ===== Logs =====
+logs/
+*.log
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== FastAPI / Uvicorn =====
+*.pid
+
+# ===== Testing =====
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ===== Keep these =====
+!.env.example
+!.gitkeep
