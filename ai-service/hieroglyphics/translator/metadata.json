@@ -1,0 +1,15 @@
+{
+  "model": "HieroglyphTranslator (Transformer)",
+  "d_model": 256,
+  "nhead": 8,
+  "encoder_layers": 4,
+  "decoder_layers": 4,
+  "src_vocab_size": 1333,
+  "tgt_vocab_size": 8000,
+  "total_params": 11819072,
+  "best_val_loss": 3.4075654572244156,
+  "training_pairs": 29136,
+  "epochs": 30,
+  "dataset": "BBAW Egyptian Corpus (35,497 parallel rows)",
+  "tokenizer": "SentencePiece BPE (8000)"
+}
