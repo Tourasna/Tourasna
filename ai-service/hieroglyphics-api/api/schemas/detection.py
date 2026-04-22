@@ -4,6 +4,10 @@ Schemas for glyph detection results.
 A Detection represents a single glyph identified in the image,
 including its classification (Gardiner code), confidence,
 bounding box, and position in the reading sequence.
+
+We have two related shapes:
+  - RawDetection: what the detector service produces (no reading order)
+  - Detection: what the API returns (with row/quadrat info from the sorter)
 """
 from typing import List
 from pydantic import BaseModel, Field
@@ -36,65 +40,58 @@ class Alternative(BaseModel):
     }
 
 
+class RawDetection(BaseModel):
+    """
+    A detection as produced by the detector service, before sorting.
+
+    This is an INTERNAL schema (not exposed on the API) that carries the
+    detector output to the sorter. The sorter adds reading-order info
+    (row, quadrat, position) and returns a full Detection.
+    """
+    gardiner_code: str = Field(..., description="Top-predicted Gardiner code")
+    confidence: float = Field(..., ge=0, le=1)
+    bbox: BoundingBox
+
+    is_ambiguous: bool = Field(
+        ...,
+        description="True if confidence is below the ambiguity threshold",
+    )
+    alternatives: List[Alternative] = Field(
+        default_factory=list,
+        description="Top-K alternative classifications (empty if not ambiguous)",
+    )
+
+
 class Detection(BaseModel):
     """
-    A single detected hieroglyph.
+    A single detected hieroglyph with reading-order information.
 
-    The Flutter frontend uses this to:
+    Returned by the public API. The Flutter frontend uses this to:
       1. Draw a bounding-box overlay on the image
       2. Show the tourist the detected Gardiner code
       3. Offer alternatives if the detection is ambiguous
       4. Let the tourist remove false positives
     """
-    # Identity
     id: int = Field(..., ge=1, description="Sequential ID (1-indexed)")
 
-    # Classification
-    gardiner_code: str = Field(
-        ...,
-        description="Top-predicted Gardiner code",
-    )
-    confidence: float = Field(
-        ...,
-        ge=0,
-        le=1,
-        description="Confidence of the top prediction",
-    )
-
-    # Spatial info
+    gardiner_code: str = Field(..., description="Top-predicted Gardiner code")
+    confidence: float = Field(..., ge=0, le=1)
     bbox: BoundingBox
 
-    # Reading-order info (filled in by the sorter service)
-    row: int = Field(
-        ...,
-        ge=1,
-        description="Row number, 1-indexed (top to bottom in the image)",
-    )
-    quadrat_id: int = Field(
-        ...,
-        ge=1,
-        description="Quadrat group ID within the row (1-indexed)",
-    )
-    position_in_quadrat: int = Field(
-        ...,
-        ge=1,
-        description="Position within the quadrat (1-indexed, top to bottom)",
-    )
+    row: int = Field(..., ge=1, description="Row number, 1-indexed (top to bottom)")
+    quadrat_id: int = Field(..., ge=1, description="Quadrat group within the row")
+    position_in_quadrat: int = Field(..., ge=1, description="Position within the quadrat")
 
-    # Ambiguity info
     is_ambiguous: bool = Field(
         ...,
         description=(
             "True if the top confidence is below the ambiguity threshold. "
-            "The frontend should highlight these for user review."
+            "Frontend should highlight these for user review."
         ),
     )
     alternatives: List[Alternative] = Field(
         default_factory=list,
-        description=(
-            "Top-K alternative classifications, sorted by confidence descending. "
-            "Empty when is_ambiguous is False."
-        ),
+        description="Top-K alternative classifications, sorted descending by confidence",
     )
 
     model_config = {

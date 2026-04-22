@@ -1,11 +1,5 @@
 """
 Public exports for the schemas package.
-
-Import from here in routes and services instead of the submodules:
-    from api.schemas import Detection, TranslateResponse
-
-This gives us a single import point and lets us refactor internals
-without breaking callers.
 """
 from api.schemas.common import (
     BoundingBox,
@@ -15,6 +9,7 @@ from api.schemas.common import (
 from api.schemas.detection import (
     Alternative,
     Detection,
+    RawDetection,
 )
 from api.schemas.translation import (
     ErrorResponse,
@@ -30,22 +25,10 @@ from api.schemas.translation import (
 )
 
 __all__ = [
-    # Common
-    "BoundingBox",
-    "ImageSize",
-    "ReadingDirection",
-    # Detection
-    "Alternative",
-    "Detection",
-    # Translation
-    "ErrorResponse",
-    "HealthResponse",
-    "SignDetail",
-    "SignInfo",
-    "SignsListResponse",
-    "TranslateCodesRequest",
-    "TranslateCodesResponse",
-    "TranslateResponse",
-    "TranslationMethod",
-    "TranslationResult",
+    "BoundingBox", "ImageSize", "ReadingDirection",
+    "Alternative", "Detection", "RawDetection",
+    "ErrorResponse", "HealthResponse",
+    "SignDetail", "SignInfo", "SignsListResponse",
+    "TranslateCodesRequest", "TranslateCodesResponse", "TranslateResponse",
+    "TranslationMethod", "TranslationResult",
 ]
