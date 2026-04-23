@@ -133,7 +133,7 @@ class TranslateCodesRequest(BaseModel):
     """
     gardiner_codes: List[str] = Field(
         ...,
-        min_length=1,
+        
         description="Ordered list of Gardiner codes to translate",
     )
     reading_direction: ReadingDirection = Field(
