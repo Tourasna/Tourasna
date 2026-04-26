@@ -152,6 +152,38 @@ class TranslateCodesRequest(BaseModel):
             }
         }
     }
+class TranslateCorrectedRequest(BaseModel):
+    """
+    Request body for translating a user-corrected sequence.
+
+    This is used after the user reviews the AI's detection and makes
+    corrections (changing a glyph, removing a wrong one, or confirming
+    the reading direction).
+    """
+
+    corrected_sequence: List[str] = Field(
+        ...,
+        description="User-verified Gardiner codes in reading order",
+    )
+
+    reading_direction: ReadingDirection = Field(
+        default=ReadingDirection.RTL,
+        description="Reading direction confirmed by the user",
+    )
+
+    original_detection_ids: Optional[List[str]] = Field(
+        default=None,
+        description="Optional: IDs of original detections for tracking",
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "corrected_sequence": ["N5", "S29", "S29", "M23", "X1"],
+                "reading_direction": "rtl",
+            }
+        }
+    }
 
 
 # ===== Response schemas =====

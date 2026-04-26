@@ -19,16 +19,30 @@ from api.schemas.translation import (
     SignsListResponse,
     TranslateCodesRequest,
     TranslateCodesResponse,
+    TranslateCorrectedRequest,
     TranslateResponse,
     TranslationMethod,
     TranslationResult,
 )
+from api.schemas.correction import (
+    SignInfoDetailed,
+    SignSearchResult,
+    SignSearchResponse,
+    SignNotFoundError,
+)
 
 __all__ = [
+    # common
     "BoundingBox", "ImageSize", "ReadingDirection",
+    # detection
     "Alternative", "Detection", "RawDetection",
+    # translation
     "ErrorResponse", "HealthResponse",
     "SignDetail", "SignInfo", "SignsListResponse",
     "TranslateCodesRequest", "TranslateCodesResponse", "TranslateResponse",
+    "TranslateCorrectedRequest",
     "TranslationMethod", "TranslationResult",
+    # correction (NEW)
+    "SignInfoDetailed", "SignSearchResult",
+    "SignSearchResponse", "SignNotFoundError",
 ]
