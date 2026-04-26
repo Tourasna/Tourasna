@@ -25,6 +25,7 @@ from ultralytics import YOLO
 
 from api.config import settings
 from api.services.transformer_model import HieroglyphTranslator
+from api.services.sign_info_service import SignInfoService
 
 
 class ModelLoader:
@@ -78,6 +79,8 @@ class ModelLoader:
         self.phrases_by_sequence: dict[tuple[str, ...], dict] = {}
         self.phrases_by_id: dict[str, dict] = {}
         self.sign_meanings: dict[str, dict] = {}
+
+        self.sign_info_service: Optional[SignInfoService] = None
 
         self.is_loaded: bool = False
 
@@ -420,6 +423,32 @@ class ModelLoader:
             f"tgt_vocab={tgt_vocab_size_actual})"
         )
 
+
+
+    def _load_sign_info(self) -> None:
+        """
+        Load the SignInfoService for interactive correction support.
+
+        Combines basic sign info from translations_db.json (already loaded)
+        with extended info from sign_extended_info.json (confusions, examples).
+        """
+        logger.info("Loading SignInfoService...")
+        start = time.time()
+
+        translations_path = settings.translations_db_path
+        extended_path = settings.translations_db_path.parent / "sign_extended_info.json"
+
+        self.sign_info_service = SignInfoService(
+            translations_db_path=translations_path,
+            extended_info_path=extended_path,
+        )
+
+        elapsed = time.time() - start
+        logger.info(
+            f"  SignInfoService loaded in {elapsed:.2f}s "
+            f"({self.sign_info_service.total_signs} signs)"
+        )
+
     # =========================================================================
     # Orchestrator
     # =========================================================================
@@ -443,6 +472,7 @@ class ModelLoader:
         self._load_translations_db()
         self._load_detector()
         self._load_translator()
+        self._load_sign_info()
 
         self.is_loaded = True
         logger.info("=" * 60)
