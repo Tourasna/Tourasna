@@ -23,6 +23,7 @@ from api.schemas import (
     ReadingDirection,
     TranslateCodesRequest,
     TranslateCodesResponse,
+    TranslateCorrectedRequest,
     TranslateResponse,
 )
 from api.services.detector_service import DetectorService
@@ -192,6 +193,52 @@ async def translate_codes(
         reading_direction=request.reading_direction,
         translation=translation,
     )
+
+
+# =============================================================================
+# POST /translate-corrected — translate a user-verified sequence
+# =============================================================================
+
+@router.post(
+    "/translate-corrected",
+    response_model=TranslateCodesResponse,
+    summary="Translate a user-corrected sequence (Human-in-the-Loop)",
+    description=(
+        "Used by the interactive correction UI after the user reviews "
+        "AI detections and confirms/edits the glyph sequence. "
+        "This endpoint trusts the user's input as the ground truth."
+    ),
+)
+async def translate_corrected(
+    request: TranslateCorrectedRequest,
+    translator: TranslatorService = Depends(get_translator),
+) -> TranslateCodesResponse:
+    """
+    Translate a user-verified Gardiner-code sequence.
+
+    This is the same as /translate-codes from the engine's perspective,
+    but exists as a separate endpoint for clarity and to enable analytics:
+    we can track which detections users correct most often, then improve
+    the detector training data accordingly.
+    """
+    codes = request.corrected_sequence
+    logger.info(
+        f"/translate-corrected called: {len(codes)} codes "
+        f"(corrected by user), direction={request.reading_direction.value}"
+    )
+
+    translation = await run_in_threadpool(translator.translate, codes)
+
+    return TranslateCodesResponse(
+        gardiner_codes=codes,
+        reading_direction=request.reading_direction,
+        translation=translation,
+    )
+
+
+# =============================================================================
+# Helpers
+# =============================================================================
 
 
 # =============================================================================

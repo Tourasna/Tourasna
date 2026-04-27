@@ -28,7 +28,7 @@ from loguru import logger
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from api.config import settings
-from api.routes import health_router, signs_router, translate_router
+from api.routes import correction_router, health_router, signs_router, translate_router
 from api.schemas import ErrorResponse
 from api.services.model_loader import loader
 
@@ -191,6 +191,7 @@ def _status_code_to_error_type(code: int) -> str:
 
 # All feature endpoints live under /api so that one day we can serve a
 # static UI at /  without colliding with the JSON API.
+app.include_router(correction_router, prefix="/api")
 app.include_router(health_router, prefix="/api")
 app.include_router(signs_router, prefix="/api")
 app.include_router(translate_router, prefix="/api")
