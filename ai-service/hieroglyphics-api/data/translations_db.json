@@ -412,7 +412,21 @@
       "location": "Grand Egyptian Museum — Entrance Atrium",
       "period": "New Kingdom, 19th Dynasty",
       "variants": ["M23 X1 L2 X1 V30 N16 N5 S29 S29 M23 X1"]
+    },
+    {
+      "id": "royal_hatshepsut_birth",
+      "type": "royal_name",
+      "gardiner_codes": ["M16", "A50", "S29", "S29", "X1"],
+      "transliteration": "Hatshepsut",
+      "translation_en": "Hatshepsut — Foremost of Noble Ladies",
+      "translation_ar": "حتشبسوت — أعظم النبيلات",
+      "context_en": "Birth name of Hatshepsut (1473–1458 BC), the most famous female pharaoh of ancient Egypt. She broke convention by ruling as a king, often depicted wearing the false beard of pharaohs. Her mortuary temple at Deir el-Bahari near Luxor is one of Egypt's most stunning architectural wonders.",
+      "context_ar": "اسم الميلاد لحتشبسوت (1473–1458 ق.م)، أشهر ملكة فرعونية في مصر القديمة. كسرت التقاليد بحكمها كملك، وكثيراً ما كانت تُصوَّر مرتدية لحية الفراعنة المزيفة. معبدها الجنائزي في الدير البحري بالأقصر من أروع العجائب المعمارية في مصر.",
+      "location": "Deir el-Bahari (Mortuary Temple), Karnak Temple, Egyptian Museum (Cairo), Luxor Museum",
+      "period": "New Kingdom, 18th Dynasty",
+      "variants": ["M16 A50 S29 S29 X1"]
     }
+
   ],
 
   "sign_meanings": {
