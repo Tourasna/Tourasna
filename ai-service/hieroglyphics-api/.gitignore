@@ -44,3 +44,6 @@ htmlcov/
 # ===== Keep these =====
 !.env.example
 !.gitkeep
+
+# Large datasets (download separately)
+data/aetel_dataset.json
