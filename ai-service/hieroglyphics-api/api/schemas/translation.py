@@ -19,9 +19,10 @@ from api.schemas.detection import Detection
 
 class TranslationMethod(str, Enum):
     """Which layer of the hybrid translator produced the translation."""
-    DATABASE_EXACT = "database_exact"     # Matched a full phrase in translations_db
-    TRANSFORMER = "transformer"           # Seq2Seq transformer output
-    SIGN_MEANINGS_ONLY = "sign_meanings"  # Fallback: concatenated sign meanings
+    DATABASE_EXACT = "database_exact"     # Layer 1: Matched a full phrase in translations_db
+    LLM_TRANSLATION = "llm_translation"   # Layer 2: Groq + Llama 3.3 70B (NEW)
+    TRANSFORMER = "transformer"           # Layer 3: Seq2Seq transformer output
+    SIGN_MEANINGS_ONLY = "sign_meanings"  # Layer 4: Fallback - concatenated sign meanings
     EMPTY = "empty"                       # No glyphs detected in the image
 
 

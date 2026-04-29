@@ -26,7 +26,7 @@ from ultralytics import YOLO
 from api.config import settings
 from api.services.transformer_model import HieroglyphTranslator
 from api.services.sign_info_service import SignInfoService
-
+from api.services.llm_translator_service import LLMTranslatorService
 
 class ModelLoader:
     """
@@ -81,6 +81,8 @@ class ModelLoader:
         self.sign_meanings: dict[str, dict] = {}
 
         self.sign_info_service: Optional[SignInfoService] = None
+
+        self.llm_translator: Optional[LLMTranslatorService] = None
 
         self.is_loaded: bool = False
 
@@ -424,6 +426,49 @@ class ModelLoader:
         )
 
 
+    def _load_llm_translator(self) -> None:
+        """
+        Initialize the LLM translator service (Layer 2).
+
+        Uses Groq Cloud API with Llama 3.3 70B for high-quality
+        translation of unknown Gardiner sequences. The service is
+        designed to fail gracefully — if no API key is set or the
+        API is unreachable, the translator falls through to Layer 3
+        (Transformer) without crashing.
+        """
+        logger.info("Initializing LLM translator service...")
+        start = time.time()
+
+        # The service reads GROQ_API_KEY from environment.
+        # If missing, we log a warning but don't raise — the system
+        # still works without LLM (just falls through to Transformer).
+        # Check if API key is configured
+        if not settings.groq_api_key:
+            logger.warning(
+                "  LLM translator disabled: GROQ_API_KEY not set in .env. "
+                "Translation will fall back to Transformer + Sign meanings."
+            )
+            self.llm_translator = None
+            return
+
+        try:
+            self.llm_translator = LLMTranslatorService(
+                api_key=settings.groq_api_key,
+                model=settings.llm_model,
+                temperature=settings.llm_temperature,
+                max_tokens=settings.llm_max_tokens,
+            )
+            elapsed = time.time() - start
+            logger.info(
+                f"  LLM translator ready in {elapsed:.2f}s "
+                f"(model={self.llm_translator.model})"
+            )
+        except Exception as e:
+            logger.warning(
+                f"  LLM translator initialization failed: {e}. "
+                f"Translation will fall back to Transformer + Sign meanings."
+            )
+            self.llm_translator = None
 
     def _load_sign_info(self) -> None:
         """
@@ -473,6 +518,8 @@ class ModelLoader:
         self._load_detector()
         self._load_translator()
         self._load_sign_info()
+        self._load_llm_translator()
+
 
         self.is_loaded = True
         logger.info("=" * 60)

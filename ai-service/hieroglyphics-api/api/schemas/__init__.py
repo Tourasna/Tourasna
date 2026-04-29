@@ -24,6 +24,13 @@ from api.schemas.translation import (
     TranslationMethod,
     TranslationResult,
 )
+
+from api.schemas.llm_translation import (
+    LLMConfidence,
+    LLMTranslationResult,
+    LLMTranslationType,
+)
+
 from api.schemas.correction import (
     SignInfoDetailed,
     SignSearchResult,
@@ -45,4 +52,6 @@ __all__ = [
     # correction (NEW)
     "SignInfoDetailed", "SignSearchResult",
     "SignSearchResponse", "SignNotFoundError",
+    "LLMConfidence", "LLMTranslationResult", "LLMTranslationType",
+
 ]

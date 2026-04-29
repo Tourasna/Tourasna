@@ -47,3 +47,8 @@ htmlcov/
 
 # Large datasets (download separately)
 data/aetel_dataset.json
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+.env.*.local

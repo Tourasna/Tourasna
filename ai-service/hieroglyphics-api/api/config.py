@@ -69,6 +69,14 @@ class Settings(BaseSettings):
     translator_max_length: int = 128
     translator_repetition_penalty: float = 1.2
 
+    # ===== LLM Translator Settings (Layer 2) =====
+    # Groq API key for LLM-based translation. If empty, Layer 2 is disabled
+    # and translation falls back to Transformer + Sign meanings.
+    groq_api_key: str = ""
+    llm_model: str = "llama-3.3-70b-versatile"
+    llm_temperature: float = 0.2
+    llm_max_tokens: int = 1024
+
     # ===== Image Upload =====
     max_image_size_mb: int = 10
     allowed_image_types: tuple = ("image/jpeg", "image/png", "image/webp")

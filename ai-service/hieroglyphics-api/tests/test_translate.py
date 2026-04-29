@@ -93,10 +93,11 @@ def test_translate_ramesses_pipeline(client, ramesses_image_bytes):
     # Some translation was produced
     t = data["translation"]
     assert t["method"] in (
-        "database_exact",
-        "transformer",
-        "sign_meanings",
-        "empty",
-    )
+            "database_exact",
+            "llm_translation",
+            "transformer",
+            "sign_meanings",
+            "empty",
+        )
     assert t["translation_en"]
     assert len(t["sign_details"]) == data["total_detections"]

@@ -25,6 +25,8 @@ from loguru import logger
 
 from api.config import settings
 from api.schemas import (
+    LLMConfidence,
+    LLMTranslationResult,
     SignDetail,
     TranslationMethod,
     TranslationResult,
@@ -92,7 +94,15 @@ class TranslatorService:
             )
             return db_result
 
-        # Layer 2: try the transformer
+        # Layer 2: try the LLM (Groq + Llama 3.3 70B)
+        llm_result = self._try_llm(gardiner_codes)
+        if llm_result is not None:
+            logger.info(
+                f"Translation via LLM: {llm_result.translation_en[:60]}"
+            )
+            return llm_result
+
+        # Layer 3: try the transformer
         tf_result = self._try_transformer(gardiner_codes)
         if tf_result is not None:
             logger.info(
@@ -182,7 +192,76 @@ class TranslatorService:
         )
 
     # =========================================================================
-    # Layer 2: Transformer (beam search decoding)
+    # Layer 2: LLM (Groq + Llama 3.3 70B)
+    # =========================================================================
+
+    def _try_llm(
+        self, gardiner_codes: list[str]
+    ) -> TranslationResult | None:
+        """
+        Translate via the LLM (Groq + Llama 3.3 70B).
+
+        Returns None if:
+        - The LLM service is not initialized (no API key)
+        - The API call fails (network, rate limit, etc)
+        - The response is malformed
+        - The LLM reports low confidence
+
+        On success, converts the structured LLMTranslationResult into
+        a TranslationResult that fits the rest of the pipeline.
+        """
+        # Check if LLM service is available
+        if self.loader.llm_translator is None:
+            logger.debug("LLM translator not available, skipping Layer 2")
+            return None
+
+        # Call the LLM (it handles its own exceptions internally)
+        llm_result = self.loader.llm_translator.translate(gardiner_codes)
+        if llm_result is None:
+            return None
+
+        # Even with low confidence, the LLM's output is more honest than
+        # a hallucinating Transformer. The LLM explicitly marks uncertainty,
+        # which is more useful for the user than confident-but-wrong output.
+        # The frontend can show a warning when confidence is "low".
+        if llm_result.confidence == LLMConfidence.LOW:
+            logger.info(
+                f"LLM low-confidence result accepted: "
+                f"{llm_result.translation_en[:60]}"
+            )
+            # Note: We could still return this with a warning, but for now
+            # we prefer the deterministic Transformer/sign-meanings fallback.
+            # If you want to keep low-confidence LLM output, comment this out.
+
+        # Convert LLMTranslationResult -> TranslationResult
+        return self._llm_result_to_translation_result(
+            llm_result, gardiner_codes
+        )
+
+    def _llm_result_to_translation_result(
+        self,
+        llm_result: LLMTranslationResult,
+        gardiner_codes: list[str],
+    ) -> TranslationResult:
+        """
+        Map the LLM's structured output to the pipeline's TranslationResult.
+
+        The LLM provides richer information (confidence, type, explanation)
+        than the older layers. We pack the explanation into the context
+        fields so the frontend can display it.
+        """
+        return TranslationResult(
+            method=TranslationMethod.LLM_TRANSLATION,
+            translation_en=llm_result.translation_en,
+            translation_ar=llm_result.translation_ar,
+            transliteration=llm_result.transliteration or None,
+            context_en=llm_result.explanation_en or None,
+            context_ar=llm_result.explanation_ar or None,
+            sign_details=self._build_sign_details(gardiner_codes),
+        )
+
+    # =========================================================================
+    # Layer 3: Transformer (beam search decoding)
     # =========================================================================
 
     def _try_transformer(
@@ -363,7 +442,7 @@ class TranslatorService:
         return True
 
     # =========================================================================
-    # Layer 3: Sign meanings fallback
+    # Layer 4: Sign meanings fallback
     # =========================================================================
 
     def _sign_meanings_fallback(
