@@ -195,6 +195,9 @@ app.include_router(correction_router, prefix="/api")
 app.include_router(health_router, prefix="/api")
 app.include_router(signs_router, prefix="/api")
 app.include_router(translate_router, prefix="/api")
+# Mount the demo page
+from fastapi.staticfiles import StaticFiles
+app.mount("/demo", StaticFiles(directory="static", html=True), name="demo")
 
 
 # =============================================================================

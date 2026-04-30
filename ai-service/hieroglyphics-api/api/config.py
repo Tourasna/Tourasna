@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     translations_db_path: Path = data_dir / "translations_db.json"
 
     # ===== Detector Settings =====
-    detector_conf_threshold: float = 0.25  # Minimum confidence to keep a detection
+    detector_conf_threshold: float = 0.40  # Minimum confidence to keep a detection
     detector_iou_threshold: float = 0.45   # NMS IOU threshold
     detector_image_size: int = 640          # YOLO input size
     detector_max_detections: int = 300      # Safety cap per image
@@ -76,6 +76,7 @@ class Settings(BaseSettings):
     llm_model: str = "llama-3.3-70b-versatile"
     llm_temperature: float = 0.2
     llm_max_tokens: int = 1024
+    
 
     # ===== Image Upload =====
     max_image_size_mb: int = 10
