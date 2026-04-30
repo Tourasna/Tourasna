@@ -108,33 +108,85 @@ The models are hosted on the Tourasna team's Google Drive:
 
 
 
-\### Option 2: Direct Links (Internal Team Only)
+\### Option 2: Direct Download Links
 
 
 
-> ⚠️ These links require team-member permissions. Reach out to the project lead for access.
+> The links below are set to \*\*"Anyone with the link → Viewer"\*\*. Permissions can be revoked at any time by the project owner.
 
 
 
-\- Detector: `https://drive.google.com/file/d/<DETECTOR\_FILE\_ID>/view`
+| File                  | Location in Repo                       | Link |
 
-\- Translator weights: `https://drive.google.com/file/d/<TRANSLATOR\_WEIGHTS\_ID>/view`
+|-----------------------|----------------------------------------|------|
 
-\- Source vocab: `https://drive.google.com/file/d/<SRC\_VOCAB\_ID>/view`
+| `best.pt`             | `models/detector/best.pt`              | \[📥 Download](https://drive.google.com/file/d/18zbEtoC-MOp\_QYGA02C6v99Nf2I-VGUX/view?usp=sharing) |
 
-\- Target BPE: `https://drive.google.com/file/d/<TGT\_BPE\_ID>/view`
+| `best\_translator.pth` | `models/translator/best\_translator.pth`| \[📥 Download](https://drive.google.com/file/d/12ztAGQSZlxY6KrNGagN7BtE798nlvFcK/view?usp=sharing) |
 
-\- Metadata: `https://drive.google.com/file/d/<METADATA\_ID>/view`
+| `src\_vocab.json`      | `models/translator/src\_vocab.json`     | \[📥 Download](https://drive.google.com/file/d/1EyKtPU7u9cvFMMMPWBnqFSI14r7OfKoV/view?usp=sharing) |
 
+| `tgt\_bpe.model`       | `models/translator/tgt\_bpe.model`      | \[📥 Download](https://drive.google.com/file/d/1RFa-5PzRUc7dxyCp1nYPSNKt7h5exGuS/view?usp=sharing) |
 
-
-> 📝 \*\*Note for team:\*\* Replace `<...>` placeholders with actual Google Drive file IDs before sharing this document externally.
-
-
-
-\---
+| `metadata.json`       | `models/translator/metadata.json`      | \[📥 Download](https://drive.google.com/file/d/1AMg6ipxzHyMP3BZ-gI1ePIZG4\_j3MXMD/view?usp=sharing) |
 
 
+
+\#### Quick Download (PowerShell on Windows)
+
+
+
+You can use `gdown` (a Python tool) for command-line downloads:
+
+
+
+```bash
+
+pip install gdown
+
+
+
+\# Detector
+
+gdown 18zbEtoC-MOp\_QYGA02C6v99Nf2I-VGUX -O models/detector/best.pt
+
+
+
+\# Translator weights
+
+gdown 12ztAGQSZlxY6KrNGagN7BtE798nlvFcK -O models/translator/best\_translator.pth
+
+
+
+\# Source vocab
+
+gdown 1EyKtPU7u9cvFMMMPWBnqFSI14r7OfKoV -O models/translator/src\_vocab.json
+
+
+
+\# Target BPE
+
+gdown 1RFa-5PzRUc7dxyCp1nYPSNKt7h5exGuS -O models/translator/tgt\_bpe.model
+
+
+
+\# Metadata
+
+gdown 1AMg6ipxzHyMP3BZ-gI1ePIZG4\_j3MXMD -O models/translator/metadata.json
+
+```
+
+
+
+> 💡 \*\*Tip:\*\* Create the `models/detector/` and `models/translator/` directories first if they don't exist:
+
+> ```bash
+
+> mkdir -p models/detector models/translator   # Linux/Mac
+
+> mkdir models\\detector \& mkdir models\\translator   # Windows cmd
+
+> ```
 
 \## ✅ Verifying Your Setup
 
