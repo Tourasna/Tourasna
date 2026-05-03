@@ -1,0 +1,43 @@
+
+================================================================================
+DEEP LEARNING TRAVEL RECOMMENDATION SYSTEM - TRAINING REPORT
+================================================================================
+Generated: 2026-01-04 20:40:56
+
+PERFORMANCE METRICS:
+----------------------------------------
+Final Training Loss (MSE): 0.005805
+Final Validation Loss (MSE): 0.004032
+Test Loss (MSE): 0.004158
+Test MAE: 0.038269
+Test RMSE: 0.053243
+Test Accuracy: 0.9950
+Test R2 Score: 0.9135
+
+OVERFITTING CHECK:
+----------------------------------------
+Training/Validation Loss Ratio: 1.44x
+Good: Minimal overfitting detected
+
+INPUT FORMAT FOR INFERENCE:
+----------------------------------------
+user_input = {
+    'user_age': 30,
+    'user_gender': 'Male',
+    'user_budget': 'medium',
+    'user_travel_type': 'solo',
+    'user_preferences': ['Museums', 'Outdoor Activities', 'Nature & Parks', 'Shopping']
+}
+
+SAVED FILES:
+----------------------------------------
+1. travel_recommendation_model.keras
+2. travel_recommendation_model.weights.h5
+3. label_encoders.pkl
+4. all_categories.pkl
+5. model_config.json
+6. training_history.png
+7. accuracy_plots.png
+8. training_report.txt
+
+================================================================================

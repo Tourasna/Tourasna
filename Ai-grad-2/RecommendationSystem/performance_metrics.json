@@ -1,0 +1,17 @@
+{
+  "ndcg_5": 0.9536272533057106,
+  "precision_5": 0.6242506666666666,
+  "mrr": 0.4295201325515443,
+  "train_loss_mse": 0.005161796230822802,
+  "val_loss_mse": 0.004428600426763296,
+  "test_loss_mse": 0.004467578139156103,
+  "test_loss_composite": 0.0074809882789850235,
+  "test_r2_score": 0.8019555807113647,
+  "loss_ratio": 1.1655592587736283,
+  "training_time_seconds": 1433.5650153160095,
+  "total_samples": 5000000,
+  "train_samples": 3500000,
+  "val_samples": 750000,
+  "test_samples": 750000,
+  "epochs_completed": 30
+}

@@ -1,0 +1,68 @@
+
+================================================================================
+DEEP LEARNING TRAVEL RECOMMENDATION SYSTEM — TRAINING REPORT v4.0
+================================================================================
+Generated: 2026-04-21 23:37:48
+
+DATASET:
+----------------------------------------
+Total samples:     5,000,000
+Training samples:  3,500,000
+Validation samples:750,000
+Test samples:      750,000
+Split ratio:       70/15/15
+
+MODEL ARCHITECTURE:
+----------------------------------------
+Type: Dual-Input Neural Network with Element-wise Interaction
+User branch:    Input(39) → 128 → 64 → 32 (ReLU, L2, BN, Dropout)
+Landmark branch:Input(31) → 64 → 32 (ReLU, L2, BN, Dropout)
+Interaction:    DotProduct + ElementWiseProduct + Concat
+Prediction:     64 → 32 → 16 → 1 (Sigmoid)
+Total params:   30,145
+
+TRAINING CONFIGURATION:
+----------------------------------------
+Loss function:   CompositeHuberMAELoss(delta=0.5, mae_weight=0.1)
+Optimizer:       Adam + CosineDecay(lr=0.0003 → 1e-05)
+Regularization:  L2(0.001), Dropout(0.2-0.3), BatchNorm
+Batch size:      512
+Epochs:          30/30
+Early stopping:  patience=8
+Seed:            42
+
+PERFORMANCE METRICS:
+----------------------------------------
+RANKING EFFICIENCY (Primary):
+NDCG@5:             0.9536
+Precision@5:        0.6243
+MRR:                0.4295
+
+REGRESSION (Secondary):
+Train MSE (final):  0.005162
+Val MSE (final):    0.004429
+Test MSE:           0.004468
+Test R² Score:      0.8020
+Loss Ratio:         1.17x
+Training Time:      1433.6 seconds
+
+SAVED FILES:
+----------------------------------------
+ 1. travel_recommendation_model.keras
+ 2. label_encoders.pkl
+ 3. all_categories.pkl
+ 4. model_config.json
+ 5. performance_metrics.json
+ 6. training_history.csv
+ 7. test_predictions.csv
+ 8. training_vs_validation_mse.png
+ 9. training_vs_validation_mae.png
+10. training_vs_validation_rmse.png
+11. predicted_vs_actual.png
+12. error_distribution.png
+13. batch_accuracy.png
+14. learning_rate_schedule.png
+15. training_report.txt
+16. training_summary.md
+
+================================================================================

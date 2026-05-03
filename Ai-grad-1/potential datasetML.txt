@@ -1,0 +1,11 @@
+https://data.mendeley.com/datasets/5b82ytz489/1
+
+https://www.kaggle.com/code/joelknapp/student-performance-analysis
+
+https://www.kaggle.com/datasets/mahmoudelhemaly/students-grading-dataset
+
+dataset2 : https://www.kaggle.com/datasets/lainguyn123/student-performance-factors
+
+dataset3 : https://www.kaggle.com/datasets/haseebindata/student-performance-predictions
+
+https://archive.ics.uci.edu/dataset/856/higher+education+students+performance+evaluation

@@ -1,0 +1,96 @@
+{
+  "model_name": "Travel_Recommendation_Model",
+  "version": "4.0",
+  "created_at": "2026-04-21 23:37:45",
+  "seed": 42,
+  "dataset": {
+    "source": "synthetic_user_landmarks.csv",
+    "total_rows": 5000000,
+    "train_samples": 3500000,
+    "val_samples": 750000,
+    "test_samples": 750000,
+    "split_ratio": "70/15/15"
+  },
+  "architecture": {
+    "type": "Dual-Input Neural Network with Element-wise Interaction",
+    "user_input_dim": 39,
+    "landmark_input_dim": 31,
+    "user_branch": "128 \u2192 64 \u2192 32 (ReLU, L2, BN, Dropout)",
+    "landmark_branch": "64 \u2192 32 (ReLU, L2, BN, Dropout)",
+    "interaction": "DotProduct(normalised) + ElementWiseProduct + Concatenation",
+    "prediction_head": "64 \u2192 32 \u2192 16 \u2192 1 (ReLU\u2192Sigmoid)",
+    "total_params": 30145
+  },
+  "training": {
+    "loss_function": "CompositeHuberMAELoss(delta=0.5, mae_weight=0.1)",
+    "optimizer": "Adam with CosineDecay",
+    "initial_learning_rate": 0.0003,
+    "min_learning_rate": 1e-05,
+    "batch_size": 512,
+    "max_epochs": 30,
+    "actual_epochs": 30,
+    "regularization": "L2(0.001) + Dropout(0.2-0.3) + BatchNorm",
+    "early_stopping_patience": 8
+  },
+  "metrics": {
+    "ndcg_5": 0.9536272533057106,
+    "precision_5": 0.6242506666666666,
+    "mrr": 0.4295201325515443,
+    "test_mse": 0.004467578139156103,
+    "test_mae": 0.0497765950858593,
+    "test_rmse": 0.06683994084596634,
+    "test_r2_score": 0.8019555807113647,
+    "loss_ratio": 1.1655592587736283
+  },
+  "training_time_seconds": 1433.5650153160095,
+  "input_format": {
+    "user_input_structure": {
+      "user_age": "int (18-75)",
+      "user_gender": "string (Male/Female)",
+      "user_budget": "string (low/medium/high)",
+      "user_travel_type": "string (family/couple/solo/luxury)",
+      "user_preferences": "list of strings from ALL_CATEGORIES"
+    },
+    "example_input": {
+      "user_age": 30,
+      "user_gender": "Male",
+      "user_budget": "medium",
+      "user_travel_type": "solo",
+      "user_preferences": [
+        "Museum",
+        "Pharaonic Site",
+        "Islamic Monument",
+        "Nile Cruise"
+      ]
+    }
+  },
+  "all_categories": [
+    "Activity",
+    "Ancient Monument",
+    "Antiques",
+    "Art Gallery",
+    "Bazaar / Souq",
+    "Coptic Site",
+    "Cultural Center",
+    "Day Trip Site",
+    "Escape Room",
+    "Food Tour",
+    "Gold & Jewelry Market",
+    "Horse Riding",
+    "Islamic Monument",
+    "Landmark",
+    "Museum",
+    "Nature Reserve",
+    "Nile Cruise",
+    "Nile View Restaurant",
+    "Park / Garden",
+    "Pharaonic Site",
+    "Rooftop Restaurant",
+    "Shopping Mall",
+    "Souvenir Shop",
+    "Sport & Recreation",
+    "Theme Park",
+    "Traditional Restaurant",
+    "Zoo / Aquarium"
+  ]
+}
