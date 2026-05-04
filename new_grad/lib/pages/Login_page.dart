@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Image(
-                    image: AssetImage('assets/images/loginnn.png'),
+                    image: AssetImage('assets/images/finallogin.png'),
                     width: 342,
                     height: 333,
                   ),

@@ -590,4 +590,16 @@ class GoogleTTSService {
       _fallbackTts.stop();
     } catch (e) {}
   }
+
+  void dispose() {
+    _isDisposed = true;
+    _isSpeaking = false;
+    try {
+      _audioPlayer.stop();
+      _audioPlayer.dispose();
+    } catch (e) {}
+    try {
+      _fallbackTts.stop();
+    } catch (e) {}
+  }
 }

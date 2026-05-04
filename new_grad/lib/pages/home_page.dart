@@ -7,6 +7,8 @@ import '../utils/recommendation_images.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
 import '../services/favorites_service.dart';
+import '../services/places_search_service.dart';
+import '../models/place_search_item.dart';
 
 final AILensService aiLens = AILensService();
 
@@ -21,12 +23,17 @@ class _HomePageState extends State<HomePage> {
   final RecommendationService _recommendationService = RecommendationService();
   final FavoritesService _favoritesService = FavoritesService();
   final PlacesRepo _placesRepo = PlacesRepo();
+  final PlacesSearchService _placesSearchService = PlacesSearchService();
 
   final Set<int> _favoriteIds = {};
 
   List<RecommendationItem> _recommendations = [];
   bool _loadingRecs = false;
   bool _recError = false;
+
+  // 🔍 SEARCH STATE
+  List<PlaceSearchItem> _searchResults = [];
+  bool _searching = false;
 
   @override
   void initState() {
@@ -52,6 +59,40 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ─────────────────────────────────────────────
+  // LIVE SEARCH
+  // ─────────────────────────────────────────────
+  Future<void> _searchPlaces(String query) async {
+    if (query.trim().isEmpty) {
+      setState(() => _searchResults.clear());
+      return;
+    }
+
+    setState(() => _searching = true);
+
+    try {
+      final results = await _placesSearchService.search(
+        query: query,
+        city: 'Cairo',
+      );
+      setState(() => _searchResults = results);
+    } catch (_) {
+      setState(() => _searchResults = []);
+    } finally {
+      setState(() => _searching = false);
+    }
+  }
+
+  void _onPlaceSelected(PlaceSearchItem place) {
+    setState(() => _searchResults.clear());
+
+    Navigator.pushNamed(
+      context,
+      '/agenda',
+      arguments: {'name': place.name, 'placeId': place.id},
+    );
+  }
+
   Future<void> _loadFavoriteIds() async {
     try {
       final favs = await _favoritesService.list();
@@ -67,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadRecommendations() async {
     try {
-      final data = await _recommendationService.getRecommendations();
+      final data = await _recommendationService.getDayPlan();
       setState(() {
         _recommendations = data;
         _loadingRecs = false;
@@ -130,6 +171,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: TextField(
+                        onChanged: _searchPlaces,
                         decoration: InputDecoration(
                           hintText: 'Search For Monument',
                           prefixIcon: const Icon(Icons.search),
@@ -145,6 +187,45 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+
+                    // 🔍 SEARCH RESULTS
+                    if (_searching)
+                      const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: CircularProgressIndicator(),
+                      )
+                    else if (_searchResults.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 8,
+                        ),
+                        child: Container(
+                          height: 210,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ListView.builder(
+                            itemCount: _searchResults.length,
+                            itemBuilder: (_, i) {
+                              final place = _searchResults[i];
+                              return ListTile(
+                                title: Text(place.name),
+                                subtitle: Text(place.subcategory),
+                                onTap: () => _onPlaceSelected(place),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                   ],
                 ),
 
@@ -176,7 +257,12 @@ class _HomePageState extends State<HomePage> {
                             child: _serviceButton(
                               iconPath: 'assets/images/map.png',
                               label: 'Map',
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/interactive_map",
+                                );
+                              },
                             ),
                           ),
                           Flexible(
@@ -186,26 +272,6 @@ class _HomePageState extends State<HomePage> {
                               onTap: () async {
                                 await _runAILens(context);
                               },
-                            ),
-                          ),
-                          Flexible(
-                            child: _serviceButton(
-                              iconPath: 'assets/images/story.png',
-                              label: 'StoryTellings',
-                              onTap: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: _serviceButton(
-                              iconPath: 'assets/images/tts.png',
-                              label: 'TTS',
-                              onTap: () {},
                             ),
                           ),
                           Flexible(
@@ -252,7 +318,10 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          Image.asset('assets/images/isis.png', height: 80),
+                          Image.asset(
+                            'assets/images/chatmocka.png',
+                            height: 80,
+                          ),
                         ],
                       ),
                     ),
@@ -348,7 +417,9 @@ class _HomePageState extends State<HomePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/agenda.png',
                     label: 'Agenda',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/agenda");
+                    },
                   ),
                   const SizedBox(width: 28),
                   _buildNavItem(
