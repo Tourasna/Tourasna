@@ -204,7 +204,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-<<<<<<< HEAD
+
 # Flutter / Dart
 **/.dart_tool/
 **/build/
@@ -232,3 +232,7 @@ __marimo__/
 =======
 # Ignore all CSV datasets in ai-service
 ai-service/**/*.csv
+
+# Model weights (too large for GitHub — stored on Google Drive)
+*.pt
+*.pth

@@ -1,0 +1,271 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-26",
+  "description": "Extended information for Gardiner signs - common confusions, usage examples, and notes. Used by the interactive correction UI.",
+  "author": "Tourasna Team - Nile University",
+  "signs": {
+    "A1": {
+      "common_confusions": ["A2", "A40"],
+      "examples": [
+        "Used as determinative for 'man, I, me'",
+        "Common in personal pronouns"
+      ],
+      "meaning_notes": "Most common human determinative"
+    },
+    "A2": {
+      "common_confusions": ["A1", "A7"],
+      "examples": [
+        "Used after verbs of speaking, eating, thinking",
+        "Determinative for mental/oral activities"
+      ],
+      "meaning_notes": "Hand-to-mouth gesture indicates speech or eating"
+    },
+    "D2": {
+      "common_confusions": ["D4", "D21"],
+      "examples": [
+        "Used in words related to face or appearance",
+        "Phonetic value: hr"
+      ],
+      "meaning_notes": "Front view of a face"
+    },
+    "D4": {
+      "common_confusions": ["D21", "D2", "D40"],
+      "examples": [
+        "Used in words for 'see, watch, look'",
+        "Phonetic value: ir"
+      ],
+      "meaning_notes": "Side view of an eye - frequently confused with mouth (D21)"
+    },
+    "D21": {
+      "common_confusions": ["D4", "D40", "F12"],
+      "examples": [
+        "One of the most common phonetic signs",
+        "Phonetic value: r",
+        "Appears in many word endings"
+      ],
+      "meaning_notes": "Mouth - most common single-consonant sign"
+    },
+    "D40": {
+      "common_confusions": ["D4", "D21"],
+      "examples": [
+        "Determinative for 'force, effort, strength'",
+        "Used in words like 'powerful, mighty'"
+      ],
+      "meaning_notes": "Arm holding a stick"
+    },
+    "F4": {
+      "common_confusions": ["F12", "F35"],
+      "examples": [
+        "Used in words related to lions or front parts",
+        "Phonetic value: HAt"
+      ],
+      "meaning_notes": "Forepart of a lion"
+    },
+    "F12": {
+      "common_confusions": ["D21", "F4", "F35"],
+      "examples": [
+        "Used in words for 'neck, throat'",
+        "Phonetic value: wsr"
+      ],
+      "meaning_notes": "Head and neck of an animal - often confused with D21"
+    },
+    "F35": {
+      "common_confusions": ["F4", "F12"],
+      "examples": [
+        "Used in royal names",
+        "Phonetic value: nfr",
+        "Means 'good, beautiful, perfect'"
+      ],
+      "meaning_notes": "Heart and trachea - one of the most beautiful signs"
+    },
+    "G1": {
+      "common_confusions": ["G7", "G43"],
+      "examples": [
+        "Phonetic value: A (aleph)",
+        "Used in many common words",
+        "Appears in 'Amun', 'Akhenaten'"
+      ],
+      "meaning_notes": "Egyptian vulture - phonetic A sound"
+    },
+    "G7": {
+      "common_confusions": ["G1", "G43"],
+      "examples": [
+        "Determinative for Horus and royal divinity",
+        "Often appears in royal titulary"
+      ],
+      "meaning_notes": "Falcon on standard - represents Horus"
+    },
+    "G17": {
+      "common_confusions": ["G39", "G43"],
+      "examples": [
+        "Phonetic value: m",
+        "One of the most common signs",
+        "Appears in countless words"
+      ],
+      "meaning_notes": "Owl - represents the m sound"
+    },
+    "G39": {
+      "common_confusions": ["G17", "G43"],
+      "examples": [
+        "Used in words related to son or descendant",
+        "Phonetic value: sA"
+      ],
+      "meaning_notes": "Pintail duck flying"
+    },
+    "G43": {
+      "common_confusions": ["G1", "G17"],
+      "examples": [
+        "Phonetic value: w",
+        "Very common sign",
+        "Used in plural endings"
+      ],
+      "meaning_notes": "Quail chick - represents w sound"
+    },
+    "M17": {
+      "common_confusions": ["M23", "M40"],
+      "examples": [
+        "Phonetic value: i (yod)",
+        "One of the most common signs",
+        "Used in 'i-am' and many pronouns"
+      ],
+      "meaning_notes": "Single reed leaf - represents i sound"
+    },
+    "M23": {
+      "common_confusions": ["M17", "M40"],
+      "examples": [
+        "Used in 'King of Upper Egypt'",
+        "Phonetic value: sw or nsw",
+        "Sacred sedge plant"
+      ],
+      "meaning_notes": "Sedge plant - symbol of Upper Egypt"
+    },
+    "M40": {
+      "common_confusions": ["M17", "M23"],
+      "examples": [
+        "Used in words for 'reed, papyrus'",
+        "Phonetic value: is"
+      ],
+      "meaning_notes": "Bundle of reeds"
+    },
+    "N5": {
+      "common_confusions": ["N14", "N33"],
+      "examples": [
+        "Phonetic value: ra",
+        "Sacred to the sun god Ra",
+        "Common in royal names like 'Ramesses'"
+      ],
+      "meaning_notes": "Sun disk - one of the most iconic Egyptian symbols"
+    },
+    "N14": {
+      "common_confusions": ["N5", "N17"],
+      "examples": [
+        "Determinative for stars and time",
+        "Phonetic value: sbA"
+      ],
+      "meaning_notes": "Five-pointed star"
+    },
+    "N17": {
+      "common_confusions": ["N14", "N35"],
+      "examples": [
+        "Used in words for 'land, country, earth'",
+        "Phonetic value: tA"
+      ],
+      "meaning_notes": "Strip of land with sand grains"
+    },
+    "N35": {
+      "common_confusions": ["N17"],
+      "examples": [
+        "Phonetic value: n",
+        "Extremely common sign",
+        "Means 'water' as ideogram"
+      ],
+      "meaning_notes": "Ripple of water - represents n sound"
+    },
+    "O29": {
+      "common_confusions": ["O34"],
+      "examples": [
+        "Phonetic value: aA",
+        "Used in words for 'great, large'"
+      ],
+      "meaning_notes": "Door bolt or wooden column"
+    },
+    "O34": {
+      "common_confusions": ["O29", "O50"],
+      "examples": [
+        "Phonetic value: s",
+        "Very common sign",
+        "Used in many word beginnings"
+      ],
+      "meaning_notes": "Door bolt - represents s sound"
+    },
+    "O50": {
+      "common_confusions": ["O34", "X1"],
+      "examples": [
+        "Used in words for 'time, occasion'",
+        "Phonetic value: zp"
+      ],
+      "meaning_notes": "Threshing floor"
+    },
+    "S29": {
+      "common_confusions": ["S34"],
+      "examples": [
+        "Phonetic value: s",
+        "Common in royal names like 'Ramesses'",
+        "Used in many words"
+      ],
+      "meaning_notes": "Folded cloth - represents s sound"
+    },
+    "S34": {
+      "common_confusions": ["S29"],
+      "examples": [
+        "Symbol of life and immortality",
+        "Phonetic value: anx",
+        "Often called 'key of life'"
+      ],
+      "meaning_notes": "Ankh - symbol of eternal life"
+    },
+    "V30": {
+      "common_confusions": ["V31"],
+      "examples": [
+        "Phonetic value: nb",
+        "Means 'lord, master, all'",
+        "Common in royal titles"
+      ],
+      "meaning_notes": "Basket - represents nb sound"
+    },
+    "V31": {
+      "common_confusions": ["V30"],
+      "examples": [
+        "Phonetic value: k",
+        "Common consonant sound"
+      ],
+      "meaning_notes": "Basket with handle - represents k sound"
+    },
+    "X1": {
+      "common_confusions": ["X8", "O50"],
+      "examples": [
+        "Phonetic value: t",
+        "Feminine ending in many words",
+        "Extremely common sign"
+      ],
+      "meaning_notes": "Bread loaf - represents t sound and feminine endings"
+    },
+    "X8": {
+      "common_confusions": ["X1"],
+      "examples": [
+        "Used in offerings and ritual contexts",
+        "Phonetic value: di"
+      ],
+      "meaning_notes": "Conical bread loaf for offerings"
+    },
+    "Y1": {
+      "common_confusions": [],
+      "examples": [
+        "Determinative for abstract concepts",
+        "Used after words for thoughts, ideas",
+        "Represents writing and knowledge"
+      ],
+      "meaning_notes": "Papyrus scroll - symbol of knowledge and writing"
+    }
+  }
+}
