@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadRecommendations() async {
     try {
-      final data = await _recommendationService.getRecommendations();
+      final data = await _recommendationService.getDayPlan();
       setState(() {
         _recommendations = data;
         _loadingRecs = false;

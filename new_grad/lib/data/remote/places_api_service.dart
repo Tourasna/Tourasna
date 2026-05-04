@@ -6,7 +6,7 @@ import '../../services/api_client.dart'; // ✅ FIXED: 4 levels up
 ///
 /// ✅ Uses existing ApiClient for consistency
 /// ✅ Inherits authentication from ApiClient
-/// ✅ Uses same base URL (http://13.48.196.1)
+/// ✅ Uses same base URL (http://13.50.201.36)
 class PlacesApiService {
   // We don't need baseUrl or authToken parameters anymore
   // ApiClient handles everything internally

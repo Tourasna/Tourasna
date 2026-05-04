@@ -3,7 +3,7 @@ import 'auth_service.dart';
 import 'dart:convert';
 
 class ApiClient {
-  static const String baseUrl = 'http://13.48.196.1';
+  static const String baseUrl = 'http://13.50.201.36';
 
   static Future<Map<String, String>> _headers() async {
     final token = await AuthService().getValidToken();
