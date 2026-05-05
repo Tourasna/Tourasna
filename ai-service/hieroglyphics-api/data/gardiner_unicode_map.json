@@ -1,111 +1,4482 @@
 {
-  "version": "1.0",
-  "description": "Mapping from Gardiner code to Unicode hieroglyph character. Based on Unicode Block: Egyptian Hieroglyphs (U+13000–U+1342F).",
-  "source": "Unicode 5.2+ Egyptian Hieroglyphs Block",
-  "signs": {
-    "A1": "𓀀",
-    "A2": "𓀁",
-    "A4": "𓀃",
-    "A5": "𓀄",
-    "A6": "𓀅",
-    "A7": "𓀆",
-    "A12": "𓀎",
-    "A17": "𓀔",
-    "A19": "𓀗",
-    "A24": "𓀜",
-    "A25": "𓀝",
-    "A28": "𓀠",
-    "A33": "𓀦",
-    "A35": "𓀨",
-    "A40": "𓀭",
-    "A50": "𓀻",
-    "B1": "𓁐",
-    "B3": "𓁒",
-    "C10": "𓁥",
-    "D2": "𓁶",
-    "D4": "𓁹",
-    "D10": "𓂀",
-    "D21": "𓂋",
-    "D28": "𓂓",
-    "D36": "𓂝",
-    "D40": "𓂡",
-    "D46": "𓂧",
-    "D58": "𓃀",
-    "E1": "𓃒",
-    "E15": "𓃣",
-    "E34": "𓃹",
-    "F1": "𓃾",
-    "F4": "𓄀",
-    "F12": "𓄇",
-    "F18": "𓄎",
-    "F35": "𓄤",
-    "G1": "𓄿",
-    "G5": "𓅃",
-    "G7": "𓅆",
-    "G15": "𓅐",
-    "G17": "𓅓",
-    "G25": "𓅜",
-    "G26": "𓅝",
-    "G36": "𓅨",
-    "G39": "𓅭",
-    "G43": "𓅱",
-    "H6": "𓆄",
-    "I9": "𓆑",
-    "K1": "𓆟",
-    "L1": "𓆣",
-    "L2": "𓆤",
-    "M16": "𓇉",
-    "M17": "𓇋",
-    "M22": "𓇑",
-    "M23": "𓇓",
-    "M40": "𓇨",
-    "N5": "𓇳",
-    "N14": "𓇼",
-    "N17": "𓈇",
-    "N28": "𓈍",
-    "N29": "𓈎",
-    "N33": "𓈒",
-    "N35": "𓈖",
-    "O1": "𓉐",
-    "O4": "𓉔",
-    "O7": "𓉗",
-    "O29": "𓉻",
-    "O34": "𓊃",
-    "O50": "𓊖",
-    "P1": "𓊝",
-    "Q1": "𓊨",
-    "Q3": "𓊪",
-    "R4": "𓊵",
-    "R8": "𓊹",
-    "R11": "𓊽",
-    "S29": "𓋴",
-    "S34": "𓋹",
-    "S38": "𓋿",
-    "S39": "𓌀",
-    "S40": "𓌁",
-    "T11": "𓌥",
-    "T17": "𓌪",
-    "U5": "𓍃",
-    "U21": "𓍝",
-    "U33": "𓍿",
-    "V10": "𓍶",
-    "V11": "𓍷",
-    "V20": "𓎆",
-    "V28": "𓎛",
-    "V30": "𓎟",
-    "V31": "𓎡",
-    "W11": "𓏊",
-    "W19": "𓏎",
-    "W22": "𓏊",
-    "X1": "𓏏",
-    "X8": "𓏙",
-    "Y1": "𓏛",
-    "Y3": "𓏝",
-    "Y5": "𓏠",
-    "Z1": "𓏤",
-    "Z2": "𓏥",
-    "Z5": "𓏨",
-    "Z7": "𓏲",
-    "Aa1": "𓐍"
-  }
+  "total_yolo_codes": 767,
+  "total_matched": 741,
+  "total_missing": 26,
+  "coverage_percent": 96.61,
+  "matched": {
+    "A1": {
+      "unicode_char": "𓀀",
+      "unicode_codepoint": "U+13000",
+      "unicode_decimal": 77824,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A001"
+    },
+    "A2": {
+      "unicode_char": "𓀁",
+      "unicode_codepoint": "U+13001",
+      "unicode_decimal": 77825,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A002"
+    },
+    "A3": {
+      "unicode_char": "𓀂",
+      "unicode_codepoint": "U+13002",
+      "unicode_decimal": 77826,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A003"
+    },
+    "A4": {
+      "unicode_char": "𓀃",
+      "unicode_codepoint": "U+13003",
+      "unicode_decimal": 77827,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A004"
+    },
+    "A5": {
+      "unicode_char": "𓀄",
+      "unicode_codepoint": "U+13004",
+      "unicode_decimal": 77828,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A005"
+    },
+    "A6": {
+      "unicode_char": "𓀆",
+      "unicode_codepoint": "U+13006",
+      "unicode_decimal": 77830,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A006"
+    },
+    "A7": {
+      "unicode_char": "𓀉",
+      "unicode_codepoint": "U+13009",
+      "unicode_decimal": 77833,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A007"
+    },
+    "A8": {
+      "unicode_char": "𓀊",
+      "unicode_codepoint": "U+1300A",
+      "unicode_decimal": 77834,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A008"
+    },
+    "A9": {
+      "unicode_char": "𓀋",
+      "unicode_codepoint": "U+1300B",
+      "unicode_decimal": 77835,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A009"
+    },
+    "A10": {
+      "unicode_char": "𓀌",
+      "unicode_codepoint": "U+1300C",
+      "unicode_decimal": 77836,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A010"
+    },
+    "A11": {
+      "unicode_char": "𓀍",
+      "unicode_codepoint": "U+1300D",
+      "unicode_decimal": 77837,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A011"
+    },
+    "A12": {
+      "unicode_char": "𓀎",
+      "unicode_codepoint": "U+1300E",
+      "unicode_decimal": 77838,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A012"
+    },
+    "A13": {
+      "unicode_char": "𓀏",
+      "unicode_codepoint": "U+1300F",
+      "unicode_decimal": 77839,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A013"
+    },
+    "A14": {
+      "unicode_char": "𓀐",
+      "unicode_codepoint": "U+13010",
+      "unicode_decimal": 77840,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A014"
+    },
+    "A15": {
+      "unicode_char": "𓀒",
+      "unicode_codepoint": "U+13012",
+      "unicode_decimal": 77842,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A015"
+    },
+    "A16": {
+      "unicode_char": "𓀓",
+      "unicode_codepoint": "U+13013",
+      "unicode_decimal": 77843,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A016"
+    },
+    "A17": {
+      "unicode_char": "𓀔",
+      "unicode_codepoint": "U+13014",
+      "unicode_decimal": 77844,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A017"
+    },
+    "A18": {
+      "unicode_char": "𓀖",
+      "unicode_codepoint": "U+13016",
+      "unicode_decimal": 77846,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A018"
+    },
+    "A19": {
+      "unicode_char": "𓀗",
+      "unicode_codepoint": "U+13017",
+      "unicode_decimal": 77847,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A019"
+    },
+    "A20": {
+      "unicode_char": "𓀘",
+      "unicode_codepoint": "U+13018",
+      "unicode_decimal": 77848,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A020"
+    },
+    "A21": {
+      "unicode_char": "𓀙",
+      "unicode_codepoint": "U+13019",
+      "unicode_decimal": 77849,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A021"
+    },
+    "A22": {
+      "unicode_char": "𓀚",
+      "unicode_codepoint": "U+1301A",
+      "unicode_decimal": 77850,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A022"
+    },
+    "A23": {
+      "unicode_char": "𓀛",
+      "unicode_codepoint": "U+1301B",
+      "unicode_decimal": 77851,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A023"
+    },
+    "A24": {
+      "unicode_char": "𓀜",
+      "unicode_codepoint": "U+1301C",
+      "unicode_decimal": 77852,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A024"
+    },
+    "A25": {
+      "unicode_char": "𓀝",
+      "unicode_codepoint": "U+1301D",
+      "unicode_decimal": 77853,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A025"
+    },
+    "A26": {
+      "unicode_char": "𓀞",
+      "unicode_codepoint": "U+1301E",
+      "unicode_decimal": 77854,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A026"
+    },
+    "A27": {
+      "unicode_char": "𓀟",
+      "unicode_codepoint": "U+1301F",
+      "unicode_decimal": 77855,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A027"
+    },
+    "A28": {
+      "unicode_char": "𓀠",
+      "unicode_codepoint": "U+13020",
+      "unicode_decimal": 77856,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A028"
+    },
+    "A29": {
+      "unicode_char": "𓀡",
+      "unicode_codepoint": "U+13021",
+      "unicode_decimal": 77857,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A029"
+    },
+    "A30": {
+      "unicode_char": "𓀢",
+      "unicode_codepoint": "U+13022",
+      "unicode_decimal": 77858,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A030"
+    },
+    "A31": {
+      "unicode_char": "𓀣",
+      "unicode_codepoint": "U+13023",
+      "unicode_decimal": 77859,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A031"
+    },
+    "A32": {
+      "unicode_char": "𓀤",
+      "unicode_codepoint": "U+13024",
+      "unicode_decimal": 77860,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A032"
+    },
+    "A33": {
+      "unicode_char": "𓀦",
+      "unicode_codepoint": "U+13026",
+      "unicode_decimal": 77862,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A033"
+    },
+    "A34": {
+      "unicode_char": "𓀧",
+      "unicode_codepoint": "U+13027",
+      "unicode_decimal": 77863,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A034"
+    },
+    "A35": {
+      "unicode_char": "𓀨",
+      "unicode_codepoint": "U+13028",
+      "unicode_decimal": 77864,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A035"
+    },
+    "A36": {
+      "unicode_char": "𓀩",
+      "unicode_codepoint": "U+13029",
+      "unicode_decimal": 77865,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A036"
+    },
+    "A37": {
+      "unicode_char": "𓀪",
+      "unicode_codepoint": "U+1302A",
+      "unicode_decimal": 77866,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A037"
+    },
+    "A38": {
+      "unicode_char": "𓀫",
+      "unicode_codepoint": "U+1302B",
+      "unicode_decimal": 77867,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A038"
+    },
+    "A39": {
+      "unicode_char": "𓀬",
+      "unicode_codepoint": "U+1302C",
+      "unicode_decimal": 77868,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A039"
+    },
+    "A40": {
+      "unicode_char": "𓀭",
+      "unicode_codepoint": "U+1302D",
+      "unicode_decimal": 77869,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A040"
+    },
+    "A41": {
+      "unicode_char": "𓀯",
+      "unicode_codepoint": "U+1302F",
+      "unicode_decimal": 77871,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A041"
+    },
+    "A42": {
+      "unicode_char": "𓀰",
+      "unicode_codepoint": "U+13030",
+      "unicode_decimal": 77872,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A042"
+    },
+    "A43": {
+      "unicode_char": "𓀲",
+      "unicode_codepoint": "U+13032",
+      "unicode_decimal": 77874,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A043"
+    },
+    "A44": {
+      "unicode_char": "𓀴",
+      "unicode_codepoint": "U+13034",
+      "unicode_decimal": 77876,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A044"
+    },
+    "A45": {
+      "unicode_char": "𓀵",
+      "unicode_codepoint": "U+13035",
+      "unicode_decimal": 77877,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A045"
+    },
+    "A46": {
+      "unicode_char": "𓀷",
+      "unicode_codepoint": "U+13037",
+      "unicode_decimal": 77879,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A046"
+    },
+    "A47": {
+      "unicode_char": "𓀸",
+      "unicode_codepoint": "U+13038",
+      "unicode_decimal": 77880,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A047"
+    },
+    "A48": {
+      "unicode_char": "𓀹",
+      "unicode_codepoint": "U+13039",
+      "unicode_decimal": 77881,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A048"
+    },
+    "A49": {
+      "unicode_char": "𓀺",
+      "unicode_codepoint": "U+1303A",
+      "unicode_decimal": 77882,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A049"
+    },
+    "A50": {
+      "unicode_char": "𓀻",
+      "unicode_codepoint": "U+1303B",
+      "unicode_decimal": 77883,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A050"
+    },
+    "A51": {
+      "unicode_char": "𓀼",
+      "unicode_codepoint": "U+1303C",
+      "unicode_decimal": 77884,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A051"
+    },
+    "A52": {
+      "unicode_char": "𓀽",
+      "unicode_codepoint": "U+1303D",
+      "unicode_decimal": 77885,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A052"
+    },
+    "A53": {
+      "unicode_char": "𓀾",
+      "unicode_codepoint": "U+1303E",
+      "unicode_decimal": 77886,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A053"
+    },
+    "A54": {
+      "unicode_char": "𓀿",
+      "unicode_codepoint": "U+1303F",
+      "unicode_decimal": 77887,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A054"
+    },
+    "A55": {
+      "unicode_char": "𓁀",
+      "unicode_codepoint": "U+13040",
+      "unicode_decimal": 77888,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A055"
+    },
+    "A59": {
+      "unicode_char": "𓁄",
+      "unicode_codepoint": "U+13044",
+      "unicode_decimal": 77892,
+      "unicode_name": "EGYPTIAN HIEROGLYPH A059"
+    },
+    "B1": {
+      "unicode_char": "𓁐",
+      "unicode_codepoint": "U+13050",
+      "unicode_decimal": 77904,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B001"
+    },
+    "B2": {
+      "unicode_char": "𓁑",
+      "unicode_codepoint": "U+13051",
+      "unicode_decimal": 77905,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B002"
+    },
+    "B3": {
+      "unicode_char": "𓁒",
+      "unicode_codepoint": "U+13052",
+      "unicode_decimal": 77906,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B003"
+    },
+    "B4": {
+      "unicode_char": "𓁓",
+      "unicode_codepoint": "U+13053",
+      "unicode_decimal": 77907,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B004"
+    },
+    "B5": {
+      "unicode_char": "𓁔",
+      "unicode_codepoint": "U+13054",
+      "unicode_decimal": 77908,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B005"
+    },
+    "B6": {
+      "unicode_char": "𓁖",
+      "unicode_codepoint": "U+13056",
+      "unicode_decimal": 77910,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B006"
+    },
+    "B7": {
+      "unicode_char": "𓁗",
+      "unicode_codepoint": "U+13057",
+      "unicode_decimal": 77911,
+      "unicode_name": "EGYPTIAN HIEROGLYPH B007"
+    },
+    "C1": {
+      "unicode_char": "𓁚",
+      "unicode_codepoint": "U+1305A",
+      "unicode_decimal": 77914,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C001"
+    },
+    "C2": {
+      "unicode_char": "𓁛",
+      "unicode_codepoint": "U+1305B",
+      "unicode_decimal": 77915,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C002"
+    },
+    "C3": {
+      "unicode_char": "𓁟",
+      "unicode_codepoint": "U+1305F",
+      "unicode_decimal": 77919,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C003"
+    },
+    "C4": {
+      "unicode_char": "𓁠",
+      "unicode_codepoint": "U+13060",
+      "unicode_decimal": 77920,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C004"
+    },
+    "C5": {
+      "unicode_char": "𓁡",
+      "unicode_codepoint": "U+13061",
+      "unicode_decimal": 77921,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C005"
+    },
+    "C6": {
+      "unicode_char": "𓁢",
+      "unicode_codepoint": "U+13062",
+      "unicode_decimal": 77922,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C006"
+    },
+    "C7": {
+      "unicode_char": "𓁣",
+      "unicode_codepoint": "U+13063",
+      "unicode_decimal": 77923,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C007"
+    },
+    "C8": {
+      "unicode_char": "𓁤",
+      "unicode_codepoint": "U+13064",
+      "unicode_decimal": 77924,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C008"
+    },
+    "C9": {
+      "unicode_char": "𓁥",
+      "unicode_codepoint": "U+13065",
+      "unicode_decimal": 77925,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C009"
+    },
+    "C10": {
+      "unicode_char": "𓁦",
+      "unicode_codepoint": "U+13066",
+      "unicode_decimal": 77926,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C010"
+    },
+    "C11": {
+      "unicode_char": "𓁨",
+      "unicode_codepoint": "U+13068",
+      "unicode_decimal": 77928,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C011"
+    },
+    "C12": {
+      "unicode_char": "𓁩",
+      "unicode_codepoint": "U+13069",
+      "unicode_decimal": 77929,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C012"
+    },
+    "C17": {
+      "unicode_char": "𓁮",
+      "unicode_codepoint": "U+1306E",
+      "unicode_decimal": 77934,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C017"
+    },
+    "C18": {
+      "unicode_char": "𓁯",
+      "unicode_codepoint": "U+1306F",
+      "unicode_decimal": 77935,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C018"
+    },
+    "C19": {
+      "unicode_char": "𓁰",
+      "unicode_codepoint": "U+13070",
+      "unicode_decimal": 77936,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C019"
+    },
+    "C20": {
+      "unicode_char": "𓁱",
+      "unicode_codepoint": "U+13071",
+      "unicode_decimal": 77937,
+      "unicode_name": "EGYPTIAN HIEROGLYPH C020"
+    },
+    "D1": {
+      "unicode_char": "𓁶",
+      "unicode_codepoint": "U+13076",
+      "unicode_decimal": 77942,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D001"
+    },
+    "D2": {
+      "unicode_char": "𓁷",
+      "unicode_codepoint": "U+13077",
+      "unicode_decimal": 77943,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D002"
+    },
+    "D3": {
+      "unicode_char": "𓁸",
+      "unicode_codepoint": "U+13078",
+      "unicode_decimal": 77944,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D003"
+    },
+    "D4": {
+      "unicode_char": "𓁹",
+      "unicode_codepoint": "U+13079",
+      "unicode_decimal": 77945,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D004"
+    },
+    "D5": {
+      "unicode_char": "𓁺",
+      "unicode_codepoint": "U+1307A",
+      "unicode_decimal": 77946,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D005"
+    },
+    "D6": {
+      "unicode_char": "𓁻",
+      "unicode_codepoint": "U+1307B",
+      "unicode_decimal": 77947,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D006"
+    },
+    "D7": {
+      "unicode_char": "𓁼",
+      "unicode_codepoint": "U+1307C",
+      "unicode_decimal": 77948,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D007"
+    },
+    "D8": {
+      "unicode_char": "𓁽",
+      "unicode_codepoint": "U+1307D",
+      "unicode_decimal": 77949,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D008"
+    },
+    "D9": {
+      "unicode_char": "𓁿",
+      "unicode_codepoint": "U+1307F",
+      "unicode_decimal": 77951,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D009"
+    },
+    "D10": {
+      "unicode_char": "𓂀",
+      "unicode_codepoint": "U+13080",
+      "unicode_decimal": 77952,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D010"
+    },
+    "D11": {
+      "unicode_char": "𓂁",
+      "unicode_codepoint": "U+13081",
+      "unicode_decimal": 77953,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D011"
+    },
+    "D12": {
+      "unicode_char": "𓂂",
+      "unicode_codepoint": "U+13082",
+      "unicode_decimal": 77954,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D012"
+    },
+    "D13": {
+      "unicode_char": "𓂃",
+      "unicode_codepoint": "U+13083",
+      "unicode_decimal": 77955,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D013"
+    },
+    "D14": {
+      "unicode_char": "𓂄",
+      "unicode_codepoint": "U+13084",
+      "unicode_decimal": 77956,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D014"
+    },
+    "D15": {
+      "unicode_char": "𓂅",
+      "unicode_codepoint": "U+13085",
+      "unicode_decimal": 77957,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D015"
+    },
+    "D16": {
+      "unicode_char": "𓂆",
+      "unicode_codepoint": "U+13086",
+      "unicode_decimal": 77958,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D016"
+    },
+    "D17": {
+      "unicode_char": "𓂇",
+      "unicode_codepoint": "U+13087",
+      "unicode_decimal": 77959,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D017"
+    },
+    "D18": {
+      "unicode_char": "𓂈",
+      "unicode_codepoint": "U+13088",
+      "unicode_decimal": 77960,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D018"
+    },
+    "D19": {
+      "unicode_char": "𓂉",
+      "unicode_codepoint": "U+13089",
+      "unicode_decimal": 77961,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D019"
+    },
+    "D20": {
+      "unicode_char": "𓂊",
+      "unicode_codepoint": "U+1308A",
+      "unicode_decimal": 77962,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D020"
+    },
+    "D21": {
+      "unicode_char": "𓂋",
+      "unicode_codepoint": "U+1308B",
+      "unicode_decimal": 77963,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D021"
+    },
+    "D22": {
+      "unicode_char": "𓂌",
+      "unicode_codepoint": "U+1308C",
+      "unicode_decimal": 77964,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D022"
+    },
+    "D23": {
+      "unicode_char": "𓂍",
+      "unicode_codepoint": "U+1308D",
+      "unicode_decimal": 77965,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D023"
+    },
+    "D24": {
+      "unicode_char": "𓂎",
+      "unicode_codepoint": "U+1308E",
+      "unicode_decimal": 77966,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D024"
+    },
+    "D25": {
+      "unicode_char": "𓂏",
+      "unicode_codepoint": "U+1308F",
+      "unicode_decimal": 77967,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D025"
+    },
+    "D26": {
+      "unicode_char": "𓂐",
+      "unicode_codepoint": "U+13090",
+      "unicode_decimal": 77968,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D026"
+    },
+    "D27": {
+      "unicode_char": "𓂑",
+      "unicode_codepoint": "U+13091",
+      "unicode_decimal": 77969,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D027"
+    },
+    "D28": {
+      "unicode_char": "𓂓",
+      "unicode_codepoint": "U+13093",
+      "unicode_decimal": 77971,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D028"
+    },
+    "D29": {
+      "unicode_char": "𓂔",
+      "unicode_codepoint": "U+13094",
+      "unicode_decimal": 77972,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D029"
+    },
+    "D30": {
+      "unicode_char": "𓂕",
+      "unicode_codepoint": "U+13095",
+      "unicode_decimal": 77973,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D030"
+    },
+    "D31": {
+      "unicode_char": "𓂖",
+      "unicode_codepoint": "U+13096",
+      "unicode_decimal": 77974,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D031"
+    },
+    "D32": {
+      "unicode_char": "𓂘",
+      "unicode_codepoint": "U+13098",
+      "unicode_decimal": 77976,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D032"
+    },
+    "D33": {
+      "unicode_char": "𓂙",
+      "unicode_codepoint": "U+13099",
+      "unicode_decimal": 77977,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D033"
+    },
+    "D34": {
+      "unicode_char": "𓂚",
+      "unicode_codepoint": "U+1309A",
+      "unicode_decimal": 77978,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D034"
+    },
+    "D35": {
+      "unicode_char": "𓂜",
+      "unicode_codepoint": "U+1309C",
+      "unicode_decimal": 77980,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D035"
+    },
+    "D36": {
+      "unicode_char": "𓂝",
+      "unicode_codepoint": "U+1309D",
+      "unicode_decimal": 77981,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D036"
+    },
+    "D37": {
+      "unicode_char": "𓂞",
+      "unicode_codepoint": "U+1309E",
+      "unicode_decimal": 77982,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D037"
+    },
+    "D38": {
+      "unicode_char": "𓂟",
+      "unicode_codepoint": "U+1309F",
+      "unicode_decimal": 77983,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D038"
+    },
+    "D39": {
+      "unicode_char": "𓂠",
+      "unicode_codepoint": "U+130A0",
+      "unicode_decimal": 77984,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D039"
+    },
+    "D40": {
+      "unicode_char": "𓂡",
+      "unicode_codepoint": "U+130A1",
+      "unicode_decimal": 77985,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D040"
+    },
+    "D41": {
+      "unicode_char": "𓂢",
+      "unicode_codepoint": "U+130A2",
+      "unicode_decimal": 77986,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D041"
+    },
+    "D42": {
+      "unicode_char": "𓂣",
+      "unicode_codepoint": "U+130A3",
+      "unicode_decimal": 77987,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D042"
+    },
+    "D43": {
+      "unicode_char": "𓂤",
+      "unicode_codepoint": "U+130A4",
+      "unicode_decimal": 77988,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D043"
+    },
+    "D44": {
+      "unicode_char": "𓂥",
+      "unicode_codepoint": "U+130A5",
+      "unicode_decimal": 77989,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D044"
+    },
+    "D45": {
+      "unicode_char": "𓂦",
+      "unicode_codepoint": "U+130A6",
+      "unicode_decimal": 77990,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D045"
+    },
+    "D46": {
+      "unicode_char": "𓂧",
+      "unicode_codepoint": "U+130A7",
+      "unicode_decimal": 77991,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D046"
+    },
+    "D47": {
+      "unicode_char": "𓂩",
+      "unicode_codepoint": "U+130A9",
+      "unicode_decimal": 77993,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D047"
+    },
+    "D48": {
+      "unicode_char": "𓂪",
+      "unicode_codepoint": "U+130AA",
+      "unicode_decimal": 77994,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D048"
+    },
+    "D49": {
+      "unicode_char": "𓂬",
+      "unicode_codepoint": "U+130AC",
+      "unicode_decimal": 77996,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D049"
+    },
+    "D50": {
+      "unicode_char": "𓂭",
+      "unicode_codepoint": "U+130AD",
+      "unicode_decimal": 77997,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D050"
+    },
+    "D51": {
+      "unicode_char": "𓂷",
+      "unicode_codepoint": "U+130B7",
+      "unicode_decimal": 78007,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D051"
+    },
+    "D52": {
+      "unicode_char": "𓂸",
+      "unicode_codepoint": "U+130B8",
+      "unicode_decimal": 78008,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D052"
+    },
+    "D53": {
+      "unicode_char": "𓂺",
+      "unicode_codepoint": "U+130BA",
+      "unicode_decimal": 78010,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D053"
+    },
+    "D54": {
+      "unicode_char": "𓂻",
+      "unicode_codepoint": "U+130BB",
+      "unicode_decimal": 78011,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D054"
+    },
+    "D55": {
+      "unicode_char": "𓂽",
+      "unicode_codepoint": "U+130BD",
+      "unicode_decimal": 78013,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D055"
+    },
+    "D56": {
+      "unicode_char": "𓂾",
+      "unicode_codepoint": "U+130BE",
+      "unicode_decimal": 78014,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D056"
+    },
+    "D57": {
+      "unicode_char": "𓂿",
+      "unicode_codepoint": "U+130BF",
+      "unicode_decimal": 78015,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D057"
+    },
+    "D58": {
+      "unicode_char": "𓃀",
+      "unicode_codepoint": "U+130C0",
+      "unicode_decimal": 78016,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D058"
+    },
+    "D59": {
+      "unicode_char": "𓃁",
+      "unicode_codepoint": "U+130C1",
+      "unicode_decimal": 78017,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D059"
+    },
+    "D60": {
+      "unicode_char": "𓃂",
+      "unicode_codepoint": "U+130C2",
+      "unicode_decimal": 78018,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D060"
+    },
+    "D61": {
+      "unicode_char": "𓃃",
+      "unicode_codepoint": "U+130C3",
+      "unicode_decimal": 78019,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D061"
+    },
+    "D62": {
+      "unicode_char": "𓃄",
+      "unicode_codepoint": "U+130C4",
+      "unicode_decimal": 78020,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D062"
+    },
+    "D63": {
+      "unicode_char": "𓃅",
+      "unicode_codepoint": "U+130C5",
+      "unicode_decimal": 78021,
+      "unicode_name": "EGYPTIAN HIEROGLYPH D063"
+    },
+    "E1": {
+      "unicode_char": "𓃒",
+      "unicode_codepoint": "U+130D2",
+      "unicode_decimal": 78034,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E001"
+    },
+    "E2": {
+      "unicode_char": "𓃓",
+      "unicode_codepoint": "U+130D3",
+      "unicode_decimal": 78035,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E002"
+    },
+    "E3": {
+      "unicode_char": "𓃔",
+      "unicode_codepoint": "U+130D4",
+      "unicode_decimal": 78036,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E003"
+    },
+    "E4": {
+      "unicode_char": "𓃕",
+      "unicode_codepoint": "U+130D5",
+      "unicode_decimal": 78037,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E004"
+    },
+    "E5": {
+      "unicode_char": "𓃖",
+      "unicode_codepoint": "U+130D6",
+      "unicode_decimal": 78038,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E005"
+    },
+    "E6": {
+      "unicode_char": "𓃗",
+      "unicode_codepoint": "U+130D7",
+      "unicode_decimal": 78039,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E006"
+    },
+    "E7": {
+      "unicode_char": "𓃘",
+      "unicode_codepoint": "U+130D8",
+      "unicode_decimal": 78040,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E007"
+    },
+    "E8": {
+      "unicode_char": "𓃙",
+      "unicode_codepoint": "U+130D9",
+      "unicode_decimal": 78041,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E008"
+    },
+    "E9": {
+      "unicode_char": "𓃛",
+      "unicode_codepoint": "U+130DB",
+      "unicode_decimal": 78043,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E009"
+    },
+    "E10": {
+      "unicode_char": "𓃝",
+      "unicode_codepoint": "U+130DD",
+      "unicode_decimal": 78045,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E010"
+    },
+    "E11": {
+      "unicode_char": "𓃞",
+      "unicode_codepoint": "U+130DE",
+      "unicode_decimal": 78046,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E011"
+    },
+    "E12": {
+      "unicode_char": "𓃟",
+      "unicode_codepoint": "U+130DF",
+      "unicode_decimal": 78047,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E012"
+    },
+    "E13": {
+      "unicode_char": "𓃠",
+      "unicode_codepoint": "U+130E0",
+      "unicode_decimal": 78048,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E013"
+    },
+    "E14": {
+      "unicode_char": "𓃡",
+      "unicode_codepoint": "U+130E1",
+      "unicode_decimal": 78049,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E014"
+    },
+    "E15": {
+      "unicode_char": "𓃢",
+      "unicode_codepoint": "U+130E2",
+      "unicode_decimal": 78050,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E015"
+    },
+    "E16": {
+      "unicode_char": "𓃣",
+      "unicode_codepoint": "U+130E3",
+      "unicode_decimal": 78051,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E016"
+    },
+    "E17": {
+      "unicode_char": "𓃥",
+      "unicode_codepoint": "U+130E5",
+      "unicode_decimal": 78053,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E017"
+    },
+    "E18": {
+      "unicode_char": "𓃧",
+      "unicode_codepoint": "U+130E7",
+      "unicode_decimal": 78055,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E018"
+    },
+    "E19": {
+      "unicode_char": "𓃨",
+      "unicode_codepoint": "U+130E8",
+      "unicode_decimal": 78056,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E019"
+    },
+    "E20": {
+      "unicode_char": "𓃩",
+      "unicode_codepoint": "U+130E9",
+      "unicode_decimal": 78057,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E020"
+    },
+    "E21": {
+      "unicode_char": "𓃫",
+      "unicode_codepoint": "U+130EB",
+      "unicode_decimal": 78059,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E021"
+    },
+    "E22": {
+      "unicode_char": "𓃬",
+      "unicode_codepoint": "U+130EC",
+      "unicode_decimal": 78060,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E022"
+    },
+    "E23": {
+      "unicode_char": "𓃭",
+      "unicode_codepoint": "U+130ED",
+      "unicode_decimal": 78061,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E023"
+    },
+    "E24": {
+      "unicode_char": "𓃮",
+      "unicode_codepoint": "U+130EE",
+      "unicode_decimal": 78062,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E024"
+    },
+    "E25": {
+      "unicode_char": "𓃯",
+      "unicode_codepoint": "U+130EF",
+      "unicode_decimal": 78063,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E025"
+    },
+    "E26": {
+      "unicode_char": "𓃰",
+      "unicode_codepoint": "U+130F0",
+      "unicode_decimal": 78064,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E026"
+    },
+    "E27": {
+      "unicode_char": "𓃱",
+      "unicode_codepoint": "U+130F1",
+      "unicode_decimal": 78065,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E027"
+    },
+    "E28": {
+      "unicode_char": "𓃲",
+      "unicode_codepoint": "U+130F2",
+      "unicode_decimal": 78066,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E028"
+    },
+    "E29": {
+      "unicode_char": "𓃴",
+      "unicode_codepoint": "U+130F4",
+      "unicode_decimal": 78068,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E029"
+    },
+    "E30": {
+      "unicode_char": "𓃵",
+      "unicode_codepoint": "U+130F5",
+      "unicode_decimal": 78069,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E030"
+    },
+    "E31": {
+      "unicode_char": "𓃶",
+      "unicode_codepoint": "U+130F6",
+      "unicode_decimal": 78070,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E031"
+    },
+    "E32": {
+      "unicode_char": "𓃷",
+      "unicode_codepoint": "U+130F7",
+      "unicode_decimal": 78071,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E032"
+    },
+    "E33": {
+      "unicode_char": "𓃸",
+      "unicode_codepoint": "U+130F8",
+      "unicode_decimal": 78072,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E033"
+    },
+    "E34": {
+      "unicode_char": "𓃹",
+      "unicode_codepoint": "U+130F9",
+      "unicode_decimal": 78073,
+      "unicode_name": "EGYPTIAN HIEROGLYPH E034"
+    },
+    "F1": {
+      "unicode_char": "𓃾",
+      "unicode_codepoint": "U+130FE",
+      "unicode_decimal": 78078,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F001"
+    },
+    "F2": {
+      "unicode_char": "𓄀",
+      "unicode_codepoint": "U+13100",
+      "unicode_decimal": 78080,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F002"
+    },
+    "F3": {
+      "unicode_char": "𓄁",
+      "unicode_codepoint": "U+13101",
+      "unicode_decimal": 78081,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F003"
+    },
+    "F4": {
+      "unicode_char": "𓄂",
+      "unicode_codepoint": "U+13102",
+      "unicode_decimal": 78082,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F004"
+    },
+    "F5": {
+      "unicode_char": "𓄃",
+      "unicode_codepoint": "U+13103",
+      "unicode_decimal": 78083,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F005"
+    },
+    "F6": {
+      "unicode_char": "𓄄",
+      "unicode_codepoint": "U+13104",
+      "unicode_decimal": 78084,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F006"
+    },
+    "F7": {
+      "unicode_char": "𓄅",
+      "unicode_codepoint": "U+13105",
+      "unicode_decimal": 78085,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F007"
+    },
+    "F8": {
+      "unicode_char": "𓄆",
+      "unicode_codepoint": "U+13106",
+      "unicode_decimal": 78086,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F008"
+    },
+    "F9": {
+      "unicode_char": "𓄇",
+      "unicode_codepoint": "U+13107",
+      "unicode_decimal": 78087,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F009"
+    },
+    "F10": {
+      "unicode_char": "𓄈",
+      "unicode_codepoint": "U+13108",
+      "unicode_decimal": 78088,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F010"
+    },
+    "F11": {
+      "unicode_char": "𓄉",
+      "unicode_codepoint": "U+13109",
+      "unicode_decimal": 78089,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F011"
+    },
+    "F12": {
+      "unicode_char": "𓄊",
+      "unicode_codepoint": "U+1310A",
+      "unicode_decimal": 78090,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F012"
+    },
+    "F13": {
+      "unicode_char": "𓄋",
+      "unicode_codepoint": "U+1310B",
+      "unicode_decimal": 78091,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F013"
+    },
+    "F14": {
+      "unicode_char": "𓄍",
+      "unicode_codepoint": "U+1310D",
+      "unicode_decimal": 78093,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F014"
+    },
+    "F15": {
+      "unicode_char": "𓄎",
+      "unicode_codepoint": "U+1310E",
+      "unicode_decimal": 78094,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F015"
+    },
+    "F16": {
+      "unicode_char": "𓄏",
+      "unicode_codepoint": "U+1310F",
+      "unicode_decimal": 78095,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F016"
+    },
+    "F17": {
+      "unicode_char": "𓄐",
+      "unicode_codepoint": "U+13110",
+      "unicode_decimal": 78096,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F017"
+    },
+    "F18": {
+      "unicode_char": "𓄑",
+      "unicode_codepoint": "U+13111",
+      "unicode_decimal": 78097,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F018"
+    },
+    "F19": {
+      "unicode_char": "𓄒",
+      "unicode_codepoint": "U+13112",
+      "unicode_decimal": 78098,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F019"
+    },
+    "F20": {
+      "unicode_char": "𓄓",
+      "unicode_codepoint": "U+13113",
+      "unicode_decimal": 78099,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F020"
+    },
+    "F21": {
+      "unicode_char": "𓄔",
+      "unicode_codepoint": "U+13114",
+      "unicode_decimal": 78100,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F021"
+    },
+    "F22": {
+      "unicode_char": "𓄖",
+      "unicode_codepoint": "U+13116",
+      "unicode_decimal": 78102,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F022"
+    },
+    "F23": {
+      "unicode_char": "𓄗",
+      "unicode_codepoint": "U+13117",
+      "unicode_decimal": 78103,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F023"
+    },
+    "F24": {
+      "unicode_char": "𓄘",
+      "unicode_codepoint": "U+13118",
+      "unicode_decimal": 78104,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F024"
+    },
+    "F25": {
+      "unicode_char": "𓄙",
+      "unicode_codepoint": "U+13119",
+      "unicode_decimal": 78105,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F025"
+    },
+    "F26": {
+      "unicode_char": "𓄚",
+      "unicode_codepoint": "U+1311A",
+      "unicode_decimal": 78106,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F026"
+    },
+    "F27": {
+      "unicode_char": "𓄛",
+      "unicode_codepoint": "U+1311B",
+      "unicode_decimal": 78107,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F027"
+    },
+    "F28": {
+      "unicode_char": "𓄜",
+      "unicode_codepoint": "U+1311C",
+      "unicode_decimal": 78108,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F028"
+    },
+    "F29": {
+      "unicode_char": "𓄝",
+      "unicode_codepoint": "U+1311D",
+      "unicode_decimal": 78109,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F029"
+    },
+    "F30": {
+      "unicode_char": "𓄞",
+      "unicode_codepoint": "U+1311E",
+      "unicode_decimal": 78110,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F030"
+    },
+    "F31": {
+      "unicode_char": "𓄟",
+      "unicode_codepoint": "U+1311F",
+      "unicode_decimal": 78111,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F031"
+    },
+    "F32": {
+      "unicode_char": "𓄡",
+      "unicode_codepoint": "U+13121",
+      "unicode_decimal": 78113,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F032"
+    },
+    "F33": {
+      "unicode_char": "𓄢",
+      "unicode_codepoint": "U+13122",
+      "unicode_decimal": 78114,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F033"
+    },
+    "F34": {
+      "unicode_char": "𓄣",
+      "unicode_codepoint": "U+13123",
+      "unicode_decimal": 78115,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F034"
+    },
+    "F35": {
+      "unicode_char": "𓄤",
+      "unicode_codepoint": "U+13124",
+      "unicode_decimal": 78116,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F035"
+    },
+    "F36": {
+      "unicode_char": "𓄥",
+      "unicode_codepoint": "U+13125",
+      "unicode_decimal": 78117,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F036"
+    },
+    "F37": {
+      "unicode_char": "𓄦",
+      "unicode_codepoint": "U+13126",
+      "unicode_decimal": 78118,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F037"
+    },
+    "F38": {
+      "unicode_char": "𓄨",
+      "unicode_codepoint": "U+13128",
+      "unicode_decimal": 78120,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F038"
+    },
+    "F39": {
+      "unicode_char": "𓄪",
+      "unicode_codepoint": "U+1312A",
+      "unicode_decimal": 78122,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F039"
+    },
+    "F40": {
+      "unicode_char": "𓄫",
+      "unicode_codepoint": "U+1312B",
+      "unicode_decimal": 78123,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F040"
+    },
+    "F41": {
+      "unicode_char": "𓄬",
+      "unicode_codepoint": "U+1312C",
+      "unicode_decimal": 78124,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F041"
+    },
+    "F42": {
+      "unicode_char": "𓄭",
+      "unicode_codepoint": "U+1312D",
+      "unicode_decimal": 78125,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F042"
+    },
+    "F43": {
+      "unicode_char": "𓄮",
+      "unicode_codepoint": "U+1312E",
+      "unicode_decimal": 78126,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F043"
+    },
+    "F44": {
+      "unicode_char": "𓄯",
+      "unicode_codepoint": "U+1312F",
+      "unicode_decimal": 78127,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F044"
+    },
+    "F45": {
+      "unicode_char": "𓄰",
+      "unicode_codepoint": "U+13130",
+      "unicode_decimal": 78128,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F045"
+    },
+    "F46": {
+      "unicode_char": "𓄲",
+      "unicode_codepoint": "U+13132",
+      "unicode_decimal": 78130,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F046"
+    },
+    "F47": {
+      "unicode_char": "𓄴",
+      "unicode_codepoint": "U+13134",
+      "unicode_decimal": 78132,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F047"
+    },
+    "F48": {
+      "unicode_char": "𓄶",
+      "unicode_codepoint": "U+13136",
+      "unicode_decimal": 78134,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F048"
+    },
+    "F49": {
+      "unicode_char": "𓄷",
+      "unicode_codepoint": "U+13137",
+      "unicode_decimal": 78135,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F049"
+    },
+    "F50": {
+      "unicode_char": "𓄸",
+      "unicode_codepoint": "U+13138",
+      "unicode_decimal": 78136,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F050"
+    },
+    "F51": {
+      "unicode_char": "𓄹",
+      "unicode_codepoint": "U+13139",
+      "unicode_decimal": 78137,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F051"
+    },
+    "F52": {
+      "unicode_char": "𓄽",
+      "unicode_codepoint": "U+1313D",
+      "unicode_decimal": 78141,
+      "unicode_name": "EGYPTIAN HIEROGLYPH F052"
+    },
+    "G1": {
+      "unicode_char": "𓄿",
+      "unicode_codepoint": "U+1313F",
+      "unicode_decimal": 78143,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G001"
+    },
+    "G2": {
+      "unicode_char": "𓅀",
+      "unicode_codepoint": "U+13140",
+      "unicode_decimal": 78144,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G002"
+    },
+    "G3": {
+      "unicode_char": "𓅁",
+      "unicode_codepoint": "U+13141",
+      "unicode_decimal": 78145,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G003"
+    },
+    "G4": {
+      "unicode_char": "𓅂",
+      "unicode_codepoint": "U+13142",
+      "unicode_decimal": 78146,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G004"
+    },
+    "G5": {
+      "unicode_char": "𓅃",
+      "unicode_codepoint": "U+13143",
+      "unicode_decimal": 78147,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G005"
+    },
+    "G6": {
+      "unicode_char": "𓅄",
+      "unicode_codepoint": "U+13144",
+      "unicode_decimal": 78148,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G006"
+    },
+    "G7": {
+      "unicode_char": "𓅆",
+      "unicode_codepoint": "U+13146",
+      "unicode_decimal": 78150,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G007"
+    },
+    "G8": {
+      "unicode_char": "𓅉",
+      "unicode_codepoint": "U+13149",
+      "unicode_decimal": 78153,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G008"
+    },
+    "G9": {
+      "unicode_char": "𓅊",
+      "unicode_codepoint": "U+1314A",
+      "unicode_decimal": 78154,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G009"
+    },
+    "G10": {
+      "unicode_char": "𓅋",
+      "unicode_codepoint": "U+1314B",
+      "unicode_decimal": 78155,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G010"
+    },
+    "G11": {
+      "unicode_char": "𓅌",
+      "unicode_codepoint": "U+1314C",
+      "unicode_decimal": 78156,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G011"
+    },
+    "G12": {
+      "unicode_char": "𓅎",
+      "unicode_codepoint": "U+1314E",
+      "unicode_decimal": 78158,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G012"
+    },
+    "G13": {
+      "unicode_char": "𓅏",
+      "unicode_codepoint": "U+1314F",
+      "unicode_decimal": 78159,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G013"
+    },
+    "G14": {
+      "unicode_char": "𓅐",
+      "unicode_codepoint": "U+13150",
+      "unicode_decimal": 78160,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G014"
+    },
+    "G15": {
+      "unicode_char": "𓅑",
+      "unicode_codepoint": "U+13151",
+      "unicode_decimal": 78161,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G015"
+    },
+    "G16": {
+      "unicode_char": "𓅒",
+      "unicode_codepoint": "U+13152",
+      "unicode_decimal": 78162,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G016"
+    },
+    "G17": {
+      "unicode_char": "𓅓",
+      "unicode_codepoint": "U+13153",
+      "unicode_decimal": 78163,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G017"
+    },
+    "G18": {
+      "unicode_char": "𓅔",
+      "unicode_codepoint": "U+13154",
+      "unicode_decimal": 78164,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G018"
+    },
+    "G19": {
+      "unicode_char": "𓅕",
+      "unicode_codepoint": "U+13155",
+      "unicode_decimal": 78165,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G019"
+    },
+    "G20": {
+      "unicode_char": "𓅖",
+      "unicode_codepoint": "U+13156",
+      "unicode_decimal": 78166,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G020"
+    },
+    "G21": {
+      "unicode_char": "𓅘",
+      "unicode_codepoint": "U+13158",
+      "unicode_decimal": 78168,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G021"
+    },
+    "G22": {
+      "unicode_char": "𓅙",
+      "unicode_codepoint": "U+13159",
+      "unicode_decimal": 78169,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G022"
+    },
+    "G23": {
+      "unicode_char": "𓅚",
+      "unicode_codepoint": "U+1315A",
+      "unicode_decimal": 78170,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G023"
+    },
+    "G24": {
+      "unicode_char": "𓅛",
+      "unicode_codepoint": "U+1315B",
+      "unicode_decimal": 78171,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G024"
+    },
+    "G25": {
+      "unicode_char": "𓅜",
+      "unicode_codepoint": "U+1315C",
+      "unicode_decimal": 78172,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G025"
+    },
+    "G26": {
+      "unicode_char": "𓅝",
+      "unicode_codepoint": "U+1315D",
+      "unicode_decimal": 78173,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G026"
+    },
+    "G27": {
+      "unicode_char": "𓅟",
+      "unicode_codepoint": "U+1315F",
+      "unicode_decimal": 78175,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G027"
+    },
+    "G28": {
+      "unicode_char": "𓅠",
+      "unicode_codepoint": "U+13160",
+      "unicode_decimal": 78176,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G028"
+    },
+    "G29": {
+      "unicode_char": "𓅡",
+      "unicode_codepoint": "U+13161",
+      "unicode_decimal": 78177,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G029"
+    },
+    "G30": {
+      "unicode_char": "𓅢",
+      "unicode_codepoint": "U+13162",
+      "unicode_decimal": 78178,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G030"
+    },
+    "G31": {
+      "unicode_char": "𓅣",
+      "unicode_codepoint": "U+13163",
+      "unicode_decimal": 78179,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G031"
+    },
+    "G32": {
+      "unicode_char": "𓅤",
+      "unicode_codepoint": "U+13164",
+      "unicode_decimal": 78180,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G032"
+    },
+    "G33": {
+      "unicode_char": "𓅥",
+      "unicode_codepoint": "U+13165",
+      "unicode_decimal": 78181,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G033"
+    },
+    "G34": {
+      "unicode_char": "𓅦",
+      "unicode_codepoint": "U+13166",
+      "unicode_decimal": 78182,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G034"
+    },
+    "G35": {
+      "unicode_char": "𓅧",
+      "unicode_codepoint": "U+13167",
+      "unicode_decimal": 78183,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G035"
+    },
+    "G36": {
+      "unicode_char": "𓅨",
+      "unicode_codepoint": "U+13168",
+      "unicode_decimal": 78184,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G036"
+    },
+    "G37": {
+      "unicode_char": "𓅪",
+      "unicode_codepoint": "U+1316A",
+      "unicode_decimal": 78186,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G037"
+    },
+    "G38": {
+      "unicode_char": "𓅬",
+      "unicode_codepoint": "U+1316C",
+      "unicode_decimal": 78188,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G038"
+    },
+    "G39": {
+      "unicode_char": "𓅭",
+      "unicode_codepoint": "U+1316D",
+      "unicode_decimal": 78189,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G039"
+    },
+    "G40": {
+      "unicode_char": "𓅮",
+      "unicode_codepoint": "U+1316E",
+      "unicode_decimal": 78190,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G040"
+    },
+    "G41": {
+      "unicode_char": "𓅯",
+      "unicode_codepoint": "U+1316F",
+      "unicode_decimal": 78191,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G041"
+    },
+    "G42": {
+      "unicode_char": "𓅰",
+      "unicode_codepoint": "U+13170",
+      "unicode_decimal": 78192,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G042"
+    },
+    "G43": {
+      "unicode_char": "𓅱",
+      "unicode_codepoint": "U+13171",
+      "unicode_decimal": 78193,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G043"
+    },
+    "G44": {
+      "unicode_char": "𓅳",
+      "unicode_codepoint": "U+13173",
+      "unicode_decimal": 78195,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G044"
+    },
+    "G45": {
+      "unicode_char": "𓅴",
+      "unicode_codepoint": "U+13174",
+      "unicode_decimal": 78196,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G045"
+    },
+    "G46": {
+      "unicode_char": "𓅶",
+      "unicode_codepoint": "U+13176",
+      "unicode_decimal": 78198,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G046"
+    },
+    "G47": {
+      "unicode_char": "𓅷",
+      "unicode_codepoint": "U+13177",
+      "unicode_decimal": 78199,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G047"
+    },
+    "G48": {
+      "unicode_char": "𓅸",
+      "unicode_codepoint": "U+13178",
+      "unicode_decimal": 78200,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G048"
+    },
+    "G49": {
+      "unicode_char": "𓅹",
+      "unicode_codepoint": "U+13179",
+      "unicode_decimal": 78201,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G049"
+    },
+    "G50": {
+      "unicode_char": "𓅺",
+      "unicode_codepoint": "U+1317A",
+      "unicode_decimal": 78202,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G050"
+    },
+    "G51": {
+      "unicode_char": "𓅻",
+      "unicode_codepoint": "U+1317B",
+      "unicode_decimal": 78203,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G051"
+    },
+    "G52": {
+      "unicode_char": "𓅼",
+      "unicode_codepoint": "U+1317C",
+      "unicode_decimal": 78204,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G052"
+    },
+    "G53": {
+      "unicode_char": "𓅽",
+      "unicode_codepoint": "U+1317D",
+      "unicode_decimal": 78205,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G053"
+    },
+    "G54": {
+      "unicode_char": "𓅾",
+      "unicode_codepoint": "U+1317E",
+      "unicode_decimal": 78206,
+      "unicode_name": "EGYPTIAN HIEROGLYPH G054"
+    },
+    "H1": {
+      "unicode_char": "𓅿",
+      "unicode_codepoint": "U+1317F",
+      "unicode_decimal": 78207,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H001"
+    },
+    "H2": {
+      "unicode_char": "𓆀",
+      "unicode_codepoint": "U+13180",
+      "unicode_decimal": 78208,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H002"
+    },
+    "H3": {
+      "unicode_char": "𓆁",
+      "unicode_codepoint": "U+13181",
+      "unicode_decimal": 78209,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H003"
+    },
+    "H4": {
+      "unicode_char": "𓆂",
+      "unicode_codepoint": "U+13182",
+      "unicode_decimal": 78210,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H004"
+    },
+    "H5": {
+      "unicode_char": "𓆃",
+      "unicode_codepoint": "U+13183",
+      "unicode_decimal": 78211,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H005"
+    },
+    "H6": {
+      "unicode_char": "𓆄",
+      "unicode_codepoint": "U+13184",
+      "unicode_decimal": 78212,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H006"
+    },
+    "H7": {
+      "unicode_char": "𓆆",
+      "unicode_codepoint": "U+13186",
+      "unicode_decimal": 78214,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H007"
+    },
+    "H8": {
+      "unicode_char": "𓆇",
+      "unicode_codepoint": "U+13187",
+      "unicode_decimal": 78215,
+      "unicode_name": "EGYPTIAN HIEROGLYPH H008"
+    },
+    "I1": {
+      "unicode_char": "𓆈",
+      "unicode_codepoint": "U+13188",
+      "unicode_decimal": 78216,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I001"
+    },
+    "I2": {
+      "unicode_char": "𓆉",
+      "unicode_codepoint": "U+13189",
+      "unicode_decimal": 78217,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I002"
+    },
+    "I3": {
+      "unicode_char": "𓆊",
+      "unicode_codepoint": "U+1318A",
+      "unicode_decimal": 78218,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I003"
+    },
+    "I4": {
+      "unicode_char": "𓆋",
+      "unicode_codepoint": "U+1318B",
+      "unicode_decimal": 78219,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I004"
+    },
+    "I5": {
+      "unicode_char": "𓆌",
+      "unicode_codepoint": "U+1318C",
+      "unicode_decimal": 78220,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I005"
+    },
+    "I6": {
+      "unicode_char": "𓆎",
+      "unicode_codepoint": "U+1318E",
+      "unicode_decimal": 78222,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I006"
+    },
+    "I7": {
+      "unicode_char": "𓆏",
+      "unicode_codepoint": "U+1318F",
+      "unicode_decimal": 78223,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I007"
+    },
+    "I8": {
+      "unicode_char": "𓆐",
+      "unicode_codepoint": "U+13190",
+      "unicode_decimal": 78224,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I008"
+    },
+    "I9": {
+      "unicode_char": "𓆑",
+      "unicode_codepoint": "U+13191",
+      "unicode_decimal": 78225,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I009"
+    },
+    "I10": {
+      "unicode_char": "𓆓",
+      "unicode_codepoint": "U+13193",
+      "unicode_decimal": 78227,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I010"
+    },
+    "I11": {
+      "unicode_char": "𓆕",
+      "unicode_codepoint": "U+13195",
+      "unicode_decimal": 78229,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I011"
+    },
+    "I12": {
+      "unicode_char": "𓆗",
+      "unicode_codepoint": "U+13197",
+      "unicode_decimal": 78231,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I012"
+    },
+    "I13": {
+      "unicode_char": "𓆘",
+      "unicode_codepoint": "U+13198",
+      "unicode_decimal": 78232,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I013"
+    },
+    "I14": {
+      "unicode_char": "𓆙",
+      "unicode_codepoint": "U+13199",
+      "unicode_decimal": 78233,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I014"
+    },
+    "I15": {
+      "unicode_char": "𓆚",
+      "unicode_codepoint": "U+1319A",
+      "unicode_decimal": 78234,
+      "unicode_name": "EGYPTIAN HIEROGLYPH I015"
+    },
+    "K1": {
+      "unicode_char": "𓆛",
+      "unicode_codepoint": "U+1319B",
+      "unicode_decimal": 78235,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K001"
+    },
+    "K2": {
+      "unicode_char": "𓆜",
+      "unicode_codepoint": "U+1319C",
+      "unicode_decimal": 78236,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K002"
+    },
+    "K3": {
+      "unicode_char": "𓆝",
+      "unicode_codepoint": "U+1319D",
+      "unicode_decimal": 78237,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K003"
+    },
+    "K4": {
+      "unicode_char": "𓆞",
+      "unicode_codepoint": "U+1319E",
+      "unicode_decimal": 78238,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K004"
+    },
+    "K5": {
+      "unicode_char": "𓆟",
+      "unicode_codepoint": "U+1319F",
+      "unicode_decimal": 78239,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K005"
+    },
+    "K6": {
+      "unicode_char": "𓆠",
+      "unicode_codepoint": "U+131A0",
+      "unicode_decimal": 78240,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K006"
+    },
+    "K7": {
+      "unicode_char": "𓆡",
+      "unicode_codepoint": "U+131A1",
+      "unicode_decimal": 78241,
+      "unicode_name": "EGYPTIAN HIEROGLYPH K007"
+    },
+    "L1": {
+      "unicode_char": "𓆣",
+      "unicode_codepoint": "U+131A3",
+      "unicode_decimal": 78243,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L001"
+    },
+    "L2": {
+      "unicode_char": "𓆤",
+      "unicode_codepoint": "U+131A4",
+      "unicode_decimal": 78244,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L002"
+    },
+    "L3": {
+      "unicode_char": "𓆦",
+      "unicode_codepoint": "U+131A6",
+      "unicode_decimal": 78246,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L003"
+    },
+    "L4": {
+      "unicode_char": "𓆧",
+      "unicode_codepoint": "U+131A7",
+      "unicode_decimal": 78247,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L004"
+    },
+    "L5": {
+      "unicode_char": "𓆨",
+      "unicode_codepoint": "U+131A8",
+      "unicode_decimal": 78248,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L005"
+    },
+    "L6": {
+      "unicode_char": "𓆩",
+      "unicode_codepoint": "U+131A9",
+      "unicode_decimal": 78249,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L006"
+    },
+    "L7": {
+      "unicode_char": "𓆫",
+      "unicode_codepoint": "U+131AB",
+      "unicode_decimal": 78251,
+      "unicode_name": "EGYPTIAN HIEROGLYPH L007"
+    },
+    "M1": {
+      "unicode_char": "𓆭",
+      "unicode_codepoint": "U+131AD",
+      "unicode_decimal": 78253,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M001"
+    },
+    "M2": {
+      "unicode_char": "𓆰",
+      "unicode_codepoint": "U+131B0",
+      "unicode_decimal": 78256,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M002"
+    },
+    "M3": {
+      "unicode_char": "𓆱",
+      "unicode_codepoint": "U+131B1",
+      "unicode_decimal": 78257,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M003"
+    },
+    "M4": {
+      "unicode_char": "𓆳",
+      "unicode_codepoint": "U+131B3",
+      "unicode_decimal": 78259,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M004"
+    },
+    "M5": {
+      "unicode_char": "𓆴",
+      "unicode_codepoint": "U+131B4",
+      "unicode_decimal": 78260,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M005"
+    },
+    "M6": {
+      "unicode_char": "𓆵",
+      "unicode_codepoint": "U+131B5",
+      "unicode_decimal": 78261,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M006"
+    },
+    "M7": {
+      "unicode_char": "𓆶",
+      "unicode_codepoint": "U+131B6",
+      "unicode_decimal": 78262,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M007"
+    },
+    "M8": {
+      "unicode_char": "𓆷",
+      "unicode_codepoint": "U+131B7",
+      "unicode_decimal": 78263,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M008"
+    },
+    "M9": {
+      "unicode_char": "𓆸",
+      "unicode_codepoint": "U+131B8",
+      "unicode_decimal": 78264,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M009"
+    },
+    "M10": {
+      "unicode_char": "𓆹",
+      "unicode_codepoint": "U+131B9",
+      "unicode_decimal": 78265,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M010"
+    },
+    "M11": {
+      "unicode_char": "𓆻",
+      "unicode_codepoint": "U+131BB",
+      "unicode_decimal": 78267,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M011"
+    },
+    "M12": {
+      "unicode_char": "𓆼",
+      "unicode_codepoint": "U+131BC",
+      "unicode_decimal": 78268,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M012"
+    },
+    "M13": {
+      "unicode_char": "𓇅",
+      "unicode_codepoint": "U+131C5",
+      "unicode_decimal": 78277,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M013"
+    },
+    "M14": {
+      "unicode_char": "𓇆",
+      "unicode_codepoint": "U+131C6",
+      "unicode_decimal": 78278,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M014"
+    },
+    "M15": {
+      "unicode_char": "𓇇",
+      "unicode_codepoint": "U+131C7",
+      "unicode_decimal": 78279,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M015"
+    },
+    "M16": {
+      "unicode_char": "𓇉",
+      "unicode_codepoint": "U+131C9",
+      "unicode_decimal": 78281,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M016"
+    },
+    "M17": {
+      "unicode_char": "𓇋",
+      "unicode_codepoint": "U+131CB",
+      "unicode_decimal": 78283,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M017"
+    },
+    "M18": {
+      "unicode_char": "𓇍",
+      "unicode_codepoint": "U+131CD",
+      "unicode_decimal": 78285,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M018"
+    },
+    "M19": {
+      "unicode_char": "𓇎",
+      "unicode_codepoint": "U+131CE",
+      "unicode_decimal": 78286,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M019"
+    },
+    "M20": {
+      "unicode_char": "𓇏",
+      "unicode_codepoint": "U+131CF",
+      "unicode_decimal": 78287,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M020"
+    },
+    "M21": {
+      "unicode_char": "𓇐",
+      "unicode_codepoint": "U+131D0",
+      "unicode_decimal": 78288,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M021"
+    },
+    "M22": {
+      "unicode_char": "𓇑",
+      "unicode_codepoint": "U+131D1",
+      "unicode_decimal": 78289,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M022"
+    },
+    "M23": {
+      "unicode_char": "𓇓",
+      "unicode_codepoint": "U+131D3",
+      "unicode_decimal": 78291,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M023"
+    },
+    "M24": {
+      "unicode_char": "𓇔",
+      "unicode_codepoint": "U+131D4",
+      "unicode_decimal": 78292,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M024"
+    },
+    "M25": {
+      "unicode_char": "𓇖",
+      "unicode_codepoint": "U+131D6",
+      "unicode_decimal": 78294,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M025"
+    },
+    "M26": {
+      "unicode_char": "𓇗",
+      "unicode_codepoint": "U+131D7",
+      "unicode_decimal": 78295,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M026"
+    },
+    "M27": {
+      "unicode_char": "𓇘",
+      "unicode_codepoint": "U+131D8",
+      "unicode_decimal": 78296,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M027"
+    },
+    "M28": {
+      "unicode_char": "𓇙",
+      "unicode_codepoint": "U+131D9",
+      "unicode_decimal": 78297,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M028"
+    },
+    "M29": {
+      "unicode_char": "𓇛",
+      "unicode_codepoint": "U+131DB",
+      "unicode_decimal": 78299,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M029"
+    },
+    "M30": {
+      "unicode_char": "𓇜",
+      "unicode_codepoint": "U+131DC",
+      "unicode_decimal": 78300,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M030"
+    },
+    "M31": {
+      "unicode_char": "𓇝",
+      "unicode_codepoint": "U+131DD",
+      "unicode_decimal": 78301,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M031"
+    },
+    "M32": {
+      "unicode_char": "𓇟",
+      "unicode_codepoint": "U+131DF",
+      "unicode_decimal": 78303,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M032"
+    },
+    "M33": {
+      "unicode_char": "𓇠",
+      "unicode_codepoint": "U+131E0",
+      "unicode_decimal": 78304,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M033"
+    },
+    "M34": {
+      "unicode_char": "𓇣",
+      "unicode_codepoint": "U+131E3",
+      "unicode_decimal": 78307,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M034"
+    },
+    "M35": {
+      "unicode_char": "𓇤",
+      "unicode_codepoint": "U+131E4",
+      "unicode_decimal": 78308,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M035"
+    },
+    "M36": {
+      "unicode_char": "𓇥",
+      "unicode_codepoint": "U+131E5",
+      "unicode_decimal": 78309,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M036"
+    },
+    "M37": {
+      "unicode_char": "𓇦",
+      "unicode_codepoint": "U+131E6",
+      "unicode_decimal": 78310,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M037"
+    },
+    "M38": {
+      "unicode_char": "𓇧",
+      "unicode_codepoint": "U+131E7",
+      "unicode_decimal": 78311,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M038"
+    },
+    "M39": {
+      "unicode_char": "𓇨",
+      "unicode_codepoint": "U+131E8",
+      "unicode_decimal": 78312,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M039"
+    },
+    "M40": {
+      "unicode_char": "𓇩",
+      "unicode_codepoint": "U+131E9",
+      "unicode_decimal": 78313,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M040"
+    },
+    "M41": {
+      "unicode_char": "𓇫",
+      "unicode_codepoint": "U+131EB",
+      "unicode_decimal": 78315,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M041"
+    },
+    "M42": {
+      "unicode_char": "𓇬",
+      "unicode_codepoint": "U+131EC",
+      "unicode_decimal": 78316,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M042"
+    },
+    "M43": {
+      "unicode_char": "𓇭",
+      "unicode_codepoint": "U+131ED",
+      "unicode_decimal": 78317,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M043"
+    },
+    "M44": {
+      "unicode_char": "𓇮",
+      "unicode_codepoint": "U+131EE",
+      "unicode_decimal": 78318,
+      "unicode_name": "EGYPTIAN HIEROGLYPH M044"
+    },
+    "N1": {
+      "unicode_char": "𓇯",
+      "unicode_codepoint": "U+131EF",
+      "unicode_decimal": 78319,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N001"
+    },
+    "N2": {
+      "unicode_char": "𓇰",
+      "unicode_codepoint": "U+131F0",
+      "unicode_decimal": 78320,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N002"
+    },
+    "N3": {
+      "unicode_char": "𓇱",
+      "unicode_codepoint": "U+131F1",
+      "unicode_decimal": 78321,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N003"
+    },
+    "N4": {
+      "unicode_char": "𓇲",
+      "unicode_codepoint": "U+131F2",
+      "unicode_decimal": 78322,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N004"
+    },
+    "N5": {
+      "unicode_char": "𓇳",
+      "unicode_codepoint": "U+131F3",
+      "unicode_decimal": 78323,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N005"
+    },
+    "N6": {
+      "unicode_char": "𓇴",
+      "unicode_codepoint": "U+131F4",
+      "unicode_decimal": 78324,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N006"
+    },
+    "N7": {
+      "unicode_char": "𓇵",
+      "unicode_codepoint": "U+131F5",
+      "unicode_decimal": 78325,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N007"
+    },
+    "N8": {
+      "unicode_char": "𓇶",
+      "unicode_codepoint": "U+131F6",
+      "unicode_decimal": 78326,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N008"
+    },
+    "N9": {
+      "unicode_char": "𓇷",
+      "unicode_codepoint": "U+131F7",
+      "unicode_decimal": 78327,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N009"
+    },
+    "N10": {
+      "unicode_char": "𓇸",
+      "unicode_codepoint": "U+131F8",
+      "unicode_decimal": 78328,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N010"
+    },
+    "N11": {
+      "unicode_char": "𓇹",
+      "unicode_codepoint": "U+131F9",
+      "unicode_decimal": 78329,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N011"
+    },
+    "N12": {
+      "unicode_char": "𓇺",
+      "unicode_codepoint": "U+131FA",
+      "unicode_decimal": 78330,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N012"
+    },
+    "N13": {
+      "unicode_char": "𓇻",
+      "unicode_codepoint": "U+131FB",
+      "unicode_decimal": 78331,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N013"
+    },
+    "N14": {
+      "unicode_char": "𓇼",
+      "unicode_codepoint": "U+131FC",
+      "unicode_decimal": 78332,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N014"
+    },
+    "N15": {
+      "unicode_char": "𓇽",
+      "unicode_codepoint": "U+131FD",
+      "unicode_decimal": 78333,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N015"
+    },
+    "N16": {
+      "unicode_char": "𓇾",
+      "unicode_codepoint": "U+131FE",
+      "unicode_decimal": 78334,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N016"
+    },
+    "N17": {
+      "unicode_char": "𓇿",
+      "unicode_codepoint": "U+131FF",
+      "unicode_decimal": 78335,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N017"
+    },
+    "N18": {
+      "unicode_char": "𓈀",
+      "unicode_codepoint": "U+13200",
+      "unicode_decimal": 78336,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N018"
+    },
+    "N19": {
+      "unicode_char": "𓈃",
+      "unicode_codepoint": "U+13203",
+      "unicode_decimal": 78339,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N019"
+    },
+    "N20": {
+      "unicode_char": "𓈄",
+      "unicode_codepoint": "U+13204",
+      "unicode_decimal": 78340,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N020"
+    },
+    "N21": {
+      "unicode_char": "𓈅",
+      "unicode_codepoint": "U+13205",
+      "unicode_decimal": 78341,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N021"
+    },
+    "N22": {
+      "unicode_char": "𓈆",
+      "unicode_codepoint": "U+13206",
+      "unicode_decimal": 78342,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N022"
+    },
+    "N23": {
+      "unicode_char": "𓈇",
+      "unicode_codepoint": "U+13207",
+      "unicode_decimal": 78343,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N023"
+    },
+    "N24": {
+      "unicode_char": "𓈈",
+      "unicode_codepoint": "U+13208",
+      "unicode_decimal": 78344,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N024"
+    },
+    "N25": {
+      "unicode_char": "𓈉",
+      "unicode_codepoint": "U+13209",
+      "unicode_decimal": 78345,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N025"
+    },
+    "N26": {
+      "unicode_char": "𓈋",
+      "unicode_codepoint": "U+1320B",
+      "unicode_decimal": 78347,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N026"
+    },
+    "N27": {
+      "unicode_char": "𓈌",
+      "unicode_codepoint": "U+1320C",
+      "unicode_decimal": 78348,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N027"
+    },
+    "N28": {
+      "unicode_char": "𓈍",
+      "unicode_codepoint": "U+1320D",
+      "unicode_decimal": 78349,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N028"
+    },
+    "N29": {
+      "unicode_char": "𓈎",
+      "unicode_codepoint": "U+1320E",
+      "unicode_decimal": 78350,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N029"
+    },
+    "N30": {
+      "unicode_char": "𓈏",
+      "unicode_codepoint": "U+1320F",
+      "unicode_decimal": 78351,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N030"
+    },
+    "N31": {
+      "unicode_char": "𓈐",
+      "unicode_codepoint": "U+13210",
+      "unicode_decimal": 78352,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N031"
+    },
+    "N32": {
+      "unicode_char": "𓈑",
+      "unicode_codepoint": "U+13211",
+      "unicode_decimal": 78353,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N032"
+    },
+    "N33": {
+      "unicode_char": "𓈒",
+      "unicode_codepoint": "U+13212",
+      "unicode_decimal": 78354,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N033"
+    },
+    "N34": {
+      "unicode_char": "𓈔",
+      "unicode_codepoint": "U+13214",
+      "unicode_decimal": 78356,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N034"
+    },
+    "N35": {
+      "unicode_char": "𓈖",
+      "unicode_codepoint": "U+13216",
+      "unicode_decimal": 78358,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N035"
+    },
+    "N36": {
+      "unicode_char": "𓈘",
+      "unicode_codepoint": "U+13218",
+      "unicode_decimal": 78360,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N036"
+    },
+    "N37": {
+      "unicode_char": "𓈙",
+      "unicode_codepoint": "U+13219",
+      "unicode_decimal": 78361,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N037"
+    },
+    "N38": {
+      "unicode_char": "𓈛",
+      "unicode_codepoint": "U+1321B",
+      "unicode_decimal": 78363,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N038"
+    },
+    "N39": {
+      "unicode_char": "𓈜",
+      "unicode_codepoint": "U+1321C",
+      "unicode_decimal": 78364,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N039"
+    },
+    "N40": {
+      "unicode_char": "𓈝",
+      "unicode_codepoint": "U+1321D",
+      "unicode_decimal": 78365,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N040"
+    },
+    "N41": {
+      "unicode_char": "𓈞",
+      "unicode_codepoint": "U+1321E",
+      "unicode_decimal": 78366,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N041"
+    },
+    "N42": {
+      "unicode_char": "𓈟",
+      "unicode_codepoint": "U+1321F",
+      "unicode_decimal": 78367,
+      "unicode_name": "EGYPTIAN HIEROGLYPH N042"
+    },
+    "O1": {
+      "unicode_char": "𓉐",
+      "unicode_codepoint": "U+13250",
+      "unicode_decimal": 78416,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O001"
+    },
+    "O2": {
+      "unicode_char": "𓉒",
+      "unicode_codepoint": "U+13252",
+      "unicode_decimal": 78418,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O002"
+    },
+    "O3": {
+      "unicode_char": "𓉓",
+      "unicode_codepoint": "U+13253",
+      "unicode_decimal": 78419,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O003"
+    },
+    "O4": {
+      "unicode_char": "𓉔",
+      "unicode_codepoint": "U+13254",
+      "unicode_decimal": 78420,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O004"
+    },
+    "O5": {
+      "unicode_char": "𓉕",
+      "unicode_codepoint": "U+13255",
+      "unicode_decimal": 78421,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O005"
+    },
+    "O6": {
+      "unicode_char": "𓉗",
+      "unicode_codepoint": "U+13257",
+      "unicode_decimal": 78423,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O006"
+    },
+    "O7": {
+      "unicode_char": "𓉞",
+      "unicode_codepoint": "U+1325E",
+      "unicode_decimal": 78430,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O007"
+    },
+    "O8": {
+      "unicode_char": "𓉟",
+      "unicode_codepoint": "U+1325F",
+      "unicode_decimal": 78431,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O008"
+    },
+    "O9": {
+      "unicode_char": "𓉠",
+      "unicode_codepoint": "U+13260",
+      "unicode_decimal": 78432,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O009"
+    },
+    "O10": {
+      "unicode_char": "𓉡",
+      "unicode_codepoint": "U+13261",
+      "unicode_decimal": 78433,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O010"
+    },
+    "O12": {
+      "unicode_char": "𓉦",
+      "unicode_codepoint": "U+13266",
+      "unicode_decimal": 78438,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O012"
+    },
+    "O13": {
+      "unicode_char": "𓉧",
+      "unicode_codepoint": "U+13267",
+      "unicode_decimal": 78439,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O013"
+    },
+    "O14": {
+      "unicode_char": "𓉨",
+      "unicode_codepoint": "U+13268",
+      "unicode_decimal": 78440,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O014"
+    },
+    "O15": {
+      "unicode_char": "𓉩",
+      "unicode_codepoint": "U+13269",
+      "unicode_decimal": 78441,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O015"
+    },
+    "O16": {
+      "unicode_char": "𓉪",
+      "unicode_codepoint": "U+1326A",
+      "unicode_decimal": 78442,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O016"
+    },
+    "O17": {
+      "unicode_char": "𓉫",
+      "unicode_codepoint": "U+1326B",
+      "unicode_decimal": 78443,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O017"
+    },
+    "O18": {
+      "unicode_char": "𓉬",
+      "unicode_codepoint": "U+1326C",
+      "unicode_decimal": 78444,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O018"
+    },
+    "O19": {
+      "unicode_char": "𓉭",
+      "unicode_codepoint": "U+1326D",
+      "unicode_decimal": 78445,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O019"
+    },
+    "O20": {
+      "unicode_char": "𓉯",
+      "unicode_codepoint": "U+1326F",
+      "unicode_decimal": 78447,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O020"
+    },
+    "O21": {
+      "unicode_char": "𓉱",
+      "unicode_codepoint": "U+13271",
+      "unicode_decimal": 78449,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O021"
+    },
+    "O22": {
+      "unicode_char": "𓉲",
+      "unicode_codepoint": "U+13272",
+      "unicode_decimal": 78450,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O022"
+    },
+    "O23": {
+      "unicode_char": "𓉳",
+      "unicode_codepoint": "U+13273",
+      "unicode_decimal": 78451,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O023"
+    },
+    "O24": {
+      "unicode_char": "𓉴",
+      "unicode_codepoint": "U+13274",
+      "unicode_decimal": 78452,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O024"
+    },
+    "O25": {
+      "unicode_char": "𓉶",
+      "unicode_codepoint": "U+13276",
+      "unicode_decimal": 78454,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O025"
+    },
+    "O26": {
+      "unicode_char": "𓉸",
+      "unicode_codepoint": "U+13278",
+      "unicode_decimal": 78456,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O026"
+    },
+    "O27": {
+      "unicode_char": "𓉹",
+      "unicode_codepoint": "U+13279",
+      "unicode_decimal": 78457,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O027"
+    },
+    "O28": {
+      "unicode_char": "𓉺",
+      "unicode_codepoint": "U+1327A",
+      "unicode_decimal": 78458,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O028"
+    },
+    "O29": {
+      "unicode_char": "𓉻",
+      "unicode_codepoint": "U+1327B",
+      "unicode_decimal": 78459,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O029"
+    },
+    "O30": {
+      "unicode_char": "𓉽",
+      "unicode_codepoint": "U+1327D",
+      "unicode_decimal": 78461,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O030"
+    },
+    "O31": {
+      "unicode_char": "𓉿",
+      "unicode_codepoint": "U+1327F",
+      "unicode_decimal": 78463,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O031"
+    },
+    "O32": {
+      "unicode_char": "𓊀",
+      "unicode_codepoint": "U+13280",
+      "unicode_decimal": 78464,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O032"
+    },
+    "O33": {
+      "unicode_char": "𓊁",
+      "unicode_codepoint": "U+13281",
+      "unicode_decimal": 78465,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O033"
+    },
+    "O34": {
+      "unicode_char": "𓊃",
+      "unicode_codepoint": "U+13283",
+      "unicode_decimal": 78467,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O034"
+    },
+    "O35": {
+      "unicode_char": "𓊄",
+      "unicode_codepoint": "U+13284",
+      "unicode_decimal": 78468,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O035"
+    },
+    "O36": {
+      "unicode_char": "𓊅",
+      "unicode_codepoint": "U+13285",
+      "unicode_decimal": 78469,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O036"
+    },
+    "O37": {
+      "unicode_char": "𓊊",
+      "unicode_codepoint": "U+1328A",
+      "unicode_decimal": 78474,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O037"
+    },
+    "O38": {
+      "unicode_char": "𓊋",
+      "unicode_codepoint": "U+1328B",
+      "unicode_decimal": 78475,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O038"
+    },
+    "O39": {
+      "unicode_char": "𓊌",
+      "unicode_codepoint": "U+1328C",
+      "unicode_decimal": 78476,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O039"
+    },
+    "O40": {
+      "unicode_char": "𓊍",
+      "unicode_codepoint": "U+1328D",
+      "unicode_decimal": 78477,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O040"
+    },
+    "O41": {
+      "unicode_char": "𓊎",
+      "unicode_codepoint": "U+1328E",
+      "unicode_decimal": 78478,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O041"
+    },
+    "O42": {
+      "unicode_char": "𓊏",
+      "unicode_codepoint": "U+1328F",
+      "unicode_decimal": 78479,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O042"
+    },
+    "O43": {
+      "unicode_char": "𓊐",
+      "unicode_codepoint": "U+13290",
+      "unicode_decimal": 78480,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O043"
+    },
+    "O44": {
+      "unicode_char": "𓊑",
+      "unicode_codepoint": "U+13291",
+      "unicode_decimal": 78481,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O044"
+    },
+    "O45": {
+      "unicode_char": "𓊒",
+      "unicode_codepoint": "U+13292",
+      "unicode_decimal": 78482,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O045"
+    },
+    "O46": {
+      "unicode_char": "𓊓",
+      "unicode_codepoint": "U+13293",
+      "unicode_decimal": 78483,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O046"
+    },
+    "O47": {
+      "unicode_char": "𓊔",
+      "unicode_codepoint": "U+13294",
+      "unicode_decimal": 78484,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O047"
+    },
+    "O48": {
+      "unicode_char": "𓊕",
+      "unicode_codepoint": "U+13295",
+      "unicode_decimal": 78485,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O048"
+    },
+    "O49": {
+      "unicode_char": "𓊖",
+      "unicode_codepoint": "U+13296",
+      "unicode_decimal": 78486,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O049"
+    },
+    "O50": {
+      "unicode_char": "𓊗",
+      "unicode_codepoint": "U+13297",
+      "unicode_decimal": 78487,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O050"
+    },
+    "O51": {
+      "unicode_char": "𓊚",
+      "unicode_codepoint": "U+1329A",
+      "unicode_decimal": 78490,
+      "unicode_name": "EGYPTIAN HIEROGLYPH O051"
+    },
+    "P1": {
+      "unicode_char": "𓊛",
+      "unicode_codepoint": "U+1329B",
+      "unicode_decimal": 78491,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P001"
+    },
+    "P2": {
+      "unicode_char": "𓊝",
+      "unicode_codepoint": "U+1329D",
+      "unicode_decimal": 78493,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P002"
+    },
+    "P3": {
+      "unicode_char": "𓊞",
+      "unicode_codepoint": "U+1329E",
+      "unicode_decimal": 78494,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P003"
+    },
+    "P4": {
+      "unicode_char": "𓊠",
+      "unicode_codepoint": "U+132A0",
+      "unicode_decimal": 78496,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P004"
+    },
+    "P5": {
+      "unicode_char": "𓊡",
+      "unicode_codepoint": "U+132A1",
+      "unicode_decimal": 78497,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P005"
+    },
+    "P6": {
+      "unicode_char": "𓊢",
+      "unicode_codepoint": "U+132A2",
+      "unicode_decimal": 78498,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P006"
+    },
+    "P7": {
+      "unicode_char": "𓊣",
+      "unicode_codepoint": "U+132A3",
+      "unicode_decimal": 78499,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P007"
+    },
+    "P8": {
+      "unicode_char": "𓊤",
+      "unicode_codepoint": "U+132A4",
+      "unicode_decimal": 78500,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P008"
+    },
+    "P9": {
+      "unicode_char": "𓊥",
+      "unicode_codepoint": "U+132A5",
+      "unicode_decimal": 78501,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P009"
+    },
+    "P10": {
+      "unicode_char": "𓊦",
+      "unicode_codepoint": "U+132A6",
+      "unicode_decimal": 78502,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P010"
+    },
+    "P11": {
+      "unicode_char": "𓊧",
+      "unicode_codepoint": "U+132A7",
+      "unicode_decimal": 78503,
+      "unicode_name": "EGYPTIAN HIEROGLYPH P011"
+    },
+    "Q1": {
+      "unicode_char": "𓊨",
+      "unicode_codepoint": "U+132A8",
+      "unicode_decimal": 78504,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q001"
+    },
+    "Q2": {
+      "unicode_char": "𓊩",
+      "unicode_codepoint": "U+132A9",
+      "unicode_decimal": 78505,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q002"
+    },
+    "Q3": {
+      "unicode_char": "𓊪",
+      "unicode_codepoint": "U+132AA",
+      "unicode_decimal": 78506,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q003"
+    },
+    "Q4": {
+      "unicode_char": "𓊫",
+      "unicode_codepoint": "U+132AB",
+      "unicode_decimal": 78507,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q004"
+    },
+    "Q5": {
+      "unicode_char": "𓊬",
+      "unicode_codepoint": "U+132AC",
+      "unicode_decimal": 78508,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q005"
+    },
+    "Q6": {
+      "unicode_char": "𓊭",
+      "unicode_codepoint": "U+132AD",
+      "unicode_decimal": 78509,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q006"
+    },
+    "Q7": {
+      "unicode_char": "𓊮",
+      "unicode_codepoint": "U+132AE",
+      "unicode_decimal": 78510,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Q007"
+    },
+    "R1": {
+      "unicode_char": "𓊯",
+      "unicode_codepoint": "U+132AF",
+      "unicode_decimal": 78511,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R001"
+    },
+    "R2": {
+      "unicode_char": "𓊰",
+      "unicode_codepoint": "U+132B0",
+      "unicode_decimal": 78512,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R002"
+    },
+    "R3": {
+      "unicode_char": "𓊲",
+      "unicode_codepoint": "U+132B2",
+      "unicode_decimal": 78514,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R003"
+    },
+    "R4": {
+      "unicode_char": "𓊵",
+      "unicode_codepoint": "U+132B5",
+      "unicode_decimal": 78517,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R004"
+    },
+    "R5": {
+      "unicode_char": "𓊶",
+      "unicode_codepoint": "U+132B6",
+      "unicode_decimal": 78518,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R005"
+    },
+    "R6": {
+      "unicode_char": "𓊷",
+      "unicode_codepoint": "U+132B7",
+      "unicode_decimal": 78519,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R006"
+    },
+    "R7": {
+      "unicode_char": "𓊸",
+      "unicode_codepoint": "U+132B8",
+      "unicode_decimal": 78520,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R007"
+    },
+    "R8": {
+      "unicode_char": "𓊹",
+      "unicode_codepoint": "U+132B9",
+      "unicode_decimal": 78521,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R008"
+    },
+    "R9": {
+      "unicode_char": "𓊺",
+      "unicode_codepoint": "U+132BA",
+      "unicode_decimal": 78522,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R009"
+    },
+    "R10": {
+      "unicode_char": "𓊻",
+      "unicode_codepoint": "U+132BB",
+      "unicode_decimal": 78523,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R010"
+    },
+    "R11": {
+      "unicode_char": "𓊽",
+      "unicode_codepoint": "U+132BD",
+      "unicode_decimal": 78525,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R011"
+    },
+    "R12": {
+      "unicode_char": "𓊾",
+      "unicode_codepoint": "U+132BE",
+      "unicode_decimal": 78526,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R012"
+    },
+    "R13": {
+      "unicode_char": "𓊿",
+      "unicode_codepoint": "U+132BF",
+      "unicode_decimal": 78527,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R013"
+    },
+    "R14": {
+      "unicode_char": "𓋀",
+      "unicode_codepoint": "U+132C0",
+      "unicode_decimal": 78528,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R014"
+    },
+    "R15": {
+      "unicode_char": "𓋁",
+      "unicode_codepoint": "U+132C1",
+      "unicode_decimal": 78529,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R015"
+    },
+    "R16": {
+      "unicode_char": "𓋂",
+      "unicode_codepoint": "U+132C2",
+      "unicode_decimal": 78530,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R016"
+    },
+    "R17": {
+      "unicode_char": "𓋄",
+      "unicode_codepoint": "U+132C4",
+      "unicode_decimal": 78532,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R017"
+    },
+    "R18": {
+      "unicode_char": "𓋅",
+      "unicode_codepoint": "U+132C5",
+      "unicode_decimal": 78533,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R018"
+    },
+    "R19": {
+      "unicode_char": "𓋆",
+      "unicode_codepoint": "U+132C6",
+      "unicode_decimal": 78534,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R019"
+    },
+    "R20": {
+      "unicode_char": "𓋇",
+      "unicode_codepoint": "U+132C7",
+      "unicode_decimal": 78535,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R020"
+    },
+    "R21": {
+      "unicode_char": "𓋈",
+      "unicode_codepoint": "U+132C8",
+      "unicode_decimal": 78536,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R021"
+    },
+    "R22": {
+      "unicode_char": "𓋉",
+      "unicode_codepoint": "U+132C9",
+      "unicode_decimal": 78537,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R022"
+    },
+    "R23": {
+      "unicode_char": "𓋊",
+      "unicode_codepoint": "U+132CA",
+      "unicode_decimal": 78538,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R023"
+    },
+    "R24": {
+      "unicode_char": "𓋋",
+      "unicode_codepoint": "U+132CB",
+      "unicode_decimal": 78539,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R024"
+    },
+    "R25": {
+      "unicode_char": "𓋌",
+      "unicode_codepoint": "U+132CC",
+      "unicode_decimal": 78540,
+      "unicode_name": "EGYPTIAN HIEROGLYPH R025"
+    },
+    "S1": {
+      "unicode_char": "𓋑",
+      "unicode_codepoint": "U+132D1",
+      "unicode_decimal": 78545,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S001"
+    },
+    "S2": {
+      "unicode_char": "𓋒",
+      "unicode_codepoint": "U+132D2",
+      "unicode_decimal": 78546,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S002"
+    },
+    "S3": {
+      "unicode_char": "𓋔",
+      "unicode_codepoint": "U+132D4",
+      "unicode_decimal": 78548,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S003"
+    },
+    "S4": {
+      "unicode_char": "𓋕",
+      "unicode_codepoint": "U+132D5",
+      "unicode_decimal": 78549,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S004"
+    },
+    "S5": {
+      "unicode_char": "𓋖",
+      "unicode_codepoint": "U+132D6",
+      "unicode_decimal": 78550,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S005"
+    },
+    "S6": {
+      "unicode_char": "𓋗",
+      "unicode_codepoint": "U+132D7",
+      "unicode_decimal": 78551,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S006"
+    },
+    "S7": {
+      "unicode_char": "𓋙",
+      "unicode_codepoint": "U+132D9",
+      "unicode_decimal": 78553,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S007"
+    },
+    "S8": {
+      "unicode_char": "𓋚",
+      "unicode_codepoint": "U+132DA",
+      "unicode_decimal": 78554,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S008"
+    },
+    "S9": {
+      "unicode_char": "𓋛",
+      "unicode_codepoint": "U+132DB",
+      "unicode_decimal": 78555,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S009"
+    },
+    "S10": {
+      "unicode_char": "𓋜",
+      "unicode_codepoint": "U+132DC",
+      "unicode_decimal": 78556,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S010"
+    },
+    "S11": {
+      "unicode_char": "𓋝",
+      "unicode_codepoint": "U+132DD",
+      "unicode_decimal": 78557,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S011"
+    },
+    "S12": {
+      "unicode_char": "𓋞",
+      "unicode_codepoint": "U+132DE",
+      "unicode_decimal": 78558,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S012"
+    },
+    "S13": {
+      "unicode_char": "𓋟",
+      "unicode_codepoint": "U+132DF",
+      "unicode_decimal": 78559,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S013"
+    },
+    "S14": {
+      "unicode_char": "𓋠",
+      "unicode_codepoint": "U+132E0",
+      "unicode_decimal": 78560,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S014"
+    },
+    "S15": {
+      "unicode_char": "𓋣",
+      "unicode_codepoint": "U+132E3",
+      "unicode_decimal": 78563,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S015"
+    },
+    "S16": {
+      "unicode_char": "𓋤",
+      "unicode_codepoint": "U+132E4",
+      "unicode_decimal": 78564,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S016"
+    },
+    "S17": {
+      "unicode_char": "𓋥",
+      "unicode_codepoint": "U+132E5",
+      "unicode_decimal": 78565,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S017"
+    },
+    "S18": {
+      "unicode_char": "𓋧",
+      "unicode_codepoint": "U+132E7",
+      "unicode_decimal": 78567,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S018"
+    },
+    "S19": {
+      "unicode_char": "𓋨",
+      "unicode_codepoint": "U+132E8",
+      "unicode_decimal": 78568,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S019"
+    },
+    "S20": {
+      "unicode_char": "𓋩",
+      "unicode_codepoint": "U+132E9",
+      "unicode_decimal": 78569,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S020"
+    },
+    "S21": {
+      "unicode_char": "𓋪",
+      "unicode_codepoint": "U+132EA",
+      "unicode_decimal": 78570,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S021"
+    },
+    "S22": {
+      "unicode_char": "𓋫",
+      "unicode_codepoint": "U+132EB",
+      "unicode_decimal": 78571,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S022"
+    },
+    "S23": {
+      "unicode_char": "𓋬",
+      "unicode_codepoint": "U+132EC",
+      "unicode_decimal": 78572,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S023"
+    },
+    "S24": {
+      "unicode_char": "𓋭",
+      "unicode_codepoint": "U+132ED",
+      "unicode_decimal": 78573,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S024"
+    },
+    "S25": {
+      "unicode_char": "𓋮",
+      "unicode_codepoint": "U+132EE",
+      "unicode_decimal": 78574,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S025"
+    },
+    "S26": {
+      "unicode_char": "𓋯",
+      "unicode_codepoint": "U+132EF",
+      "unicode_decimal": 78575,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S026"
+    },
+    "S27": {
+      "unicode_char": "𓋲",
+      "unicode_codepoint": "U+132F2",
+      "unicode_decimal": 78578,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S027"
+    },
+    "S28": {
+      "unicode_char": "𓋳",
+      "unicode_codepoint": "U+132F3",
+      "unicode_decimal": 78579,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S028"
+    },
+    "S29": {
+      "unicode_char": "𓋴",
+      "unicode_codepoint": "U+132F4",
+      "unicode_decimal": 78580,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S029"
+    },
+    "S30": {
+      "unicode_char": "𓋵",
+      "unicode_codepoint": "U+132F5",
+      "unicode_decimal": 78581,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S030"
+    },
+    "S31": {
+      "unicode_char": "𓋶",
+      "unicode_codepoint": "U+132F6",
+      "unicode_decimal": 78582,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S031"
+    },
+    "S32": {
+      "unicode_char": "𓋷",
+      "unicode_codepoint": "U+132F7",
+      "unicode_decimal": 78583,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S032"
+    },
+    "S33": {
+      "unicode_char": "𓋸",
+      "unicode_codepoint": "U+132F8",
+      "unicode_decimal": 78584,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S033"
+    },
+    "S34": {
+      "unicode_char": "𓋹",
+      "unicode_codepoint": "U+132F9",
+      "unicode_decimal": 78585,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S034"
+    },
+    "S35": {
+      "unicode_char": "𓋺",
+      "unicode_codepoint": "U+132FA",
+      "unicode_decimal": 78586,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S035"
+    },
+    "S36": {
+      "unicode_char": "𓋼",
+      "unicode_codepoint": "U+132FC",
+      "unicode_decimal": 78588,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S036"
+    },
+    "S37": {
+      "unicode_char": "𓋽",
+      "unicode_codepoint": "U+132FD",
+      "unicode_decimal": 78589,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S037"
+    },
+    "S38": {
+      "unicode_char": "𓋾",
+      "unicode_codepoint": "U+132FE",
+      "unicode_decimal": 78590,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S038"
+    },
+    "S39": {
+      "unicode_char": "𓋿",
+      "unicode_codepoint": "U+132FF",
+      "unicode_decimal": 78591,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S039"
+    },
+    "S40": {
+      "unicode_char": "𓌀",
+      "unicode_codepoint": "U+13300",
+      "unicode_decimal": 78592,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S040"
+    },
+    "S41": {
+      "unicode_char": "𓌁",
+      "unicode_codepoint": "U+13301",
+      "unicode_decimal": 78593,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S041"
+    },
+    "S42": {
+      "unicode_char": "𓌂",
+      "unicode_codepoint": "U+13302",
+      "unicode_decimal": 78594,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S042"
+    },
+    "S43": {
+      "unicode_char": "𓌃",
+      "unicode_codepoint": "U+13303",
+      "unicode_decimal": 78595,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S043"
+    },
+    "S44": {
+      "unicode_char": "𓌄",
+      "unicode_codepoint": "U+13304",
+      "unicode_decimal": 78596,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S044"
+    },
+    "S45": {
+      "unicode_char": "𓌅",
+      "unicode_codepoint": "U+13305",
+      "unicode_decimal": 78597,
+      "unicode_name": "EGYPTIAN HIEROGLYPH S045"
+    },
+    "T1": {
+      "unicode_char": "𓌇",
+      "unicode_codepoint": "U+13307",
+      "unicode_decimal": 78599,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T001"
+    },
+    "T2": {
+      "unicode_char": "𓌈",
+      "unicode_codepoint": "U+13308",
+      "unicode_decimal": 78600,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T002"
+    },
+    "T3": {
+      "unicode_char": "𓌉",
+      "unicode_codepoint": "U+13309",
+      "unicode_decimal": 78601,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T003"
+    },
+    "T4": {
+      "unicode_char": "𓌋",
+      "unicode_codepoint": "U+1330B",
+      "unicode_decimal": 78603,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T004"
+    },
+    "T5": {
+      "unicode_char": "𓌌",
+      "unicode_codepoint": "U+1330C",
+      "unicode_decimal": 78604,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T005"
+    },
+    "T6": {
+      "unicode_char": "𓌍",
+      "unicode_codepoint": "U+1330D",
+      "unicode_decimal": 78605,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T006"
+    },
+    "T7": {
+      "unicode_char": "𓌎",
+      "unicode_codepoint": "U+1330E",
+      "unicode_decimal": 78606,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T007"
+    },
+    "T8": {
+      "unicode_char": "𓌐",
+      "unicode_codepoint": "U+13310",
+      "unicode_decimal": 78608,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T008"
+    },
+    "T9": {
+      "unicode_char": "𓌒",
+      "unicode_codepoint": "U+13312",
+      "unicode_decimal": 78610,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T009"
+    },
+    "T10": {
+      "unicode_char": "𓌔",
+      "unicode_codepoint": "U+13314",
+      "unicode_decimal": 78612,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T010"
+    },
+    "T11": {
+      "unicode_char": "𓌕",
+      "unicode_codepoint": "U+13315",
+      "unicode_decimal": 78613,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T011"
+    },
+    "T12": {
+      "unicode_char": "𓌗",
+      "unicode_codepoint": "U+13317",
+      "unicode_decimal": 78615,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T012"
+    },
+    "T13": {
+      "unicode_char": "𓌘",
+      "unicode_codepoint": "U+13318",
+      "unicode_decimal": 78616,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T013"
+    },
+    "T14": {
+      "unicode_char": "𓌙",
+      "unicode_codepoint": "U+13319",
+      "unicode_decimal": 78617,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T014"
+    },
+    "T15": {
+      "unicode_char": "𓌚",
+      "unicode_codepoint": "U+1331A",
+      "unicode_decimal": 78618,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T015"
+    },
+    "T16": {
+      "unicode_char": "𓌛",
+      "unicode_codepoint": "U+1331B",
+      "unicode_decimal": 78619,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T016"
+    },
+    "T17": {
+      "unicode_char": "𓌝",
+      "unicode_codepoint": "U+1331D",
+      "unicode_decimal": 78621,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T017"
+    },
+    "T18": {
+      "unicode_char": "𓌞",
+      "unicode_codepoint": "U+1331E",
+      "unicode_decimal": 78622,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T018"
+    },
+    "T19": {
+      "unicode_char": "𓌟",
+      "unicode_codepoint": "U+1331F",
+      "unicode_decimal": 78623,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T019"
+    },
+    "T20": {
+      "unicode_char": "𓌠",
+      "unicode_codepoint": "U+13320",
+      "unicode_decimal": 78624,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T020"
+    },
+    "T21": {
+      "unicode_char": "𓌡",
+      "unicode_codepoint": "U+13321",
+      "unicode_decimal": 78625,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T021"
+    },
+    "T22": {
+      "unicode_char": "𓌢",
+      "unicode_codepoint": "U+13322",
+      "unicode_decimal": 78626,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T022"
+    },
+    "T23": {
+      "unicode_char": "𓌣",
+      "unicode_codepoint": "U+13323",
+      "unicode_decimal": 78627,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T023"
+    },
+    "T24": {
+      "unicode_char": "𓌤",
+      "unicode_codepoint": "U+13324",
+      "unicode_decimal": 78628,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T024"
+    },
+    "T25": {
+      "unicode_char": "𓌥",
+      "unicode_codepoint": "U+13325",
+      "unicode_decimal": 78629,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T025"
+    },
+    "T26": {
+      "unicode_char": "𓌦",
+      "unicode_codepoint": "U+13326",
+      "unicode_decimal": 78630,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T026"
+    },
+    "T27": {
+      "unicode_char": "𓌧",
+      "unicode_codepoint": "U+13327",
+      "unicode_decimal": 78631,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T027"
+    },
+    "T28": {
+      "unicode_char": "𓌨",
+      "unicode_codepoint": "U+13328",
+      "unicode_decimal": 78632,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T028"
+    },
+    "T29": {
+      "unicode_char": "𓌩",
+      "unicode_codepoint": "U+13329",
+      "unicode_decimal": 78633,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T029"
+    },
+    "T30": {
+      "unicode_char": "𓌪",
+      "unicode_codepoint": "U+1332A",
+      "unicode_decimal": 78634,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T030"
+    },
+    "T31": {
+      "unicode_char": "𓌫",
+      "unicode_codepoint": "U+1332B",
+      "unicode_decimal": 78635,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T031"
+    },
+    "T32": {
+      "unicode_char": "𓌬",
+      "unicode_codepoint": "U+1332C",
+      "unicode_decimal": 78636,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T032"
+    },
+    "T33": {
+      "unicode_char": "𓌮",
+      "unicode_codepoint": "U+1332E",
+      "unicode_decimal": 78638,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T033"
+    },
+    "T34": {
+      "unicode_char": "𓌰",
+      "unicode_codepoint": "U+13330",
+      "unicode_decimal": 78640,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T034"
+    },
+    "T35": {
+      "unicode_char": "𓌱",
+      "unicode_codepoint": "U+13331",
+      "unicode_decimal": 78641,
+      "unicode_name": "EGYPTIAN HIEROGLYPH T035"
+    },
+    "U1": {
+      "unicode_char": "𓌳",
+      "unicode_codepoint": "U+13333",
+      "unicode_decimal": 78643,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U001"
+    },
+    "U2": {
+      "unicode_char": "𓌴",
+      "unicode_codepoint": "U+13334",
+      "unicode_decimal": 78644,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U002"
+    },
+    "U3": {
+      "unicode_char": "𓌵",
+      "unicode_codepoint": "U+13335",
+      "unicode_decimal": 78645,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U003"
+    },
+    "U4": {
+      "unicode_char": "𓌶",
+      "unicode_codepoint": "U+13336",
+      "unicode_decimal": 78646,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U004"
+    },
+    "U5": {
+      "unicode_char": "𓌷",
+      "unicode_codepoint": "U+13337",
+      "unicode_decimal": 78647,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U005"
+    },
+    "U6": {
+      "unicode_char": "𓌸",
+      "unicode_codepoint": "U+13338",
+      "unicode_decimal": 78648,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U006"
+    },
+    "U7": {
+      "unicode_char": "𓌻",
+      "unicode_codepoint": "U+1333B",
+      "unicode_decimal": 78651,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U007"
+    },
+    "U8": {
+      "unicode_char": "𓌼",
+      "unicode_codepoint": "U+1333C",
+      "unicode_decimal": 78652,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U008"
+    },
+    "U9": {
+      "unicode_char": "𓌽",
+      "unicode_codepoint": "U+1333D",
+      "unicode_decimal": 78653,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U009"
+    },
+    "U10": {
+      "unicode_char": "𓌾",
+      "unicode_codepoint": "U+1333E",
+      "unicode_decimal": 78654,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U010"
+    },
+    "U11": {
+      "unicode_char": "𓌿",
+      "unicode_codepoint": "U+1333F",
+      "unicode_decimal": 78655,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U011"
+    },
+    "U12": {
+      "unicode_char": "𓍀",
+      "unicode_codepoint": "U+13340",
+      "unicode_decimal": 78656,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U012"
+    },
+    "U13": {
+      "unicode_char": "𓍁",
+      "unicode_codepoint": "U+13341",
+      "unicode_decimal": 78657,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U013"
+    },
+    "U14": {
+      "unicode_char": "𓍂",
+      "unicode_codepoint": "U+13342",
+      "unicode_decimal": 78658,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U014"
+    },
+    "U15": {
+      "unicode_char": "𓍃",
+      "unicode_codepoint": "U+13343",
+      "unicode_decimal": 78659,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U015"
+    },
+    "U16": {
+      "unicode_char": "𓍄",
+      "unicode_codepoint": "U+13344",
+      "unicode_decimal": 78660,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U016"
+    },
+    "U17": {
+      "unicode_char": "𓍅",
+      "unicode_codepoint": "U+13345",
+      "unicode_decimal": 78661,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U017"
+    },
+    "U18": {
+      "unicode_char": "𓍆",
+      "unicode_codepoint": "U+13346",
+      "unicode_decimal": 78662,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U018"
+    },
+    "U19": {
+      "unicode_char": "𓍇",
+      "unicode_codepoint": "U+13347",
+      "unicode_decimal": 78663,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U019"
+    },
+    "U20": {
+      "unicode_char": "𓍈",
+      "unicode_codepoint": "U+13348",
+      "unicode_decimal": 78664,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U020"
+    },
+    "U21": {
+      "unicode_char": "𓍉",
+      "unicode_codepoint": "U+13349",
+      "unicode_decimal": 78665,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U021"
+    },
+    "U22": {
+      "unicode_char": "𓍊",
+      "unicode_codepoint": "U+1334A",
+      "unicode_decimal": 78666,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U022"
+    },
+    "U23": {
+      "unicode_char": "𓍋",
+      "unicode_codepoint": "U+1334B",
+      "unicode_decimal": 78667,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U023"
+    },
+    "U24": {
+      "unicode_char": "𓍍",
+      "unicode_codepoint": "U+1334D",
+      "unicode_decimal": 78669,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U024"
+    },
+    "U25": {
+      "unicode_char": "𓍎",
+      "unicode_codepoint": "U+1334E",
+      "unicode_decimal": 78670,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U025"
+    },
+    "U26": {
+      "unicode_char": "𓍏",
+      "unicode_codepoint": "U+1334F",
+      "unicode_decimal": 78671,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U026"
+    },
+    "U27": {
+      "unicode_char": "𓍐",
+      "unicode_codepoint": "U+13350",
+      "unicode_decimal": 78672,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U027"
+    },
+    "U28": {
+      "unicode_char": "𓍑",
+      "unicode_codepoint": "U+13351",
+      "unicode_decimal": 78673,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U028"
+    },
+    "U29": {
+      "unicode_char": "𓍒",
+      "unicode_codepoint": "U+13352",
+      "unicode_decimal": 78674,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U029"
+    },
+    "U30": {
+      "unicode_char": "𓍔",
+      "unicode_codepoint": "U+13354",
+      "unicode_decimal": 78676,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U030"
+    },
+    "U31": {
+      "unicode_char": "𓍕",
+      "unicode_codepoint": "U+13355",
+      "unicode_decimal": 78677,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U031"
+    },
+    "U32": {
+      "unicode_char": "𓍖",
+      "unicode_codepoint": "U+13356",
+      "unicode_decimal": 78678,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U032"
+    },
+    "U33": {
+      "unicode_char": "𓍘",
+      "unicode_codepoint": "U+13358",
+      "unicode_decimal": 78680,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U033"
+    },
+    "U34": {
+      "unicode_char": "𓍙",
+      "unicode_codepoint": "U+13359",
+      "unicode_decimal": 78681,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U034"
+    },
+    "U35": {
+      "unicode_char": "𓍚",
+      "unicode_codepoint": "U+1335A",
+      "unicode_decimal": 78682,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U035"
+    },
+    "U36": {
+      "unicode_char": "𓍛",
+      "unicode_codepoint": "U+1335B",
+      "unicode_decimal": 78683,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U036"
+    },
+    "U37": {
+      "unicode_char": "𓍜",
+      "unicode_codepoint": "U+1335C",
+      "unicode_decimal": 78684,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U037"
+    },
+    "U38": {
+      "unicode_char": "𓍝",
+      "unicode_codepoint": "U+1335D",
+      "unicode_decimal": 78685,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U038"
+    },
+    "U39": {
+      "unicode_char": "𓍞",
+      "unicode_codepoint": "U+1335E",
+      "unicode_decimal": 78686,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U039"
+    },
+    "U40": {
+      "unicode_char": "𓍟",
+      "unicode_codepoint": "U+1335F",
+      "unicode_decimal": 78687,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U040"
+    },
+    "U41": {
+      "unicode_char": "𓍠",
+      "unicode_codepoint": "U+13360",
+      "unicode_decimal": 78688,
+      "unicode_name": "EGYPTIAN HIEROGLYPH U041"
+    },
+    "V1": {
+      "unicode_char": "𓍢",
+      "unicode_codepoint": "U+13362",
+      "unicode_decimal": 78690,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V001"
+    },
+    "V2": {
+      "unicode_char": "𓍬",
+      "unicode_codepoint": "U+1336C",
+      "unicode_decimal": 78700,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V002"
+    },
+    "V3": {
+      "unicode_char": "𓍮",
+      "unicode_codepoint": "U+1336E",
+      "unicode_decimal": 78702,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V003"
+    },
+    "V4": {
+      "unicode_char": "𓍯",
+      "unicode_codepoint": "U+1336F",
+      "unicode_decimal": 78703,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V004"
+    },
+    "V5": {
+      "unicode_char": "𓍰",
+      "unicode_codepoint": "U+13370",
+      "unicode_decimal": 78704,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V005"
+    },
+    "V6": {
+      "unicode_char": "𓍱",
+      "unicode_codepoint": "U+13371",
+      "unicode_decimal": 78705,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V006"
+    },
+    "V7": {
+      "unicode_char": "𓍲",
+      "unicode_codepoint": "U+13372",
+      "unicode_decimal": 78706,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V007"
+    },
+    "V8": {
+      "unicode_char": "𓍵",
+      "unicode_codepoint": "U+13375",
+      "unicode_decimal": 78709,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V008"
+    },
+    "V9": {
+      "unicode_char": "𓍶",
+      "unicode_codepoint": "U+13376",
+      "unicode_decimal": 78710,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V009"
+    },
+    "V10": {
+      "unicode_char": "𓍷",
+      "unicode_codepoint": "U+13377",
+      "unicode_decimal": 78711,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V010"
+    },
+    "V11": {
+      "unicode_char": "𓍸",
+      "unicode_codepoint": "U+13378",
+      "unicode_decimal": 78712,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V011"
+    },
+    "V12": {
+      "unicode_char": "𓍼",
+      "unicode_codepoint": "U+1337C",
+      "unicode_decimal": 78716,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V012"
+    },
+    "V13": {
+      "unicode_char": "𓍿",
+      "unicode_codepoint": "U+1337F",
+      "unicode_decimal": 78719,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V013"
+    },
+    "V14": {
+      "unicode_char": "𓎀",
+      "unicode_codepoint": "U+13380",
+      "unicode_decimal": 78720,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V014"
+    },
+    "V15": {
+      "unicode_char": "𓎁",
+      "unicode_codepoint": "U+13381",
+      "unicode_decimal": 78721,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V015"
+    },
+    "V16": {
+      "unicode_char": "𓎂",
+      "unicode_codepoint": "U+13382",
+      "unicode_decimal": 78722,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V016"
+    },
+    "V17": {
+      "unicode_char": "𓎃",
+      "unicode_codepoint": "U+13383",
+      "unicode_decimal": 78723,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V017"
+    },
+    "V18": {
+      "unicode_char": "𓎄",
+      "unicode_codepoint": "U+13384",
+      "unicode_decimal": 78724,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V018"
+    },
+    "V19": {
+      "unicode_char": "𓎅",
+      "unicode_codepoint": "U+13385",
+      "unicode_decimal": 78725,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V019"
+    },
+    "V20": {
+      "unicode_char": "𓎆",
+      "unicode_codepoint": "U+13386",
+      "unicode_decimal": 78726,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V020"
+    },
+    "V21": {
+      "unicode_char": "𓎓",
+      "unicode_codepoint": "U+13393",
+      "unicode_decimal": 78739,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V021"
+    },
+    "V22": {
+      "unicode_char": "𓎔",
+      "unicode_codepoint": "U+13394",
+      "unicode_decimal": 78740,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V022"
+    },
+    "V23": {
+      "unicode_char": "𓎕",
+      "unicode_codepoint": "U+13395",
+      "unicode_decimal": 78741,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V023"
+    },
+    "V24": {
+      "unicode_char": "𓎗",
+      "unicode_codepoint": "U+13397",
+      "unicode_decimal": 78743,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V024"
+    },
+    "V25": {
+      "unicode_char": "𓎘",
+      "unicode_codepoint": "U+13398",
+      "unicode_decimal": 78744,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V025"
+    },
+    "V26": {
+      "unicode_char": "𓎙",
+      "unicode_codepoint": "U+13399",
+      "unicode_decimal": 78745,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V026"
+    },
+    "V27": {
+      "unicode_char": "𓎚",
+      "unicode_codepoint": "U+1339A",
+      "unicode_decimal": 78746,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V027"
+    },
+    "V28": {
+      "unicode_char": "𓎛",
+      "unicode_codepoint": "U+1339B",
+      "unicode_decimal": 78747,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V028"
+    },
+    "V29": {
+      "unicode_char": "𓎝",
+      "unicode_codepoint": "U+1339D",
+      "unicode_decimal": 78749,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V029"
+    },
+    "V30": {
+      "unicode_char": "𓎟",
+      "unicode_codepoint": "U+1339F",
+      "unicode_decimal": 78751,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V030"
+    },
+    "V31": {
+      "unicode_char": "𓎡",
+      "unicode_codepoint": "U+133A1",
+      "unicode_decimal": 78753,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V031"
+    },
+    "V32": {
+      "unicode_char": "𓎣",
+      "unicode_codepoint": "U+133A3",
+      "unicode_decimal": 78755,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V032"
+    },
+    "V33": {
+      "unicode_char": "𓎤",
+      "unicode_codepoint": "U+133A4",
+      "unicode_decimal": 78756,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V033"
+    },
+    "V34": {
+      "unicode_char": "𓎦",
+      "unicode_codepoint": "U+133A6",
+      "unicode_decimal": 78758,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V034"
+    },
+    "V35": {
+      "unicode_char": "𓎧",
+      "unicode_codepoint": "U+133A7",
+      "unicode_decimal": 78759,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V035"
+    },
+    "V36": {
+      "unicode_char": "𓎨",
+      "unicode_codepoint": "U+133A8",
+      "unicode_decimal": 78760,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V036"
+    },
+    "V37": {
+      "unicode_char": "𓎩",
+      "unicode_codepoint": "U+133A9",
+      "unicode_decimal": 78761,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V037"
+    },
+    "V38": {
+      "unicode_char": "𓎫",
+      "unicode_codepoint": "U+133AB",
+      "unicode_decimal": 78763,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V038"
+    },
+    "V39": {
+      "unicode_char": "𓎬",
+      "unicode_codepoint": "U+133AC",
+      "unicode_decimal": 78764,
+      "unicode_name": "EGYPTIAN HIEROGLYPH V039"
+    },
+    "W1": {
+      "unicode_char": "𓎯",
+      "unicode_codepoint": "U+133AF",
+      "unicode_decimal": 78767,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W001"
+    },
+    "W2": {
+      "unicode_char": "𓎰",
+      "unicode_codepoint": "U+133B0",
+      "unicode_decimal": 78768,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W002"
+    },
+    "W3": {
+      "unicode_char": "𓎱",
+      "unicode_codepoint": "U+133B1",
+      "unicode_decimal": 78769,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W003"
+    },
+    "W4": {
+      "unicode_char": "𓎳",
+      "unicode_codepoint": "U+133B3",
+      "unicode_decimal": 78771,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W004"
+    },
+    "W5": {
+      "unicode_char": "𓎴",
+      "unicode_codepoint": "U+133B4",
+      "unicode_decimal": 78772,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W005"
+    },
+    "W6": {
+      "unicode_char": "𓎵",
+      "unicode_codepoint": "U+133B5",
+      "unicode_decimal": 78773,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W006"
+    },
+    "W7": {
+      "unicode_char": "𓎶",
+      "unicode_codepoint": "U+133B6",
+      "unicode_decimal": 78774,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W007"
+    },
+    "W8": {
+      "unicode_char": "𓎷",
+      "unicode_codepoint": "U+133B7",
+      "unicode_decimal": 78775,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W008"
+    },
+    "W9": {
+      "unicode_char": "𓎸",
+      "unicode_codepoint": "U+133B8",
+      "unicode_decimal": 78776,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W009"
+    },
+    "W10": {
+      "unicode_char": "𓎺",
+      "unicode_codepoint": "U+133BA",
+      "unicode_decimal": 78778,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W010"
+    },
+    "W11": {
+      "unicode_char": "𓎼",
+      "unicode_codepoint": "U+133BC",
+      "unicode_decimal": 78780,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W011"
+    },
+    "W12": {
+      "unicode_char": "𓎽",
+      "unicode_codepoint": "U+133BD",
+      "unicode_decimal": 78781,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W012"
+    },
+    "W13": {
+      "unicode_char": "𓎾",
+      "unicode_codepoint": "U+133BE",
+      "unicode_decimal": 78782,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W013"
+    },
+    "W14": {
+      "unicode_char": "𓎿",
+      "unicode_codepoint": "U+133BF",
+      "unicode_decimal": 78783,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W014"
+    },
+    "W15": {
+      "unicode_char": "𓏁",
+      "unicode_codepoint": "U+133C1",
+      "unicode_decimal": 78785,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W015"
+    },
+    "W16": {
+      "unicode_char": "𓏂",
+      "unicode_codepoint": "U+133C2",
+      "unicode_decimal": 78786,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W016"
+    },
+    "W17": {
+      "unicode_char": "𓏃",
+      "unicode_codepoint": "U+133C3",
+      "unicode_decimal": 78787,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W017"
+    },
+    "W18": {
+      "unicode_char": "𓏅",
+      "unicode_codepoint": "U+133C5",
+      "unicode_decimal": 78789,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W018"
+    },
+    "W19": {
+      "unicode_char": "𓏇",
+      "unicode_codepoint": "U+133C7",
+      "unicode_decimal": 78791,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W019"
+    },
+    "W20": {
+      "unicode_char": "𓏈",
+      "unicode_codepoint": "U+133C8",
+      "unicode_decimal": 78792,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W020"
+    },
+    "W21": {
+      "unicode_char": "𓏉",
+      "unicode_codepoint": "U+133C9",
+      "unicode_decimal": 78793,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W021"
+    },
+    "W22": {
+      "unicode_char": "𓏊",
+      "unicode_codepoint": "U+133CA",
+      "unicode_decimal": 78794,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W022"
+    },
+    "W23": {
+      "unicode_char": "𓏋",
+      "unicode_codepoint": "U+133CB",
+      "unicode_decimal": 78795,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W023"
+    },
+    "W24": {
+      "unicode_char": "𓏌",
+      "unicode_codepoint": "U+133CC",
+      "unicode_decimal": 78796,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W024"
+    },
+    "W25": {
+      "unicode_char": "𓏎",
+      "unicode_codepoint": "U+133CE",
+      "unicode_decimal": 78798,
+      "unicode_name": "EGYPTIAN HIEROGLYPH W025"
+    },
+    "X1": {
+      "unicode_char": "𓏏",
+      "unicode_codepoint": "U+133CF",
+      "unicode_decimal": 78799,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X001"
+    },
+    "X2": {
+      "unicode_char": "𓏐",
+      "unicode_codepoint": "U+133D0",
+      "unicode_decimal": 78800,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X002"
+    },
+    "X3": {
+      "unicode_char": "𓏑",
+      "unicode_codepoint": "U+133D1",
+      "unicode_decimal": 78801,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X003"
+    },
+    "X4": {
+      "unicode_char": "𓏒",
+      "unicode_codepoint": "U+133D2",
+      "unicode_decimal": 78802,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X004"
+    },
+    "X5": {
+      "unicode_char": "𓏕",
+      "unicode_codepoint": "U+133D5",
+      "unicode_decimal": 78805,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X005"
+    },
+    "X6": {
+      "unicode_char": "𓏖",
+      "unicode_codepoint": "U+133D6",
+      "unicode_decimal": 78806,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X006"
+    },
+    "X7": {
+      "unicode_char": "𓏘",
+      "unicode_codepoint": "U+133D8",
+      "unicode_decimal": 78808,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X007"
+    },
+    "X8": {
+      "unicode_char": "𓏙",
+      "unicode_codepoint": "U+133D9",
+      "unicode_decimal": 78809,
+      "unicode_name": "EGYPTIAN HIEROGLYPH X008"
+    },
+    "Y1": {
+      "unicode_char": "𓏛",
+      "unicode_codepoint": "U+133DB",
+      "unicode_decimal": 78811,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y001"
+    },
+    "Y2": {
+      "unicode_char": "𓏝",
+      "unicode_codepoint": "U+133DD",
+      "unicode_decimal": 78813,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y002"
+    },
+    "Y3": {
+      "unicode_char": "𓏞",
+      "unicode_codepoint": "U+133DE",
+      "unicode_decimal": 78814,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y003"
+    },
+    "Y4": {
+      "unicode_char": "𓏟",
+      "unicode_codepoint": "U+133DF",
+      "unicode_decimal": 78815,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y004"
+    },
+    "Y5": {
+      "unicode_char": "𓏠",
+      "unicode_codepoint": "U+133E0",
+      "unicode_decimal": 78816,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y005"
+    },
+    "Y6": {
+      "unicode_char": "𓏡",
+      "unicode_codepoint": "U+133E1",
+      "unicode_decimal": 78817,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y006"
+    },
+    "Y7": {
+      "unicode_char": "𓏢",
+      "unicode_codepoint": "U+133E2",
+      "unicode_decimal": 78818,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y007"
+    },
+    "Y8": {
+      "unicode_char": "𓏣",
+      "unicode_codepoint": "U+133E3",
+      "unicode_decimal": 78819,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Y008"
+    },
+    "Z1": {
+      "unicode_char": "𓏤",
+      "unicode_codepoint": "U+133E4",
+      "unicode_decimal": 78820,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z001"
+    },
+    "Z2": {
+      "unicode_char": "𓏥",
+      "unicode_codepoint": "U+133E5",
+      "unicode_decimal": 78821,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z002"
+    },
+    "Z3": {
+      "unicode_char": "𓏪",
+      "unicode_codepoint": "U+133EA",
+      "unicode_decimal": 78826,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z003"
+    },
+    "Z4": {
+      "unicode_char": "𓏭",
+      "unicode_codepoint": "U+133ED",
+      "unicode_decimal": 78829,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z004"
+    },
+    "Z5": {
+      "unicode_char": "𓏯",
+      "unicode_codepoint": "U+133EF",
+      "unicode_decimal": 78831,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z005"
+    },
+    "Z6": {
+      "unicode_char": "𓏱",
+      "unicode_codepoint": "U+133F1",
+      "unicode_decimal": 78833,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z006"
+    },
+    "Z7": {
+      "unicode_char": "𓏲",
+      "unicode_codepoint": "U+133F2",
+      "unicode_decimal": 78834,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z007"
+    },
+    "Z8": {
+      "unicode_char": "𓏳",
+      "unicode_codepoint": "U+133F3",
+      "unicode_decimal": 78835,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z008"
+    },
+    "Z9": {
+      "unicode_char": "𓏴",
+      "unicode_codepoint": "U+133F4",
+      "unicode_decimal": 78836,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z009"
+    },
+    "Z10": {
+      "unicode_char": "𓏵",
+      "unicode_codepoint": "U+133F5",
+      "unicode_decimal": 78837,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z010"
+    },
+    "Z11": {
+      "unicode_char": "𓏶",
+      "unicode_codepoint": "U+133F6",
+      "unicode_decimal": 78838,
+      "unicode_name": "EGYPTIAN HIEROGLYPH Z011"
+    },
+    "Aa1": {
+      "unicode_char": "𓐍",
+      "unicode_codepoint": "U+1340D",
+      "unicode_decimal": 78861,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA001"
+    },
+    "Aa2": {
+      "unicode_char": "𓐎",
+      "unicode_codepoint": "U+1340E",
+      "unicode_decimal": 78862,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA002"
+    },
+    "Aa3": {
+      "unicode_char": "𓐏",
+      "unicode_codepoint": "U+1340F",
+      "unicode_decimal": 78863,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA003"
+    },
+    "Aa4": {
+      "unicode_char": "𓐐",
+      "unicode_codepoint": "U+13410",
+      "unicode_decimal": 78864,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA004"
+    },
+    "Aa5": {
+      "unicode_char": "𓐑",
+      "unicode_codepoint": "U+13411",
+      "unicode_decimal": 78865,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA005"
+    },
+    "Aa6": {
+      "unicode_char": "𓐒",
+      "unicode_codepoint": "U+13412",
+      "unicode_decimal": 78866,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA006"
+    },
+    "Aa7": {
+      "unicode_char": "𓐓",
+      "unicode_codepoint": "U+13413",
+      "unicode_decimal": 78867,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA007"
+    },
+    "Aa8": {
+      "unicode_char": "𓐖",
+      "unicode_codepoint": "U+13416",
+      "unicode_decimal": 78870,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA008"
+    },
+    "Aa9": {
+      "unicode_char": "𓐗",
+      "unicode_codepoint": "U+13417",
+      "unicode_decimal": 78871,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA009"
+    },
+    "Aa10": {
+      "unicode_char": "𓐘",
+      "unicode_codepoint": "U+13418",
+      "unicode_decimal": 78872,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA010"
+    },
+    "Aa11": {
+      "unicode_char": "𓐙",
+      "unicode_codepoint": "U+13419",
+      "unicode_decimal": 78873,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA011"
+    },
+    "Aa12": {
+      "unicode_char": "𓐚",
+      "unicode_codepoint": "U+1341A",
+      "unicode_decimal": 78874,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA012"
+    },
+    "Aa13": {
+      "unicode_char": "𓐛",
+      "unicode_codepoint": "U+1341B",
+      "unicode_decimal": 78875,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA013"
+    },
+    "Aa14": {
+      "unicode_char": "𓐜",
+      "unicode_codepoint": "U+1341C",
+      "unicode_decimal": 78876,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA014"
+    },
+    "Aa15": {
+      "unicode_char": "𓐝",
+      "unicode_codepoint": "U+1341D",
+      "unicode_decimal": 78877,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA015"
+    },
+    "Aa16": {
+      "unicode_char": "𓐞",
+      "unicode_codepoint": "U+1341E",
+      "unicode_decimal": 78878,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA016"
+    },
+    "Aa17": {
+      "unicode_char": "𓐟",
+      "unicode_codepoint": "U+1341F",
+      "unicode_decimal": 78879,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA017"
+    },
+    "Aa18": {
+      "unicode_char": "𓐠",
+      "unicode_codepoint": "U+13420",
+      "unicode_decimal": 78880,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA018"
+    },
+    "Aa19": {
+      "unicode_char": "𓐡",
+      "unicode_codepoint": "U+13421",
+      "unicode_decimal": 78881,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA019"
+    },
+    "Aa20": {
+      "unicode_char": "𓐢",
+      "unicode_codepoint": "U+13422",
+      "unicode_decimal": 78882,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA020"
+    },
+    "Aa21": {
+      "unicode_char": "𓐣",
+      "unicode_codepoint": "U+13423",
+      "unicode_decimal": 78883,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA021"
+    },
+    "Aa22": {
+      "unicode_char": "𓐤",
+      "unicode_codepoint": "U+13424",
+      "unicode_decimal": 78884,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA022"
+    },
+    "Aa23": {
+      "unicode_char": "𓐥",
+      "unicode_codepoint": "U+13425",
+      "unicode_decimal": 78885,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA023"
+    },
+    "Aa24": {
+      "unicode_char": "𓐦",
+      "unicode_codepoint": "U+13426",
+      "unicode_decimal": 78886,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA024"
+    },
+    "Aa25": {
+      "unicode_char": "𓐧",
+      "unicode_codepoint": "U+13427",
+      "unicode_decimal": 78887,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA025"
+    },
+    "Aa26": {
+      "unicode_char": "𓐨",
+      "unicode_codepoint": "U+13428",
+      "unicode_decimal": 78888,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA026"
+    },
+    "Aa27": {
+      "unicode_char": "𓐩",
+      "unicode_codepoint": "U+13429",
+      "unicode_decimal": 78889,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA027"
+    },
+    "Aa28": {
+      "unicode_char": "𓐪",
+      "unicode_codepoint": "U+1342A",
+      "unicode_decimal": 78890,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA028"
+    },
+    "Aa29": {
+      "unicode_char": "𓐫",
+      "unicode_codepoint": "U+1342B",
+      "unicode_decimal": 78891,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA029"
+    },
+    "Aa30": {
+      "unicode_char": "𓐬",
+      "unicode_codepoint": "U+1342C",
+      "unicode_decimal": 78892,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA030"
+    },
+    "Aa31": {
+      "unicode_char": "𓐭",
+      "unicode_codepoint": "U+1342D",
+      "unicode_decimal": 78893,
+      "unicode_name": "EGYPTIAN HIEROGLYPH AA031"
+    }
+  },
+  "missing": [
+    "A14a",
+    "A17a",
+    "A40a",
+    "A42a",
+    "A43a",
+    "A45a",
+    "A5a",
+    "C10a",
+    "D27a",
+    "D34a",
+    "D46a",
+    "G26a",
+    "G7a",
+    "G7b",
+    "N35a",
+    "O29V",
+    "P1a",
+    "S14a",
+    "T7a",
+    "T8a",
+    "T9a",
+    "V31a",
+    "W10a",
+    "Y1v",
+    "Z3a",
+    "Z4a"
+  ]
 }

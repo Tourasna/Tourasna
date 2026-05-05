@@ -52,3 +52,10 @@ data/aetel_dataset.json
 .env
 .env.local
 .env.*.local
+
+# Glyph icons (generated, ~3.7 MB - distributed via Google Drive)
+data/glyph_icons/
+data/glyph_icons.zip
+
+# Generated mappings (regenerable from scripts)
+data/yolo_classes.json
