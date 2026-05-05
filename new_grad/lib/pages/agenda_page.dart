@@ -7,7 +7,8 @@ import '../services/agenda_service.dart';
 import '../services/auth_service.dart';
 
 class AgendaPage extends StatefulWidget {
-  const AgendaPage({super.key});
+  final DateTime? initialDate;
+  const AgendaPage({super.key, this.initialDate});
 
   @override
   State<AgendaPage> createState() => _AgendaPageState();
@@ -16,8 +17,8 @@ class AgendaPage extends StatefulWidget {
 class _AgendaPageState extends State<AgendaPage> {
   final AgendaService agendaService = AgendaService();
 
-  DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  late DateTime _focusedDay;
+  late DateTime _selectedDay;
 
   final Color actionColor = const Color(0xFFAC975D);
 
@@ -42,12 +43,13 @@ class _AgendaPageState extends State<AgendaPage> {
   void initState() {
     super.initState();
 
+    // ← USE initialDate if provided
+    _focusedDay = widget.initialDate ?? DateTime.now();
+    _selectedDay = widget.initialDate ?? DateTime.now();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // 🔐 Wait until Firebase auth is actually ready
       final token = await AuthService().getValidToken();
-
       if (!mounted) return;
-
       if (token != null) {
         await _loadAgendaForDay(_selectedDay);
       } else {
@@ -77,6 +79,487 @@ class _AgendaPageState extends State<AgendaPage> {
     }
   }
 
+  void _editEventDialog(Map<String, dynamic> event) {
+    final titleController = TextEditingController(text: event['title']);
+    String? start;
+    String? end;
+
+    final currentStart = DateFormat(
+      'h:mm a',
+    ).format(event['start'] as DateTime);
+    final currentEnd = DateFormat('h:mm a').format(event['end'] as DateTime);
+
+    showDialog(
+      context: context,
+      builder: (_) => StatefulBuilder(
+        builder: (_, setD) => AlertDialog(
+          title: const Text('Edit Event'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                value: _timeSlots.contains(currentStart) ? currentStart : null,
+                hint: Text('Start: $currentStart'),
+                items: _timeSlots
+                    .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                    .toList(),
+                onChanged: (v) => setD(() => start = v),
+              ),
+              DropdownButtonFormField<String>(
+                value: _timeSlots.contains(currentEnd) ? currentEnd : null,
+                hint: Text('End: $currentEnd'),
+                items: _timeSlots
+                    .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                    .toList(),
+                onChanged: (v) => setD(() => end = v),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFAC975D),
+              ),
+              onPressed: () async {
+                final newStart = start != null
+                    ? _combine(_selectedDay, start!)
+                    : event['start'] as DateTime;
+                final newEnd = end != null
+                    ? _combine(_selectedDay, end!)
+                    : event['end'] as DateTime;
+
+                if (!newEnd.isAfter(newStart)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('End time must be after start time'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
+                try {
+                  await agendaService.update(
+                    AgendaItem(
+                      id: event['id'],
+                      title: titleController.text,
+                      start: newStart,
+                      end: newEnd,
+                      placeId: event['placeId'],
+                      notes: null,
+                    ),
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context);
+                  await _loadAgendaForDay(_selectedDay);
+                } catch (e) {
+                  if (!mounted) return;
+
+                  // ── Check if it's a conflict error ──────────
+                  final isConflict =
+                      e.toString().toLowerCase().contains('overlap') ||
+                      e.toString().toLowerCase().contains('conflict') ||
+                      e.toString().contains('409');
+
+                  if (isConflict) {
+                    Navigator.pop(context); // close edit dialog first
+                    await _showFreeTimeSlotsDialog(
+                      eventId: event['id'],
+                      title: titleController.text,
+                      placeId: event['placeId'],
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('Save', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── FREE TIME SLOTS DIALOG ───────────────────────────────────────
+  Future<void> _showFreeTimeSlotsDialog({
+    required int eventId,
+    required String title,
+    String? placeId,
+  }) async {
+    // Load all events for this day
+    final allItems = await agendaService.fetch(
+      from: _selectedDay,
+      to: _selectedDay.add(const Duration(days: 1)),
+    );
+
+    // Filter out the event being edited
+    final otherItems = allItems.where((e) => e.id != eventId).toList();
+
+    // Calculate free 2-hour slots between 7AM and 10PM
+    final freeSlots = _calculateFreeSlots(otherItems);
+
+    if (!mounted) return;
+
+    if (freeSlots.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: const [
+              Icon(Icons.event_busy, color: Colors.red, size: 28),
+              SizedBox(width: 10),
+              Text('Day is Full'),
+            ],
+          ),
+          content: const Text(
+            'There are no free time slots available on this day.\n\nTry a different day or remove an existing event first.',
+            style: TextStyle(fontSize: 14, height: 1.5),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1A3C3C),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: const [
+                Icon(Icons.schedule, color: Color(0xFFAC975D), size: 26),
+                SizedBox(width: 10),
+                Text(
+                  'Time Conflict',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF3E0),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFAC975D), width: 1),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.info_outline, color: Color(0xFFAC975D), size: 18),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'That slot is taken. Pick a free time below.',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF5D4037)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 12),
+              const Text(
+                'AVAILABLE SLOTS',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.5,
+                  color: Colors.black45,
+                ),
+              ),
+              const SizedBox(height: 10),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 300),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: freeSlots.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (_, i) {
+                    final slot = freeSlots[i];
+                    final slotStart = slot['start'] as DateTime;
+                    final slotEnd = slot['end'] as DateTime;
+                    final label =
+                        '${DateFormat('h:mm a').format(slotStart)}  →  ${DateFormat('h:mm a').format(slotEnd)}';
+                    final duration = slotEnd.difference(slotStart).inMinutes;
+                    final durationLabel = duration >= 60
+                        ? '${duration ~/ 60}h${duration % 60 > 0 ? ' ${duration % 60}m' : ''}'
+                        : '${duration}m';
+
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await _applyFreeSlot(
+                          eventId: eventId,
+                          title: title,
+                          placeId: placeId,
+                          newStart: slotStart,
+                          newEnd: slotEnd,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF2E8D5),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: const Color(0xFF1A3C3C).withOpacity(0.15),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1A3C3C),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.access_time,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    label,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Color(0xFF1A3C3C),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    '$durationLabel free',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: Color(0xFFAC975D),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.black54),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── CALCULATE FREE 2-HOUR SLOTS BETWEEN 7AM AND 10PM ─────────────
+  List<Map<String, DateTime>> _calculateFreeSlots(List<AgendaItem> busyItems) {
+    final dayStart = DateTime(
+      _selectedDay.year,
+      _selectedDay.month,
+      _selectedDay.day,
+      7,
+      0,
+    );
+    final dayEnd = DateTime(
+      _selectedDay.year,
+      _selectedDay.month,
+      _selectedDay.day,
+      22,
+      0,
+    );
+
+    // Sort busy items by start time
+    busyItems.sort((a, b) => a.start.compareTo(b.start));
+
+    final freeSlots = <Map<String, DateTime>>[];
+    DateTime cursor = dayStart;
+
+    for (final item in busyItems) {
+      final busyStart = item.start;
+      final busyEnd = item.end;
+
+      // Gap before this busy item
+      if (cursor.isBefore(busyStart)) {
+        final gapMinutes = busyStart.difference(cursor).inMinutes;
+        if (gapMinutes >= 60) {
+          // Offer slots in 2-hour blocks within the gap
+          DateTime slotCursor = cursor;
+          while (slotCursor.add(const Duration(hours: 2)).isBefore(busyStart) ||
+              slotCursor.add(const Duration(hours: 2)) == busyStart) {
+            freeSlots.add({
+              'start': slotCursor,
+              'end': slotCursor.add(const Duration(hours: 2)),
+            });
+            slotCursor = slotCursor.add(const Duration(hours: 1));
+            if (freeSlots.length >= 8) break; // max 8 suggestions
+          }
+        }
+      }
+
+      if (busyEnd.isAfter(cursor)) cursor = busyEnd;
+    }
+
+    // Gap after last busy item until end of day
+    if (cursor.isBefore(dayEnd)) {
+      DateTime slotCursor = cursor;
+      while (slotCursor.add(const Duration(hours: 2)).isBefore(dayEnd) ||
+          slotCursor.add(const Duration(hours: 2)) == dayEnd) {
+        freeSlots.add({
+          'start': slotCursor,
+          'end': slotCursor.add(const Duration(hours: 2)),
+        });
+        slotCursor = slotCursor.add(const Duration(hours: 1));
+        if (freeSlots.length >= 8) break;
+      }
+    }
+
+    return freeSlots;
+  }
+
+  // ── APPLY THE CHOSEN FREE SLOT ────────────────────────────────────
+  Future<void> _applyFreeSlot({
+    required int eventId,
+    required String title,
+    String? placeId,
+    required DateTime newStart,
+    required DateTime newEnd,
+  }) async {
+    try {
+      await agendaService.update(
+        AgendaItem(
+          id: eventId,
+          title: title,
+          start: newStart,
+          end: newEnd,
+          placeId: placeId,
+          notes: null,
+        ),
+      );
+      await _loadAgendaForDay(_selectedDay);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 8),
+              Text('Event rescheduled successfully'),
+            ],
+          ),
+          backgroundColor: const Color(0xFF1A3C3C),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to reschedule: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _deleteEvent(Map<String, dynamic> event) async {
+    // Confirm before deleting
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Remove Event'),
+        content: Text('Remove "${event['title']}" from your agenda?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remove', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await agendaService.delete(event['id']);
+      await _loadAgendaForDay(_selectedDay);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+      );
+    }
+  }
   // ───────────────── LOAD AGENDA ─────────────────
 
   Future<void> _loadAgendaForDay(DateTime day) async {
@@ -314,29 +797,27 @@ class _AgendaPageState extends State<AgendaPage> {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      height: 80,
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              margin: EdgeInsets.only(right: open ? 8 : 0),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5E5D1),
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
+          Container(
+            height: 80,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5E5D1),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -346,6 +827,7 @@ class _AgendaPageState extends State<AgendaPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -354,18 +836,66 @@ class _AgendaPageState extends State<AgendaPage> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {
-                      setState(() {
-                        event['open'] = !open;
-                      });
-                    },
+                ),
+                IconButton(
+                  icon: Icon(open ? Icons.expand_less : Icons.more_vert),
+                  onPressed: () {
+                    setState(() => event['open'] = !open);
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          // ── Action buttons (edit / delete) ──────────────
+          if (open)
+            Container(
+              margin: const EdgeInsets.only(top: 4),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  // Edit
+                  Expanded(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        setState(() => event['open'] = false);
+                        _editEventDialog(event);
+                      },
+                      icon: const Icon(Icons.edit, color: Color(0xFFAC975D)),
+                      label: const Text(
+                        'Edit Time',
+                        style: TextStyle(color: Color(0xFFAC975D)),
+                      ),
+                    ),
+                  ),
+                  Container(width: 1, height: 36, color: Colors.black12),
+                  // Delete
+                  Expanded(
+                    child: TextButton.icon(
+                      onPressed: () async {
+                        setState(() => event['open'] = false);
+                        await _deleteEvent(event);
+                      },
+                      icon: const Icon(Icons.delete_outline, color: Colors.red),
+                      label: const Text(
+                        'Remove',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
         ],
       ),
     );

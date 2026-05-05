@@ -10,7 +10,9 @@ class RecommendationService {
       body: {'plan_type': 'DayPlan'},
     );
 
-    if (res.statusCode != 200) {
+    print('📡 getDayPlan STATUS: ${res.statusCode}');
+
+    if (res.statusCode != 200 && res.statusCode != 201) {
       throw Exception('Failed to load recommendations: ${res.body}');
     }
 
@@ -25,7 +27,9 @@ class RecommendationService {
       body: {'plan_type': 'TripPlan', 'trip_days': tripDays},
     );
 
-    if (res.statusCode != 200) {
+    print('📡 getTripPlan STATUS: ${res.statusCode}');
+
+    if (res.statusCode != 200 && res.statusCode != 201) {
       throw Exception('Failed to load trip plan: ${res.body}');
     }
 
@@ -36,12 +40,14 @@ class RecommendationService {
   // ── Feedback ─────────────────────────────────
   Future<void> sendFeedback({
     required String landmarkName,
-    required String eventType, // 'like' or 'dislike'
+    required String eventType,
   }) async {
     final res = await ApiClient.post(
       '/api/recommendations/feedback',
       body: {'landmark_name': landmarkName, 'event_type': eventType},
     );
+
+    print('📡 sendFeedback STATUS: ${res.statusCode}');
 
     if (res.statusCode != 200 && res.statusCode != 201) {
       throw Exception('Failed to send feedback: ${res.body}');

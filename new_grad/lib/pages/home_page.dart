@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:new_grad/pages/landmark_details_page.dart';
-import '../widgets/context_bottom_sheet.dart';
 import '../models/recommendation_item.dart';
 import '../services/recommendation_service.dart';
 import '../utils/recommendation_images.dart';
@@ -9,6 +8,7 @@ import '../services/places_repo.dart';
 import '../services/favorites_service.dart';
 import '../services/places_search_service.dart';
 import '../models/place_search_item.dart';
+import 'trip_discovery.dart';
 
 final AILensService aiLens = AILensService();
 
@@ -113,10 +113,9 @@ class _HomePageState extends State<HomePage> {
         _recommendations = data;
         _loadingRecs = false;
       });
-
-      // 🔥 Prefill hearts AFTER recommendations exist
       await _loadFavoriteIds();
-    } catch (_) {
+    } catch (e) {
+      print('❌ LOAD RECOMMENDATIONS ERROR: $e');
       setState(() {
         _recError = true;
         _loadingRecs = false;
@@ -124,15 +123,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _ensureContextThenLoadRecommendations() async {
-    final result = await showModalBottomSheet<bool>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const ContextBottomSheet(),
+  Future<void> _openTripDiscovery() async {
+    final result = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(builder: (_) => const TripDiscoveryPage()),
     );
 
-    if (result == true) {
+    if (result == null) return;
+
+    final mode = result['mode'] as String;
+
+    if (mode == 'day') {
+      setState(() {
+        _loadingRecs = true;
+        _recError = false;
+      });
       await _loadRecommendations();
     }
   }
@@ -274,14 +279,12 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ),
-                          Flexible(
-                            child: _serviceButton(
-                              iconPath: 'assets/images/personalized.png',
-                              label: 'Recommendations',
-                              onTap: () async {
-                                await _ensureContextThenLoadRecommendations();
-                              },
-                            ),
+                          _serviceButton(
+                            iconPath: 'assets/images/personalized.png',
+                            label: 'Recommendations',
+                            onTap: () async {
+                              await _openTripDiscovery();
+                            },
                           ),
                         ],
                       ),
@@ -523,8 +526,6 @@ class _HomePageState extends State<HomePage> {
                     _favoriteIds.add(item.id);
                   }
                 });
-
-                // Backend sync
                 if (isFavorite) {
                   await _favoritesService.remove(item.id);
                 } else {
@@ -533,9 +534,78 @@ class _HomePageState extends State<HomePage> {
               },
               child: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: Colors.black,
-                size: 26,
+                color: Colors.white,
+                size: 24,
               ),
+            ),
+          ),
+
+          // 👍 👎 Feedback buttons
+          Positioned(
+            bottom: 36,
+            right: 8,
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      await _recommendationService.sendFeedback(
+                        landmarkName: item.name,
+                        eventType: 'like',
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('👍 Liked ${item.name}'),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    } catch (_) {}
+                  },
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.45),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.thumb_up,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      await _recommendationService.sendFeedback(
+                        landmarkName: item.name,
+                        eventType: 'dislike',
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('👎 Disliked ${item.name}'),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    } catch (_) {}
+                  },
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.45),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.thumb_down,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
