@@ -235,7 +235,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/agenda.png',
                     label: 'Agenda',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/agenda");
+                    },
                   ),
                   const SizedBox(width: 28),
                   _buildNavItem(

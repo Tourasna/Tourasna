@@ -141,7 +141,9 @@ class _FavsPageState extends State<FavsPage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/agenda.png',
                     label: 'Agenda',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/agenda');
+                    },
                   ),
                   const SizedBox(width: 20),
                   _buildNavItem(
@@ -165,56 +167,59 @@ class _FavsPageState extends State<FavsPage> {
   Widget _favCard(RecommendationItem item) {
     final imagePath = imageForCategory(item.category);
 
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-
-        Positioned.fill(
-          child: Container(
+    return GestureDetector(
+      onLongPress: () => _showAgendaSheet(item),
+      child: Stack(
+        children: [
+          Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+              image: DecorationImage(
+                image: AssetImage(imagePath),
+                fit: BoxFit.cover,
               ),
             ),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  item.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 15,
+          ),
+
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    item.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
 
-        Positioned(
-          top: 10,
-          right: 10,
-          child: GestureDetector(
-            onTap: () async {
-              await _removeFavorite(item);
-            },
-            child: const Icon(Icons.favorite, color: Colors.black, size: 28),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: () async {
+                await _removeFavorite(item);
+              },
+              child: const Icon(Icons.favorite, color: Colors.black, size: 28),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -252,7 +257,7 @@ class _FavsPageState extends State<FavsPage> {
             label,
             style: const TextStyle(
               color: Color(0xFF1F1F1F),
-              fontSize: 14.0,
+              fontSize: 12.5,
               fontWeight: FontWeight.w700,
               height: 1.0,
               letterSpacing: 0.1,
@@ -260,6 +265,46 @@ class _FavsPageState extends State<FavsPage> {
           ),
         ],
       ),
+    );
+  }
+
+  // ─────────────────────────────────────────────
+  // AGENDA ACTION SHEET (LOGIC ONLY)
+  // ─────────────────────────────────────────────
+
+  void _showAgendaSheet(RecommendationItem item) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Icon(Icons.event),
+                title: const Text('Add to Agenda'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/agenda', arguments: item);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Remove from Favorites'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _removeFavorite(item);
+                },
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
     );
   }
 }

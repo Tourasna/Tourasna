@@ -9,7 +9,7 @@ import { ContextModule } from '../context/context.module';
 import { FavoritesModule } from '../favorites/favorites.module';
 import { ChatModule } from './chat/chat.module'
 import { ConfigModule } from '@nestjs/config';
-
+import { PlacesSearchModule } from './places-search/places-search.module';
 @Module({
   imports: [
     AuthModule,
@@ -21,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     RecommendationsModule,
     ContextModule,
     FavoritesModule,
+    PlacesSearchModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

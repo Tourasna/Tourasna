@@ -151,7 +151,7 @@ class _ChatMockPageState extends State<ChatMockPage> {
                     ),
                     child: ClipOval(
                       child: Image.asset(
-                        "assets/icons/ChatmockAvatar.png",
+                        "assets/icons/chatmocka.png",
                         fit: BoxFit.cover,
                       ),
                     ),

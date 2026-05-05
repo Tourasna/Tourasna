@@ -22,15 +22,15 @@ services:
       - ./backend/.env.production
     depends_on:
       - mysql
-      - ai-service
+      - tourasna-ai
     ports:
       - "3000:3000"
-    enviroment:
+    enviroments:
       -AI_CHAT_WS_URL=ws://tourasna-ai:8000
 
-  ai-service:
+  tourasna-ai:
     build: ./ai-service
-    container_name: ai-service
+    container_name: tourasna-ai
     restart: always
     env_file:
       - ./ai-service/.env.production
