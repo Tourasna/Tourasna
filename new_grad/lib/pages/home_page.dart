@@ -124,22 +124,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _openTripDiscovery() async {
-    final result = await Navigator.push<Map<String, dynamic>>(
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const TripDiscoveryPage()),
     );
-
-    if (result == null) return;
-
-    final mode = result['mode'] as String;
-
-    if (mode == 'day') {
-      setState(() {
-        _loadingRecs = true;
-        _recError = false;
-      });
-      await _loadRecommendations();
-    }
   }
 
   @override

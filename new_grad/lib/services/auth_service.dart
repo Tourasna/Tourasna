@@ -43,16 +43,14 @@ class AuthService {
   // ALWAYS GET A FRESH ID TOKEN
   // ─────────────────────────────────────────────
   Future<String?> getValidToken() async {
-    // If we already have a token, return it
-    if (_idToken != null) return _idToken;
-
     User? user = _auth.currentUser;
 
-    // Wait until Firebase provides a user
     if (user == null) {
       user = await _auth.authStateChanges().firstWhere((u) => u != null);
     }
 
+    // Always force refresh — Firebase caches it internally
+    // and only actually hits the network when truly expired
     _idToken = await user!.getIdToken(true);
     return _idToken;
   }

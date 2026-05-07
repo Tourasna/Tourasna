@@ -1,0 +1,1477 @@
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../models/recommendation_item.dart';
+import '../services/recommendation_service.dart';
+import '../services/agenda_service.dart';
+import '../models/agenda_item.dart';
+import 'agenda_page.dart';
+
+// ─────────────────────────────────────────────
+//  COLOUR PALETTE
+// ─────────────────────────────────────────────
+class _C {
+  static const bg = Color(0xFFF2EADC);
+  static const dark = Color(0xFF1A3C3C);
+  static const gold = Color(0xFFD4AF37);
+  static const bronze = Color(0xFFC5A059);
+  static const cream = Color(0xFFEAE2D1);
+  static const white = Colors.white;
+  static const redTime = Color(0xFFDC2626);
+  static const blueTime = Color(0xFF2563EB);
+  static const greenTime = Color(0xFF059669);
+}
+
+// Day color pairs
+const _dayColors = [
+  [Color(0xFFDC2626), Color(0xFFFEE2E2)],
+  [Color(0xFF2563EB), Color(0xFFDBEAFE)],
+  [Color(0xFF059669), Color(0xFFD1FAE5)],
+  [Color(0xFF7C3AED), Color(0xFFEDE9FE)],
+  [Color(0xFFD97706), Color(0xFFFEF3C7)],
+  [Color(0xFFDB2777), Color(0xFFFCE7F3)],
+  [Color(0xFF0891B2), Color(0xFFCFFAFE)],
+];
+
+// ─────────────────────────────────────────────
+//  DATA MODEL (wraps RecommendationItem)
+// ─────────────────────────────────────────────
+class _TripPlace {
+  final RecommendationItem item;
+  bool liked;
+  bool visible;
+
+  _TripPlace({required this.item, this.liked = false, this.visible = true});
+}
+
+class _TripDay {
+  final int number;
+  final List<_TripPlace> places;
+  _TripDay({required this.number, required this.places});
+}
+
+// ─────────────────────────────────────────────
+//  MAIN PAGE
+// ─────────────────────────────────────────────
+class TripPlanPage extends StatefulWidget {
+  final TripPlanResult tripResult;
+  const TripPlanPage({super.key, required this.tripResult});
+
+  @override
+  State<TripPlanPage> createState() => _TripPlanPageState();
+}
+
+class _TripPlanPageState extends State<TripPlanPage> {
+  final RecommendationService _recService = RecommendationService();
+  late List<_TripDay> _days;
+  int _selectedDay = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _days = widget.tripResult.days
+        .map(
+          (d) => _TripDay(
+            number: d.day,
+            places: d.landmarks.map((l) => _TripPlace(item: l)).toList(),
+          ),
+        )
+        .toList();
+  }
+
+  _TripDay get _currentDay => _days[_selectedDay];
+  List<_TripPlace> get _visiblePlaces =>
+      _currentDay.places.where((p) => p.visible).toList();
+
+  Future<void> _onLike(_TripPlace place) async {
+    setState(() => place.liked = true);
+    try {
+      await _recService.sendFeedback(
+        landmarkName: place.item.name,
+        eventType: 'like',
+      );
+    } catch (_) {}
+  }
+
+  Future<void> _onDislike(_TripPlace place) async {
+    setState(() => place.visible = false);
+    try {
+      await _recService.sendFeedback(
+        landmarkName: place.item.name,
+        eventType: 'dislike',
+      );
+    } catch (_) {}
+  }
+
+  void _openDayAgendaModal() {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black45,
+      builder: (_) =>
+          _DayAgendaDialog(day: _currentDay, visiblePlaces: _visiblePlaces),
+    );
+  }
+
+  void _openSinglePlaceModal(_TripPlace place) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black45,
+      builder: (_) =>
+          _SinglePlaceAgendaDialog(place: place, dayNumber: _selectedDay + 1),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _C.bg,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            const SizedBox(height: 20),
+            Center(
+              child: _AddAgendaButton(
+                dayNumber: _selectedDay + 1,
+                onTap: _openDayAgendaModal,
+              ),
+            ),
+            const SizedBox(height: 20),
+            _buildDayTabs(),
+            const SizedBox(height: 16),
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, anim) => FadeTransition(
+                  opacity: anim,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.05, 0),
+                      end: Offset.zero,
+                    ).animate(anim),
+                    child: child,
+                  ),
+                ),
+                child: _buildPlaceList(),
+              ),
+            ),
+            _AIPersonalizedNote(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.maybePop(context),
+            child: Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: _C.white.withValues(alpha: 0.8),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.chevron_left, color: _C.dark, size: 20),
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Trip Plan',
+            style: TextStyle(
+              fontSize: 34,
+              fontWeight: FontWeight.w900,
+              color: _C.dark,
+              height: 1.1,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Your personalized ${widget.tripResult.tripDays}-day journey through Egypt.',
+            style: TextStyle(
+              fontSize: 13,
+              color: _C.dark.withValues(alpha: 0.55),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDayTabs() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: List.generate(_days.length, (i) {
+          final active = i == _selectedDay;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedDay = i),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: EdgeInsets.only(right: i < _days.length - 1 ? 10 : 0),
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                decoration: BoxDecoration(
+                  color: active ? _C.dark : _C.white.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: active
+                        ? Colors.transparent
+                        : _C.bronze.withValues(alpha: 0.2),
+                  ),
+                  boxShadow: active
+                      ? [
+                          BoxShadow(
+                            color: _C.dark.withValues(alpha: 0.25),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Center(
+                  child: Text(
+                    'DAY ${i + 1}',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2,
+                      color: active
+                          ? _C.white
+                          : _C.dark.withValues(alpha: 0.55),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildPlaceList() {
+    final visible = _visiblePlaces;
+    final colors = _dayColors[_selectedDay % _dayColors.length];
+
+    if (visible.isEmpty) {
+      return Center(
+        key: ValueKey('empty-$_selectedDay'),
+        child: Text(
+          'No places remaining for this day.',
+          style: TextStyle(
+            color: _C.dark.withValues(alpha: 0.35),
+            fontSize: 13,
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      key: ValueKey(_selectedDay),
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+      itemCount: visible.length,
+      itemBuilder: (_, i) {
+        final place = visible[i];
+        final timeHour = 9 + (i * 2);
+        final timeLabel = timeHour < 12
+            ? '$timeHour:00 AM'
+            : timeHour == 12
+            ? '12:00 PM'
+            : '${timeHour - 12}:00 PM';
+
+        return _PlaceCard(
+          key: ValueKey(place.item.name),
+          place: place,
+          timeLabel: timeLabel,
+          timeColor: colors[0],
+          timeBg: colors[1],
+          onLike: () => _onLike(place),
+          onDislike: () => _onDislike(place),
+          onAddCalendar: () => _openSinglePlaceModal(place),
+        );
+      },
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  ADD AGENDA BUTTON
+// ─────────────────────────────────────────────
+class _AddAgendaButton extends StatelessWidget {
+  final int dayNumber;
+  final VoidCallback onTap;
+  const _AddAgendaButton({required this.dayNumber, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+        decoration: BoxDecoration(
+          color: _C.dark,
+          borderRadius: BorderRadius.circular(50),
+          boxShadow: [
+            BoxShadow(
+              color: _C.dark.withValues(alpha: 0.3),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.calendar_month, size: 16, color: _C.gold),
+            const SizedBox(width: 10),
+            Text(
+              'ADD DAY $dayNumber TO AGENDA',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 1.5,
+                color: _C.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  PLACE CARD
+// ─────────────────────────────────────────────
+class _PlaceCard extends StatefulWidget {
+  final _TripPlace place;
+  final String timeLabel;
+  final Color timeColor;
+  final Color timeBg;
+  final VoidCallback onLike;
+  final VoidCallback onDislike;
+  final VoidCallback onAddCalendar;
+
+  const _PlaceCard({
+    super.key,
+    required this.place,
+    required this.timeLabel,
+    required this.timeColor,
+    required this.timeBg,
+    required this.onLike,
+    required this.onDislike,
+    required this.onAddCalendar,
+  });
+
+  @override
+  State<_PlaceCard> createState() => _PlaceCardState();
+}
+
+class _PlaceCardState extends State<_PlaceCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  late Animation<double> _fade;
+  late Animation<Offset> _slide;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    );
+    _fade = Tween<double>(begin: 1, end: 0).animate(_ctrl);
+    _slide = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(-0.4, 0),
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeIn));
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  void _handleDislike() async {
+    await _ctrl.forward();
+    widget.onDislike();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final item = widget.place.item;
+
+    return FadeTransition(
+      opacity: _fade,
+      child: SlideTransition(
+        position: _slide,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 14),
+          decoration: BoxDecoration(
+            color: _C.white.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: _C.bronze.withValues(alpha: 0.18)),
+            boxShadow: [
+              BoxShadow(
+                color: _C.dark.withValues(alpha: 0.06),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                // image placeholder
+                Container(
+                  width: 88,
+                  height: 88,
+                  decoration: BoxDecoration(
+                    color: _C.dark.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 28,
+                        color: _C.dark.withValues(alpha: 0.22),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        item.category,
+                        style: TextStyle(
+                          fontSize: 8,
+                          color: _C.dark.withValues(alpha: 0.3),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+
+                // info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: widget.timeBg,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              widget.timeLabel,
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.5,
+                                color: widget.timeColor,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(Icons.star, size: 12, color: _C.bronze),
+                          const SizedBox(width: 2),
+                          Text(
+                            (item.rating ?? 0).toStringAsFixed(1),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: _C.bronze,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        item.name,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: _C.dark,
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        item.budget.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.8,
+                          color: _C.bronze.withValues(alpha: 0.8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // actions
+                Column(
+                  children: [
+                    _CircleAction(
+                      icon: widget.place.liked
+                          ? Icons.thumb_up
+                          : Icons.thumb_up_outlined,
+                      color: widget.place.liked
+                          ? _C.gold
+                          : _C.dark.withValues(alpha: 0.35),
+                      bgColor: widget.place.liked
+                          ? _C.gold.withValues(alpha: 0.12)
+                          : _C.white.withValues(alpha: 0.5),
+                      borderColor: widget.place.liked
+                          ? _C.gold
+                          : _C.bronze.withValues(alpha: 0.2),
+                      onTap: widget.place.liked ? null : widget.onLike,
+                    ),
+                    const SizedBox(height: 6),
+                    _CircleAction(
+                      icon: Icons.thumb_down_outlined,
+                      color: _C.dark.withValues(alpha: 0.35),
+                      bgColor: _C.white.withValues(alpha: 0.5),
+                      borderColor: _C.bronze.withValues(alpha: 0.2),
+                      onTap: _handleDislike,
+                    ),
+                    const SizedBox(height: 6),
+                    _CircleAction(
+                      icon: Icons.calendar_month_outlined,
+                      color: _C.dark.withValues(alpha: 0.5),
+                      bgColor: _C.white.withValues(alpha: 0.5),
+                      borderColor: _C.bronze.withValues(alpha: 0.2),
+                      onTap: widget.onAddCalendar,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CircleAction extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final Color bgColor;
+  final Color borderColor;
+  final VoidCallback? onTap;
+
+  const _CircleAction({
+    required this.icon,
+    required this.color,
+    required this.bgColor,
+    required this.borderColor,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: borderColor),
+        ),
+        child: Icon(icon, size: 17, color: color),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  DAY AGENDA DIALOG
+// ─────────────────────────────────────────────
+class _DayAgendaDialog extends StatefulWidget {
+  final _TripDay day;
+  final List<_TripPlace> visiblePlaces;
+  const _DayAgendaDialog({required this.day, required this.visiblePlaces});
+
+  @override
+  State<_DayAgendaDialog> createState() => _DayAgendaDialogState();
+}
+
+class _DayAgendaDialogState extends State<_DayAgendaDialog> {
+  late List<DateTime> _weekDays;
+  int _selectedDateIdx = 0;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _weekDays = List.generate(
+      7,
+      (i) => DateTime(now.year, now.month, now.day + i),
+    );
+  }
+
+  static const _dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  String _headerFor(DateTime d) => _dayHeaders[d.weekday % 7];
+
+  Future<void> _confirm() async {
+    setState(() => _saving = true);
+    final selectedDate = _weekDays[_selectedDateIdx];
+    final agendaService = AgendaService();
+
+    try {
+      // ── Step 1: Check if this date already has ANY events ──────────
+      final existing = await agendaService.fetch(
+        from: selectedDate,
+        to: selectedDate.add(const Duration(days: 1)),
+      );
+
+      if (existing.isNotEmpty) {
+        setState(() => _saving = false);
+        if (!mounted) return;
+
+        // ── Step 2: Show warning dialog with two options ───────────────
+        final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (_) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            title: Row(
+              children: const [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFFD4AF37),
+                  size: 28,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'Date Already Has Events',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'This date already has ${existing.length} event${existing.length > 1 ? 's' : ''} scheduled:',
+                  style: const TextStyle(fontSize: 13, color: Colors.black54),
+                ),
+                const SizedBox(height: 10),
+                ...existing.map(
+                  (e) => Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFC5A059),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            e.title,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1A3C3C),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF3E0),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: const Color(0xFFD4AF37).withOpacity(0.4),
+                    ),
+                  ),
+                  child: const Text(
+                    'Adding this day may cause time conflicts with your existing events.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF5D4037),
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text(
+                  'Pick Different Date',
+                  style: TextStyle(color: Colors.black54),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1A3C3C),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text(
+                  'Add Anyway',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        );
+
+        // User chose to pick a different date
+        if (confirmed != true) return;
+      }
+
+      // ── Step 3: Save all events ────────────────────────────────────
+      setState(() => _saving = true);
+      const startHour = 9;
+      const durationHours = 2;
+
+      for (int i = 0; i < widget.visiblePlaces.length; i++) {
+        final place = widget.visiblePlaces[i];
+        final slotStart = DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+          startHour + (i * durationHours),
+          0,
+        );
+        final slotEnd = slotStart.add(const Duration(hours: durationHours));
+
+        await agendaService.create(
+          AgendaItem(
+            id: 0,
+            title: place.item.name,
+            start: slotStart,
+            end: slotEnd,
+            placeId: null,
+            notes: '${place.item.category} • ${place.item.budget} budget',
+          ),
+        );
+      }
+
+      if (!mounted) return;
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AgendaPage(initialDate: selectedDate),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _saving = false);
+
+      // Specific conflict error from backend
+      final isConflict =
+          e.toString().toLowerCase().contains('overlap') ||
+          e.toString().toLowerCase().contains('conflict') ||
+          e.toString().contains('409');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            isConflict
+                ? 'Some time slots conflict with existing events. Try a different date.'
+                : 'Failed to save: $e',
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final count = widget.visiblePlaces.length;
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+      child: Container(
+        decoration: BoxDecoration(
+          color: _C.cream,
+          borderRadius: BorderRadius.circular(28),
+          border: const Border(top: BorderSide(color: _C.gold, width: 4)),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Schedule Day ${widget.day.number}',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: _C.dark,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'ADD DAY ${widget.day.number} TO YOUR AGENDA',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                            color: _C.gold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.close,
+                      color: _C.dark.withValues(alpha: 0.4),
+                      size: 22,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _LandmarksBar(count: count, total: widget.day.places.length),
+              const SizedBox(height: 20),
+
+              Text(
+                'SCHEDULE SUMMARY',
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  color: _C.dark.withValues(alpha: 0.4),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ...List.generate(widget.visiblePlaces.length, (i) {
+                final place = widget.visiblePlaces[i];
+                final timeHour = 9 + (i * 2);
+                final timeLabel = timeHour < 12
+                    ? '$timeHour:00 AM'
+                    : timeHour == 12
+                    ? '12:00 PM'
+                    : '${timeHour - 12}:00 PM';
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: _C.bronze.withValues(alpha: 0.5),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        timeLabel,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: _C.bronze,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          place.item.name,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _C.dark.withValues(alpha: 0.75),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              const SizedBox(height: 20),
+
+              Text(
+                'SELECT START DATE',
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  color: _C.dark.withValues(alpha: 0.4),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _weekDays
+                    .map(
+                      (d) => SizedBox(
+                        width: 36,
+                        child: Center(
+                          child: Text(
+                            _headerFor(d),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: _C.gold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(_weekDays.length, (i) {
+                  final d = _weekDays[i];
+                  final sel = i == _selectedDateIdx;
+                  return GestureDetector(
+                    onTap: () => setState(() => _selectedDateIdx = i),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: sel ? _C.dark : _C.white,
+                        shape: BoxShape.circle,
+                        boxShadow: sel
+                            ? [
+                                BoxShadow(
+                                  color: _C.dark.withValues(alpha: 0.25),
+                                  blurRadius: 8,
+                                ),
+                              ]
+                            : [],
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${d.day}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: sel ? _C.white : _C.dark,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 24),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _DialogButton(
+                      label: 'CANCEL',
+                      filled: false,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _DialogButton(
+                      label: _saving ? 'SAVING...' : 'CONFIRM',
+                      filled: true,
+                      onTap: _saving ? () {} : _confirm,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  SINGLE PLACE AGENDA DIALOG
+// ─────────────────────────────────────────────
+class _SinglePlaceAgendaDialog extends StatefulWidget {
+  final _TripPlace place;
+  final int dayNumber;
+  const _SinglePlaceAgendaDialog({
+    required this.place,
+    required this.dayNumber,
+  });
+
+  @override
+  State<_SinglePlaceAgendaDialog> createState() =>
+      _SinglePlaceAgendaDialogState();
+}
+
+class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
+  late List<DateTime> _weekDays;
+  int _selectedDateIdx = 0;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _weekDays = List.generate(
+      7,
+      (i) => DateTime(now.year, now.month, now.day + i),
+    );
+  }
+
+  static const _dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  String _headerFor(DateTime d) => _dayHeaders[d.weekday % 7];
+
+  Future<void> _confirm() async {
+    setState(() => _saving = true);
+    final selectedDate = _weekDays[_selectedDateIdx];
+
+    try {
+      await AgendaService().create(
+        AgendaItem(
+          id: 0,
+          title: widget.place.item.name,
+          start: DateTime(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+            9,
+            0,
+          ),
+          end: DateTime(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+            11,
+            0,
+          ),
+          placeId: null,
+          notes:
+              '${widget.place.item.category} • ${widget.place.item.budget} budget',
+        ),
+      );
+
+      if (!mounted) return;
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AgendaPage(initialDate: selectedDate),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _saving = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString().contains('overlap')
+                ? 'That slot conflicts with an existing event. Pick a different date.'
+                : 'Failed to save: $e',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+      child: Container(
+        decoration: BoxDecoration(
+          color: _C.cream,
+          borderRadius: BorderRadius.circular(28),
+          border: const Border(top: BorderSide(color: _C.gold, width: 4)),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.place.item.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: _C.dark,
+                            height: 1.2,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'ADD TO YOUR AGENDA',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                            color: _C.gold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.close,
+                      color: _C.dark.withValues(alpha: 0.4),
+                      size: 22,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _LandmarksBar(count: 1, total: 1),
+              const SizedBox(height: 20),
+
+              Text(
+                'SCHEDULE SUMMARY',
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  color: _C.dark.withValues(alpha: 0.4),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Container(
+                    width: 5,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: _C.bronze.withValues(alpha: 0.5),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      widget.place.item.name,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: _C.dark.withValues(alpha: 0.75),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              Text(
+                'SELECT DATE',
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  color: _C.dark.withValues(alpha: 0.4),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _weekDays
+                    .map(
+                      (d) => SizedBox(
+                        width: 36,
+                        child: Center(
+                          child: Text(
+                            _headerFor(d),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: _C.gold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(_weekDays.length, (i) {
+                  final d = _weekDays[i];
+                  final sel = i == _selectedDateIdx;
+                  return GestureDetector(
+                    onTap: () => setState(() => _selectedDateIdx = i),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: sel ? _C.dark : _C.white,
+                        shape: BoxShape.circle,
+                        boxShadow: sel
+                            ? [
+                                BoxShadow(
+                                  color: _C.dark.withValues(alpha: 0.25),
+                                  blurRadius: 8,
+                                ),
+                              ]
+                            : [],
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${d.day}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: sel ? _C.white : _C.dark,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 24),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _DialogButton(
+                      label: 'CANCEL',
+                      filled: false,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _DialogButton(
+                      label: _saving ? 'SAVING...' : 'CONFIRM',
+                      filled: true,
+                      onTap: _saving ? () {} : _confirm,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  SHARED WIDGETS
+// ─────────────────────────────────────────────
+class _LandmarksBar extends StatelessWidget {
+  final int count;
+  final int total;
+  const _LandmarksBar({required this.count, required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    final fraction = total == 0 ? 0.0 : count / total;
+    return Container(
+      height: 64,
+      decoration: BoxDecoration(
+        color: _C.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: LayoutBuilder(
+        builder: (_, constraints) {
+          return Stack(
+            children: [
+              Container(
+                width: constraints.maxWidth * fraction,
+                decoration: BoxDecoration(
+                  color: _C.cream,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                top: 0,
+                bottom: 0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'LANDMARKS',
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.5,
+                        color: _C.dark.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    Text(
+                      '$count',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: _C.dark,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _DialogButton extends StatelessWidget {
+  final String label;
+  final bool filled;
+  final VoidCallback onTap;
+  const _DialogButton({
+    required this.label,
+    required this.filled,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: filled ? _C.dark : _C.white,
+          borderRadius: BorderRadius.circular(50),
+          boxShadow: filled
+              ? [
+                  BoxShadow(
+                    color: _C.dark.withValues(alpha: 0.25),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [],
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 2,
+              color: filled ? _C.white : _C.dark.withValues(alpha: 0.55),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AIPersonalizedNote extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      decoration: BoxDecoration(
+        color: _C.cream,
+        borderRadius: BorderRadius.circular(18),
+        border: const Border(left: BorderSide(color: _C.gold, width: 3)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.auto_awesome, size: 16, color: _C.gold),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'AI-Personalized Journey',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    color: _C.dark,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  'Your liked choices help our AI engine tailor destinations that match your pace, interests, and the unique Egyptian heritage.',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: _C.dark.withValues(alpha: 0.55),
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
