@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/context_service.dart';
-import 'package:intl/intl.dart';
 import '../services/recommendation_service.dart';
-import '../services/agenda_service.dart';
-import '../models/agenda_item.dart';
-import 'agenda_page.dart';
+import 'daily_plan.dart';
+import 'trip_plan_page.dart';
 
 class _Colors {
   static const papyrus = Color(0xFFF2E8D5);
@@ -111,8 +109,11 @@ class _TripDiscoveryPageState extends State<TripDiscoveryPage>
       if (!mounted) return;
 
       if (_mode == PlanMode.daily) {
-        // DayPlan → return to homepage to show cards
-        Navigator.pop(context, {'mode': 'day'});
+        setState(() => _loading = false);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const DailyPlanPage()),
+        );
       } else {
         // TripPlan → pick start date first
         setState(() => _loading = false);
@@ -128,123 +129,28 @@ class _TripDiscoveryPageState extends State<TripDiscoveryPage>
   }
 
   Future<void> _pickStartDateAndFillAgenda() async {
-    // Step 1 — pick start date
-    final startDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      helpText: 'Pick your trip start date',
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: Color(0xFF1A3C3C),
-            onPrimary: Colors.white,
-            surface: Color(0xFFF2E8D5),
-          ),
-        ),
-        child: child!,
-      ),
-    );
-
-    if (startDate == null || !mounted) return;
-
+    // Fetch TripPlan results
     setState(() => _loading = true);
 
     try {
-      // Step 2 — fetch TripPlan from AI
       final tripResult = await RecommendationService().getTripPlan(
         tripDays: _tripDays,
       );
 
       if (!mounted) return;
-
-      // Step 3 — fill agenda
-      final agendaService = AgendaService();
-      final conflicts = <String>[];
-
-      for (final day in tripResult.days) {
-        final date = startDate.add(Duration(days: day.day - 1));
-
-        // Check for existing items on this day
-        final existing = await agendaService.fetch(
-          from: date,
-          to: date.add(const Duration(days: 1)),
-        );
-
-        if (existing.isNotEmpty) {
-          conflicts.add(DateFormat('EEE MMM d').format(date));
-        }
-      }
-
-      if (!mounted) return;
-
-      // Step 4 — if conflicts, ask user to pick different date
-      if (conflicts.isNotEmpty) {
-        setState(() => _loading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'You already have events on: ${conflicts.join(', ')}. Please pick a different start date.',
-            ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 4),
-            action: SnackBarAction(
-              label: 'Pick Again',
-              textColor: Colors.white,
-              onPressed: _pickStartDateAndFillAgenda,
-            ),
-          ),
-        );
-        return;
-      }
-
-      // Step 5 — no conflicts, fill agenda
-      // Time slots: 9AM start, 2 hours each
-      const startHour = 9;
-      const durationHours = 2;
-
-      for (final day in tripResult.days) {
-        final date = startDate.add(Duration(days: day.day - 1));
-
-        for (int i = 0; i < day.landmarks.length; i++) {
-          final landmark = day.landmarks[i];
-          final slotStart = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            startHour + (i * durationHours),
-            0,
-          );
-          final slotEnd = slotStart.add(Duration(hours: durationHours));
-
-          await agendaService.create(
-            AgendaItem(
-              id: 0,
-              title: landmark.name,
-              start: slotStart,
-              end: slotEnd,
-              placeId: null,
-              notes: '${landmark.category} • ${landmark.budget} budget',
-            ),
-          );
-        }
-      }
-
-      if (!mounted) return;
       setState(() => _loading = false);
 
-      // Step 6 — navigate to agenda on the start date
+      // Navigate to TripPlanPage with real data
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => AgendaPage(initialDate: startDate)),
+        MaterialPageRoute(builder: (_) => TripPlanPage(tripResult: tripResult)),
       );
     } catch (e) {
       if (!mounted) return;
       setState(() => _loading = false);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Failed to fill agenda: $e')));
+      ).showSnackBar(SnackBar(content: Text('Failed to load trip plan: $e')));
     }
   }
 

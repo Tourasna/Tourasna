@@ -8,7 +8,8 @@ import '../services/auth_service.dart';
 
 class AgendaPage extends StatefulWidget {
   final DateTime? initialDate;
-  const AgendaPage({super.key, this.initialDate});
+  final String? prefilledTitle;
+  const AgendaPage({super.key, this.initialDate, this.prefilledTitle});
 
   @override
   State<AgendaPage> createState() => _AgendaPageState();
@@ -42,8 +43,6 @@ class _AgendaPageState extends State<AgendaPage> {
   @override
   void initState() {
     super.initState();
-
-    // ← USE initialDate if provided
     _focusedDay = widget.initialDate ?? DateTime.now();
     _selectedDay = widget.initialDate ?? DateTime.now();
 
@@ -52,8 +51,10 @@ class _AgendaPageState extends State<AgendaPage> {
       if (!mounted) return;
       if (token != null) {
         await _loadAgendaForDay(_selectedDay);
-      } else {
-        debugPrint('⚠️ AgendaPage: user not authenticated yet');
+        // ← Auto-open dialog if a title was passed
+        if (widget.prefilledTitle != null) {
+          _eventDialog(prefilledTitle: widget.prefilledTitle);
+        }
       }
     });
   }
