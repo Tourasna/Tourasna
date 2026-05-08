@@ -3,6 +3,7 @@ import '../models/recommendation_item.dart';
 import '../services/recommendation_service.dart';
 import 'agenda_page.dart';
 import 'dart:ui' as ui;
+import 'recommendation_landmark_details.dart';
 
 // ─────────────────────────────────────────────
 //  COLOUR PALETTE
@@ -170,12 +171,23 @@ class _DailyPlanPageState extends State<DailyPlanPage> {
                                     itemCount: visible.length,
                                     itemBuilder: (_, i) {
                                       final p = visible[i];
-                                      return _PlaceCard(
-                                        place: p,
-                                        rank: i + 1,
-                                        onLike: () => _onLike(p),
-                                        onDislike: () => _onDislike(p),
-                                        onAdd: () => _onAddToSchedule(p),
+                                      return GestureDetector(
+                                        onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                RecommendationDetailsPage(
+                                                  item: p.item,
+                                                ),
+                                          ),
+                                        ),
+                                        child: _PlaceCard(
+                                          place: p,
+                                          rank: i + 1,
+                                          onLike: () => _onLike(p),
+                                          onDislike: () => _onDislike(p),
+                                          onAdd: () => _onAddToSchedule(p),
+                                        ),
                                       );
                                     },
                                   ),
@@ -485,6 +497,34 @@ class _PlaceCard extends StatelessWidget {
   });
 
   @override
+  Widget _categoryPlaceholder(String category) {
+    return Container(
+      width: double.infinity,
+      height: 140,
+      color: _C.dark.withOpacity(0.08),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.location_on_outlined,
+            size: 36,
+            color: _C.dark.withOpacity(0.25),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            category,
+            style: TextStyle(
+              fontSize: 9,
+              color: _C.dark.withOpacity(0.4),
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     final item = place.item;
 
@@ -516,27 +556,20 @@ class _PlaceCard extends StatelessWidget {
                     top: Radius.circular(20),
                   ),
                 ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: 36,
-                        color: _C.dark.withOpacity(0.25),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.category,
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: _C.dark.withOpacity(0.4),
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ],
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
                   ),
+                  child: item.photoUrls.isNotEmpty
+                      ? Image.network(
+                          item.photoUrls.first,
+                          width: double.infinity,
+                          height: 140,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              _categoryPlaceholder(item.category),
+                        )
+                      : _categoryPlaceholder(item.category),
                 ),
               ),
               // rank badge

@@ -6,7 +6,21 @@ class RecommendationItem {
   final double? rating;
   final List<String> travelTypes;
   final double? score;
-  final int? day; // for TripPlan only
+  final int? day;
+  // ── Rich fields ──────────────────────────
+  final String? description;
+  final String? address;
+  final String? openingHours;
+  final String? phone;
+  final String? website;
+  final List<String> photoUrls;
+  final double? latitude;
+  final double? longitude;
+  final String? googleMapsUrl;
+  final String? priceRange;
+  final int? startPrice;
+  final int? endPrice;
+  final int? reviewCount;
 
   RecommendationItem({
     required this.id,
@@ -17,9 +31,36 @@ class RecommendationItem {
     required this.travelTypes,
     required this.score,
     this.day,
+    this.description,
+    this.address,
+    this.openingHours,
+    this.phone,
+    this.website,
+    this.photoUrls = const [],
+    this.latitude,
+    this.longitude,
+    this.googleMapsUrl,
+    this.priceRange,
+    this.startPrice,
+    this.endPrice,
+    this.reviewCount,
   });
 
   factory RecommendationItem.fromJson(Map<String, dynamic> json) {
+    List<String> parsePhotoUrls(dynamic val) {
+      if (val == null) return [];
+      if (val is List) return List<String>.from(val);
+      if (val is String) {
+        try {
+          final decoded = val.split('|').map((e) => e.trim()).toList();
+          return decoded;
+        } catch (_) {
+          return [];
+        }
+      }
+      return [];
+    }
+
     return RecommendationItem(
       id: json['id'],
       name: json['name'],
@@ -31,6 +72,23 @@ class RecommendationItem {
       travelTypes: List<String>.from(json['travel_types'] ?? []),
       score: json['score'] != null ? (json['score'] as num).toDouble() : null,
       day: json['day'],
+      description: json['description'],
+      address: json['address'],
+      openingHours: json['opening_hours'],
+      phone: json['phone'],
+      website: json['website'],
+      photoUrls: parsePhotoUrls(json['photo_urls']),
+      latitude: json['latitude'] != null
+          ? (json['latitude'] as num).toDouble()
+          : null,
+      longitude: json['longitude'] != null
+          ? (json['longitude'] as num).toDouble()
+          : null,
+      googleMapsUrl: json['google_maps_url'],
+      priceRange: json['price_range'],
+      startPrice: json['start_price'],
+      endPrice: json['end_price'],
+      reviewCount: json['review_count'],
     );
   }
 }

@@ -6,6 +6,7 @@ import '../services/recommendation_service.dart';
 import '../services/agenda_service.dart';
 import '../models/agenda_item.dart';
 import 'agenda_page.dart';
+import 'recommendation_landmark_details.dart';
 
 // ─────────────────────────────────────────────
 //  COLOUR PALETTE
@@ -17,12 +18,8 @@ class _C {
   static const bronze = Color(0xFFC5A059);
   static const cream = Color(0xFFEAE2D1);
   static const white = Colors.white;
-  static const redTime = Color(0xFFDC2626);
-  static const blueTime = Color(0xFF2563EB);
-  static const greenTime = Color(0xFF059669);
 }
 
-// Day color pairs
 const _dayColors = [
   [Color(0xFFDC2626), Color(0xFFFEE2E2)],
   [Color(0xFF2563EB), Color(0xFFDBEAFE)],
@@ -34,13 +31,12 @@ const _dayColors = [
 ];
 
 // ─────────────────────────────────────────────
-//  DATA MODEL (wraps RecommendationItem)
+//  DATA MODELS
 // ─────────────────────────────────────────────
 class _TripPlace {
   final RecommendationItem item;
   bool liked;
   bool visible;
-
   _TripPlace({required this.item, this.liked = false, this.visible = true});
 }
 
@@ -286,15 +282,23 @@ class _TripPlanPageState extends State<TripPlanPage> {
             ? '12:00 PM'
             : '${timeHour - 12}:00 PM';
 
-        return _PlaceCard(
-          key: ValueKey(place.item.name),
-          place: place,
-          timeLabel: timeLabel,
-          timeColor: colors[0],
-          timeBg: colors[1],
-          onLike: () => _onLike(place),
-          onDislike: () => _onDislike(place),
-          onAddCalendar: () => _openSinglePlaceModal(place),
+        return GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RecommendationDetailsPage(item: place.item),
+            ),
+          ),
+          child: _PlaceCard(
+            key: ValueKey(place.item.name),
+            place: place,
+            timeLabel: timeLabel,
+            timeColor: colors[0],
+            timeBg: colors[1],
+            onLike: () => _onLike(place),
+            onDislike: () => _onDislike(place),
+            onAddCalendar: () => _openSinglePlaceModal(place),
+          ),
         );
       },
     );
@@ -431,40 +435,75 @@ class _PlaceCardState extends State<_PlaceCard>
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                // image placeholder
-                Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    color: _C.dark.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: 28,
-                        color: _C.dark.withValues(alpha: 0.22),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.category,
-                        style: TextStyle(
-                          fontSize: 8,
-                          color: _C.dark.withValues(alpha: 0.3),
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: SizedBox(
+                    width: 88,
+                    height: 88,
+                    child: item.photoUrls.isNotEmpty
+                        ? Image.network(
+                            item.photoUrls.first,
+                            width: 88,
+                            height: 88,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              width: 88,
+                              height: 88,
+                              color: _C.dark.withValues(alpha: 0.12),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.location_on_outlined,
+                                    size: 28,
+                                    color: _C.dark.withValues(alpha: 0.22),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    item.category,
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: _C.dark.withValues(alpha: 0.3),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Container(
+                            width: 88,
+                            height: 88,
+                            color: _C.dark.withValues(alpha: 0.12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  size: 28,
+                                  color: _C.dark.withValues(alpha: 0.22),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  item.category,
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    color: _C.dark.withValues(alpha: 0.3),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(width: 16),
-
-                // info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -529,8 +568,6 @@ class _PlaceCardState extends State<_PlaceCard>
                   ),
                 ),
                 const SizedBox(width: 12),
-
-                // actions
                 Column(
                   children: [
                     _CircleAction(
@@ -610,6 +647,78 @@ class _CircleAction extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────
+//  SHARED DATE PICKER WIDGET
+// ─────────────────────────────────────────────
+Widget _buildDatePicker(
+  BuildContext context,
+  DateTime selectedDate,
+  ValueChanged<DateTime> onChanged,
+  String label,
+) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 2,
+          color: _C.dark.withValues(alpha: 0.4),
+        ),
+      ),
+      const SizedBox(height: 12),
+      GestureDetector(
+        onTap: () async {
+          final picked = await showDatePicker(
+            context: context,
+            initialDate: selectedDate,
+            firstDate: DateTime.now(),
+            lastDate: DateTime.now().add(const Duration(days: 365)),
+            builder: (context, child) => Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: const ColorScheme.light(
+                  primary: Color(0xFF1A3C3C),
+                  onPrimary: Colors.white,
+                  surface: Color(0xFFEAE2D1),
+                ),
+              ),
+              child: child!,
+            ),
+          );
+          if (picked != null) onChanged(picked);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: _C.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _C.bronze.withValues(alpha: 0.3)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_month, color: _C.dark, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  DateFormat('EEEE, MMM d yyyy').format(selectedDate),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: _C.dark,
+                  ),
+                ),
+              ),
+              Icon(Icons.chevron_right, color: _C.dark.withValues(alpha: 0.4)),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+// ─────────────────────────────────────────────
 //  DAY AGENDA DIALOG
 // ─────────────────────────────────────────────
 class _DayAgendaDialog extends StatefulWidget {
@@ -622,30 +731,16 @@ class _DayAgendaDialog extends StatefulWidget {
 }
 
 class _DayAgendaDialogState extends State<_DayAgendaDialog> {
-  late List<DateTime> _weekDays;
-  int _selectedDateIdx = 0;
+  DateTime _selectedDate = DateTime.now();
   bool _saving = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final now = DateTime.now();
-    _weekDays = List.generate(
-      7,
-      (i) => DateTime(now.year, now.month, now.day + i),
-    );
-  }
-
-  static const _dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  String _headerFor(DateTime d) => _dayHeaders[d.weekday % 7];
 
   Future<void> _confirm() async {
     setState(() => _saving = true);
-    final selectedDate = _weekDays[_selectedDateIdx];
+    final selectedDate = _selectedDate;
     final agendaService = AgendaService();
 
     try {
-      // ── Step 1: Check if this date already has ANY events ──────────
+      // Check conflicts
       final existing = await agendaService.fetch(
         from: selectedDate,
         to: selectedDate.add(const Duration(days: 1)),
@@ -655,7 +750,6 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
         setState(() => _saving = false);
         if (!mounted) return;
 
-        // ── Step 2: Show warning dialog with two options ───────────────
         final confirmed = await showDialog<bool>(
           context: context,
           builder: (_) => AlertDialog(
@@ -670,9 +764,11 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
                   size: 28,
                 ),
                 SizedBox(width: 10),
-                Text(
-                  'Date Already Has Events',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                Flexible(
+                  child: Text(
+                    'Date Already Has Events',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                  ),
                 ),
               ],
             ),
@@ -761,11 +857,9 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
           ),
         );
 
-        // User chose to pick a different date
         if (confirmed != true) return;
       }
 
-      // ── Step 3: Save all events ────────────────────────────────────
       setState(() => _saving = true);
       const startHour = 9;
       const durationHours = 2;
@@ -795,7 +889,6 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
 
       if (!mounted) return;
       Navigator.pop(context);
-
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -805,18 +898,15 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _saving = false);
-
-      // Specific conflict error from backend
       final isConflict =
           e.toString().toLowerCase().contains('overlap') ||
           e.toString().toLowerCase().contains('conflict') ||
           e.toString().contains('409');
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             isConflict
-                ? 'Some time slots conflict with existing events. Try a different date.'
+                ? 'Some time slots conflict. Try a different date.'
                 : 'Failed to save: $e',
           ),
           backgroundColor: Colors.red,
@@ -886,7 +976,6 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
               const SizedBox(height: 20),
               _LandmarksBar(count: count, total: widget.day.places.length),
               const SizedBox(height: 20),
-
               Text(
                 'SCHEDULE SUMMARY',
                 style: TextStyle(
@@ -942,77 +1031,15 @@ class _DayAgendaDialogState extends State<_DayAgendaDialog> {
                 );
               }),
               const SizedBox(height: 20),
-
-              Text(
-                'SELECT START DATE',
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: _C.dark.withValues(alpha: 0.4),
+              StatefulBuilder(
+                builder: (context, setLocal) => _buildDatePicker(
+                  context,
+                  _selectedDate,
+                  (d) => setState(() => _selectedDate = d),
+                  'SELECT START DATE',
                 ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _weekDays
-                    .map(
-                      (d) => SizedBox(
-                        width: 36,
-                        child: Center(
-                          child: Text(
-                            _headerFor(d),
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: _C.gold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(_weekDays.length, (i) {
-                  final d = _weekDays[i];
-                  final sel = i == _selectedDateIdx;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedDateIdx = i),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: sel ? _C.dark : _C.white,
-                        shape: BoxShape.circle,
-                        boxShadow: sel
-                            ? [
-                                BoxShadow(
-                                  color: _C.dark.withValues(alpha: 0.25),
-                                  blurRadius: 8,
-                                ),
-                              ]
-                            : [],
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${d.day}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: sel ? _C.white : _C.dark,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
               const SizedBox(height: 24),
-
               Row(
                 children: [
                   Expanded(
@@ -1058,26 +1085,12 @@ class _SinglePlaceAgendaDialog extends StatefulWidget {
 }
 
 class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
-  late List<DateTime> _weekDays;
-  int _selectedDateIdx = 0;
+  DateTime _selectedDate = DateTime.now();
   bool _saving = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final now = DateTime.now();
-    _weekDays = List.generate(
-      7,
-      (i) => DateTime(now.year, now.month, now.day + i),
-    );
-  }
-
-  static const _dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  String _headerFor(DateTime d) => _dayHeaders[d.weekday % 7];
 
   Future<void> _confirm() async {
     setState(() => _saving = true);
-    final selectedDate = _weekDays[_selectedDateIdx];
+    final selectedDate = _selectedDate;
 
     try {
       await AgendaService().create(
@@ -1162,9 +1175,9 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
                           ),
                         ),
                         const SizedBox(height: 2),
-                        Text(
+                        const Text(
                           'ADD TO YOUR AGENDA',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.5,
@@ -1185,9 +1198,8 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
                 ],
               ),
               const SizedBox(height: 20),
-              _LandmarksBar(count: 1, total: 1),
+              const _LandmarksBar(count: 1, total: 1),
               const SizedBox(height: 20),
-
               Text(
                 'SCHEDULE SUMMARY',
                 style: TextStyle(
@@ -1222,77 +1234,15 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
                 ],
               ),
               const SizedBox(height: 20),
-
-              Text(
-                'SELECT DATE',
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: _C.dark.withValues(alpha: 0.4),
+              StatefulBuilder(
+                builder: (context, setLocal) => _buildDatePicker(
+                  context,
+                  _selectedDate,
+                  (d) => setState(() => _selectedDate = d),
+                  'SELECT DATE',
                 ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _weekDays
-                    .map(
-                      (d) => SizedBox(
-                        width: 36,
-                        child: Center(
-                          child: Text(
-                            _headerFor(d),
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: _C.gold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(_weekDays.length, (i) {
-                  final d = _weekDays[i];
-                  final sel = i == _selectedDateIdx;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedDateIdx = i),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: sel ? _C.dark : _C.white,
-                        shape: BoxShape.circle,
-                        boxShadow: sel
-                            ? [
-                                BoxShadow(
-                                  color: _C.dark.withValues(alpha: 0.25),
-                                  blurRadius: 8,
-                                ),
-                              ]
-                            : [],
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${d.day}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: sel ? _C.white : _C.dark,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
               const SizedBox(height: 24),
-
               Row(
                 children: [
                   Expanded(
@@ -1339,47 +1289,45 @@ class _LandmarksBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: LayoutBuilder(
-        builder: (_, constraints) {
-          return Stack(
-            children: [
-              Container(
-                width: constraints.maxWidth * fraction,
-                decoration: BoxDecoration(
-                  color: _C.cream,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+        builder: (_, constraints) => Stack(
+          children: [
+            Container(
+              width: constraints.maxWidth * fraction,
+              decoration: BoxDecoration(
+                color: _C.cream,
+                borderRadius: BorderRadius.circular(16),
               ),
-              Positioned(
-                left: 16,
-                top: 0,
-                bottom: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'LANDMARKS',
-                      style: TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.5,
-                        color: _C.dark.withValues(alpha: 0.4),
-                      ),
+            ),
+            Positioned(
+              left: 16,
+              top: 0,
+              bottom: 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'LANDMARKS',
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.5,
+                      color: _C.dark.withValues(alpha: 0.4),
                     ),
-                    Text(
-                      '$count',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                        color: _C.dark,
-                      ),
+                  ),
+                  Text(
+                    '$count',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: _C.dark,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
