@@ -5,6 +5,7 @@ import 'package:new_grad/ai/landmark_classifier.dart';
 import 'package:new_grad/interactive_map_feature.dart';
 import 'package:new_grad/pages/agenda_page.dart';
 import 'package:new_grad/pages/favs.dart';
+import 'package:new_grad/pages/hieroglyph_translator_page.dart';
 import 'package:new_grad/pages/profile_page.dart';
 import 'package:new_grad/pages/terms_and_conditions.dart';
 import 'package:new_grad/pages/done.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/start',
       routes: {
-        '/start': (context) => const FirstPage(),
+        '/start': (context) => const HieroglyphTranslatorPage(),
         '/home': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
