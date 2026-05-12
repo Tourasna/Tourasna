@@ -62,6 +62,7 @@ flutter:
     - assets/icons/
     - assets/ml/
     - assets/html/
+    - assets/icons/glyph_icons/
 
   fonts:
   - family: Cinzel
