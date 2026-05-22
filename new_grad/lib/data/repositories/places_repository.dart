@@ -2,7 +2,7 @@ import '../remote/places_api_service.dart';
 import '../../models/place_location.dart';
 
 /// Repository for accessing place location data
-/// 
+///
 /// ✅ Single source of truth for place coordinates
 /// ✅ Fetches data from places_agenda table via Backend API
 /// ✅ Uses ApiClient for authentication & base URL
@@ -10,18 +10,30 @@ class PlacesRepository {
   final PlacesApiService apiService;
 
   PlacesRepository({required this.apiService});
-  
+
   // Factory constructor for easy instantiation
   factory PlacesRepository.create() {
-    return PlacesRepository(
-      apiService: PlacesApiService(),
-    );
+    return PlacesRepository(apiService: PlacesApiService());
   }
 
   /// Get location for a single place by placeId
-  /// 
+  ///
   /// Returns PlaceLocation with latitude, longitude, and category
   /// Throws exception if place not found or API fails
+  Future<List<PlaceLocation>> getMultipleByLandmarkIds(
+    List<int> landmarkIds,
+  ) async {
+    try {
+      print(
+        '📍 PlacesRepository: Getting ${landmarkIds.length} landmark locations',
+      );
+      return await apiService.getMultipleByLandmarkIds(landmarkIds);
+    } catch (e) {
+      print('❌ PlacesRepository: Failed to get landmark locations: $e');
+      rethrow;
+    }
+  }
+
   Future<PlaceLocation> getPlaceLocation(String placeId) async {
     try {
       print('📍 PlacesRepository: Getting location for placeId: $placeId');
@@ -33,7 +45,7 @@ class PlacesRepository {
   }
 
   /// Get locations for multiple places (batch request)
-  /// 
+  ///
   /// Useful for fetching multiple agenda items at once
   Future<List<PlaceLocation>> getMultiplePlaceLocations(
     List<String> placeIds,
@@ -48,7 +60,7 @@ class PlacesRepository {
   }
 
   /// Check if a placeId exists in the database
-  /// 
+  ///
   /// Returns true if place exists, false otherwise
   Future<bool> placeExists(String placeId) async {
     try {

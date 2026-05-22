@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 
@@ -9,8 +10,6 @@ import '../services/auth_service.dart';
 const _teal = Color(0xFF1A3C3C);
 const _gold = Color(0xFFC5A059);
 const _cream = Color(0xFFF2EADC);
-const _emerald = Color(0xFF0D5B5F);
-const _bronze = Color(0xFF8B6F47);
 
 // ─── Egyptian hieroglyph glyphs per category ────────────────────────────────
 const _glyphs = [
@@ -221,8 +220,34 @@ class PreferencesPageState extends State<PreferencesPage>
     }
   }
 
-  void _skipPage() {
-    Navigator.pushReplacementNamed(context, '/homescreen');
+  Future<void> _skipPage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final firstName = prefs.getString('onboarding_firstName');
+      if (firstName != null) {
+        // Still complete profile with empty preferences
+        final body = {
+          "firstName": firstName,
+          "lastName": prefs.getString('onboarding_lastName') ?? '',
+          "username": prefs.getString('onboarding_username') ?? '',
+          "gender": prefs.getString('onboarding_gender') ?? '',
+          "nationality": prefs.getString('onboarding_nationality') ?? '',
+          "dateOfBirth": _normalizeDate(
+            prefs.getString('onboarding_dob') ?? '01/01/2000',
+          ),
+          "preferences": [],
+        };
+        await ApiClient.put('/api/profiles/complete', body: body);
+        await prefs.remove('onboarding_firstName');
+        await prefs.remove('onboarding_lastName');
+        await prefs.remove('onboarding_username');
+        await prefs.remove('onboarding_gender');
+        await prefs.remove('onboarding_nationality');
+        await prefs.remove('onboarding_dob');
+        await _uploadCachedAvatar();
+      }
+    } catch (_) {}
+    if (mounted) Navigator.pushReplacementNamed(context, '/homescreen');
   }
 
   void _toggleSelection(String preference, int index) {
@@ -252,6 +277,38 @@ class PreferencesPageState extends State<PreferencesPage>
   // ─────────────────────────────────────────────
   // COMPLETE ONBOARDING
   // ─────────────────────────────────────────────
+  Future<void> _uploadCachedAvatar() async {
+    final prefs = await SharedPreferences.getInstance();
+    final avatarPath = prefs.getString('onboarding_avatar_path');
+    if (avatarPath == null) return;
+
+    try {
+      final token = await AuthService().getValidToken();
+      if (token == null) return;
+
+      final uri = Uri.parse('${ApiClient.baseUrl}/api/profiles/avatar');
+      final ext = avatarPath.split('.').last.toLowerCase();
+      final mimeType = ext == 'png'
+          ? 'image/png'
+          : ext == 'webp'
+          ? 'image/webp'
+          : 'image/jpeg';
+
+      final request = http.MultipartRequest('POST', uri)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..files.add(
+          await http.MultipartFile.fromPath(
+            'file',
+            avatarPath,
+            contentType: MediaType('image', mimeType.split('/').last),
+          ),
+        );
+
+      await request.send();
+      await prefs.remove('onboarding_avatar_path');
+    } catch (_) {}
+  }
+
   Future<void> _savePreferencesAndFinish() async {
     final token = await AuthService().getValidToken();
 
@@ -314,6 +371,10 @@ class PreferencesPageState extends State<PreferencesPage>
 
       final res = await ApiClient.put('/api/profiles/complete', body: body);
 
+      if (res.statusCode == 409) {
+        throw Exception('409: ${res.body}');
+      }
+
       if (res.statusCode != 200) {
         throw Exception(res.body);
       }
@@ -324,20 +385,49 @@ class PreferencesPageState extends State<PreferencesPage>
       await prefs.remove('onboarding_gender');
       await prefs.remove('onboarding_nationality');
       await prefs.remove('onboarding_dob');
+      await _uploadCachedAvatar();
 
       Navigator.pushReplacementNamed(context, '/homescreen');
     } catch (e) {
       debugPrint("❌ Onboarding failed: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Failed to complete onboarding"),
-          backgroundColor: Colors.red[800],
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+
+      String message = "Failed to complete onboarding";
+
+      // Check for username conflict (409)
+      final errorStr = e.toString();
+      if (errorStr.contains('409') || errorStr.contains('username')) {
+        message = "Username already taken. Please choose a different one.";
+        // Go back to signup so user can change username
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              backgroundColor: Colors.red[800],
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+          await Future.delayed(const Duration(seconds: 2));
+          if (mounted) Navigator.pushReplacementNamed(context, '/signup');
+        }
+        return;
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.red[800],
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 

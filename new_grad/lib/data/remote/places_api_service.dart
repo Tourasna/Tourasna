@@ -56,6 +56,37 @@ class PlacesApiService {
   ///
   /// Endpoint: POST /api/places/locations
   /// Body: { "placeIds": ["id1", "id2", ...] }
+  ///
+  Future<List<PlaceLocation>> getMultipleByLandmarkIds(
+    List<int> landmarkIds,
+  ) async {
+    try {
+      print('🔍 Fetching locations for ${landmarkIds.length} landmark IDs');
+
+      final response = await ApiClient.post(
+        '/api/places-map/landmark-locations',
+        body: {'landmarkIds': landmarkIds},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        final locations = jsonList
+            .map((json) => PlaceLocation.fromJson(json as Map<String, dynamic>))
+            .toList();
+        print('✅ Fetched ${locations.length} landmark locations');
+        return locations;
+      } else {
+        throw Exception(
+          'Failed to fetch landmark locations: ${response.statusCode}',
+        );
+      }
+    } catch (e, stackTrace) {
+      print('❌ Error fetching landmark locations: $e');
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
   Future<List<PlaceLocation>> getMultiplePlaceLocations(
     List<String> placeIds,
   ) async {

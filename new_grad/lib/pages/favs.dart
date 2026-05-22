@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-
 import '../models/recommendation_item.dart';
 import '../services/favorites_service.dart';
-import '../utils/recommendation_images.dart';
+
+class _C {
+  static const papyrus = Color(0xFFF2EADC);
+  static const teal = Color(0xFF1A3C3C);
+  static const gold = Color(0xFFC5A059);
+  static const surface = Color(0xFFEAE2D1);
+  static const cardBg = Color(0xCCFFFFFF);
+}
 
 class FavsPage extends StatefulWidget {
   const FavsPage({super.key});
@@ -14,8 +20,15 @@ class FavsPage extends StatefulWidget {
 class _FavsPageState extends State<FavsPage> {
   final FavoritesService favoritesService = FavoritesService();
 
-  bool loading = true;
-  List<RecommendationItem> favorites = [];
+  bool _loading = true;
+  List<RecommendationItem> _favorites = [];
+
+  TextStyle get _serif => const TextStyle(
+    fontFamily: 'Gambetta',
+    fontWeight: FontWeight.w700,
+    color: _C.teal,
+  );
+  TextStyle get _sans => const TextStyle(fontFamily: 'Satoshi', color: _C.teal);
 
   @override
   void initState() {
@@ -24,243 +37,351 @@ class _FavsPageState extends State<FavsPage> {
   }
 
   Future<void> _loadFavorites() async {
-    setState(() => loading = true);
-    favorites = await favoritesService.list();
-    setState(() => loading = false);
+    setState(() => _loading = true);
+    _favorites = await favoritesService.list();
+    if (mounted) setState(() => _loading = false);
   }
 
   Future<void> _removeFavorite(RecommendationItem item) async {
     await favoritesService.remove(item.id);
-    setState(() {
-      favorites.removeWhere((f) => f.id == item.id);
-    });
+    if (mounted) setState(() => _favorites.removeWhere((f) => f.id == item.id));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      body: Stack(
+      backgroundColor: _C.papyrus,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildTopBar(),
+            Expanded(
+              child: _loading
+                  ? Center(child: CircularProgressIndicator(color: _C.gold))
+                  : _favorites.isEmpty
+                  ? _buildEmpty()
+                  : _buildGrid(),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  // ── top bar ───────────────────────────────────
+  Widget _buildTopBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      child: Row(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/homepage.png"),
-                fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.60),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: _C.teal.withValues(alpha: 0.08)),
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: _C.teal,
+                size: 16,
               ),
             ),
           ),
-          Container(color: Colors.white.withOpacity(0.2)),
-
-          if (loading)
-            const Center(child: CircularProgressIndicator())
-          else
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 90),
-
-                  const Text(
-                    "FAVOURITES",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.5,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  if (favorites.isEmpty)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 80),
-                      child: Text(
-                        "No favorites yet",
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                    )
-                  else
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.75,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: GridView.builder(
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15,
-                                childAspectRatio: 0.82,
-                              ),
-                          itemCount: favorites.length,
-                          itemBuilder: (context, index) {
-                            final item = favorites[index];
-                            return _favCard(item);
-                          },
-                        ),
-                      ),
-                    ),
-
-                  const SizedBox(height: 40),
-                ],
+          const SizedBox(width: 16),
+          Text('Favourites', style: _serif.copyWith(fontSize: 28)),
+          const Spacer(),
+          if (_favorites.isNotEmpty)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: _C.gold.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: _C.gold.withValues(alpha: 0.25)),
+              ),
+              child: Text(
+                '${_favorites.length} saved',
+                style: _sans.copyWith(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: _C.gold,
+                ),
               ),
             ),
         ],
       ),
+    );
+  }
 
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: const Color(0xFFF5E5D1),
-        height: 85,
-        notchMargin: 8.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 26.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  _buildNavItem(
-                    iconPath: 'assets/icons/explore.png',
-                    label: 'Explore',
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/homescreen'),
-                  ),
-                  const SizedBox(width: 20),
-                  _buildNavItem(
-                    iconPath: 'assets/icons/favs.png',
-                    label: 'FAVs',
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  _buildNavItem(
-                    iconPath: 'assets/icons/agenda.png',
-                    label: 'Agenda',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/agenda');
-                    },
-                  ),
-                  const SizedBox(width: 20),
-                  _buildNavItem(
-                    iconPath: 'assets/icons/profile.png',
-                    label: 'Profile',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/profile');
-                    },
-                  ),
-                ],
-              ),
-            ],
+  // ── empty state ───────────────────────────────
+  Widget _buildEmpty() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: _C.gold.withValues(alpha: 0.10),
+              shape: BoxShape.circle,
+              border: Border.all(color: _C.gold.withValues(alpha: 0.25)),
+            ),
+            child: Icon(
+              Icons.favorite_border_rounded,
+              color: _C.gold.withValues(alpha: 0.60),
+              size: 36,
+            ),
           ),
+          const SizedBox(height: 20),
+          Text('No favourites yet', style: _serif.copyWith(fontSize: 20)),
+          const SizedBox(height: 8),
+          Text(
+            'Explore landmarks and save your\nfavourites here',
+            textAlign: TextAlign.center,
+            style: _sans.copyWith(
+              fontSize: 13,
+              color: _C.teal.withValues(alpha: 0.50),
+            ),
+          ),
+          const SizedBox(height: 28),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/discovery'),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+              decoration: BoxDecoration(
+                color: _C.teal,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: _C.teal.withValues(alpha: 0.28),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Text(
+                'Explore Landmarks',
+                style: _sans.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── grid ──────────────────────────────────────
+  Widget _buildGrid() {
+    return GridView.builder(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 14,
+        childAspectRatio: 0.82,
+      ),
+      itemCount: _favorites.length,
+      itemBuilder: (_, i) => _favCard(_favorites[i]),
+    );
+  }
+
+  // ── fav card ──────────────────────────────────
+  Widget _favCard(RecommendationItem item) {
+    final photo = item.photoUrls.isNotEmpty ? item.photoUrls.first : null;
+
+    return GestureDetector(
+      onLongPress: () => _showAgendaSheet(item),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: _C.surface,
+          image: photo != null
+              ? DecorationImage(image: NetworkImage(photo), fit: BoxFit.cover)
+              : null,
+          boxShadow: [
+            BoxShadow(
+              color: _C.teal.withValues(alpha: 0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // gradient overlay
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.65),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // name + category
+            Positioned(
+              left: 12,
+              right: 12,
+              bottom: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Gambetta',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _C.gold.withValues(alpha: 0.85),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      item.category,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // heart button
+            Positioned(
+              top: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: () => _removeFavorite(item),
+                child: Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.90),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.10),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.favorite_rounded,
+                    color: Colors.redAccent,
+                    size: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  // ─────────────────────────────────────────────
-
-  Widget _favCard(RecommendationItem item) {
-    final imagePath = imageForCategory(item.category);
-
-    return GestureDetector(
-      onLongPress: () => _showAgendaSheet(item),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
-              ),
+  // ── bottom nav ────────────────────────────────
+  Widget _buildBottomNav() {
+    return Container(
+      height: 85,
+      decoration: BoxDecoration(
+        color: _C.papyrus,
+        border: Border(top: BorderSide(color: _C.teal.withValues(alpha: 0.05))),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _navItem(
+              'assets/icons/explore.png',
+              'Explore',
+              () => Navigator.pushNamed(context, '/homescreen'),
             ),
-          ),
-
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [Colors.black.withOpacity(0.7), Colors.transparent],
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    item.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
+            _navItem('assets/icons/favs.png', 'FAVs', () {}, isActive: true),
+            _navItem(
+              'assets/icons/agenda.png',
+              'Agenda',
+              () => Navigator.pushNamed(context, '/agenda'),
             ),
-          ),
-
-          Positioned(
-            top: 10,
-            right: 10,
-            child: GestureDetector(
-              onTap: () async {
-                await _removeFavorite(item);
-              },
-              child: const Icon(Icons.favorite, color: Colors.black, size: 28),
+            _navItem(
+              'assets/images/Discovery-3.png',
+              'Discovery',
+              () => Navigator.pushNamed(context, '/discovery'),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  // ─────────────────────────────────────────────
-
-  Widget _buildNavItem({
-    required String iconPath,
-    required String label,
-    required VoidCallback onPressed,
+  Widget _navItem(
+    String iconPath,
+    String label,
+    VoidCallback onTap, {
+    bool isActive = false,
   }) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             width: 62,
-            height: 38,
+            height: 40,
             alignment: Alignment.center,
-            decoration: label == 'FAVs'
-                ? BoxDecoration(
-                    color: const Color(0xFFE9DDC9),
-                    borderRadius: BorderRadius.circular(20),
-                  )
-                : null,
+            decoration: BoxDecoration(
+              color: isActive ? _C.teal : Colors.transparent,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Image.asset(
               iconPath,
-              width: 40,
-              height: 40,
+              width: 38,
+              height: 38,
               fit: BoxFit.contain,
+              color: isActive ? Colors.white : null,
+              colorBlendMode: isActive ? BlendMode.srcIn : null,
             ),
           ),
-          const SizedBox(height: 0),
+          const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
-              color: Color(0xFF1F1F1F),
-              fontSize: 12.5,
-              fontWeight: FontWeight.w700,
-              height: 1.0,
-              letterSpacing: 0.1,
+            style: _sans.copyWith(
+              fontSize: 11,
+              fontWeight: isActive ? FontWeight.w800 : FontWeight.w700,
+              color: isActive ? _C.teal : const Color(0xFF1F1F1F),
             ),
           ),
         ],
@@ -268,43 +389,95 @@ class _FavsPageState extends State<FavsPage> {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // AGENDA ACTION SHEET (LOGIC ONLY)
-  // ─────────────────────────────────────────────
-
+  // ── agenda sheet ──────────────────────────────
   void _showAgendaSheet(RecommendationItem item) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        decoration: const BoxDecoration(
+          color: _C.papyrus,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: _C.teal.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              item.name,
+              style: _serif.copyWith(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            _sheetAction(
+              icon: Icons.event_rounded,
+              label: 'Add to Agenda',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/agenda', arguments: item);
+              },
+            ),
+            const SizedBox(height: 10),
+            _sheetAction(
+              icon: Icons.favorite_border_rounded,
+              label: 'Remove from Favourites',
+              isRed: true,
+              onTap: () async {
+                Navigator.pop(context);
+                await _removeFavorite(item);
+              },
+            ),
+          ],
+        ),
       ),
-      builder: (_) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 12),
-              ListTile(
-                leading: const Icon(Icons.event),
-                title: const Text('Add to Agenda'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/agenda', arguments: item);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.delete),
-                title: const Text('Remove from Favorites'),
-                onTap: () async {
-                  Navigator.pop(context);
-                  await _removeFavorite(item);
-                },
-              ),
-              const SizedBox(height: 12),
-            ],
+    );
+  }
+
+  Widget _sheetAction({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    bool isRed = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        decoration: BoxDecoration(
+          color: isRed
+              ? Colors.red.withValues(alpha: 0.06)
+              : Colors.white.withValues(alpha: 0.70),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: isRed
+                ? Colors.red.withValues(alpha: 0.20)
+                : _C.teal.withValues(alpha: 0.08),
           ),
-        );
-      },
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: isRed ? Colors.redAccent : _C.gold, size: 20),
+            const SizedBox(width: 14),
+            Text(
+              label,
+              style: _sans.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+                color: isRed ? Colors.redAccent : _C.teal,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

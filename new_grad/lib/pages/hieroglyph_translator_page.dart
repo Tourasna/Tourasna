@@ -663,21 +663,27 @@ class _DirectionTip extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          Text(
-            'Look at the direction characters face. Symbols point toward the beginning of the text, so you must read ',
-            style: TextStyle(fontSize: 12, color: _C.dark.withOpacity(0.75)),
-          ),
-          Text(
-            'into their faces',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: _C.bronze,
+          RichText(
+            text: TextSpan(
+              style: TextStyle(fontSize: 12, color: _C.dark.withOpacity(0.75)),
+              children: [
+                const TextSpan(
+                  text:
+                      'Look at the direction characters face. Symbols point toward the beginning of the text, so you must read ',
+                ),
+                TextSpan(
+                  text: 'into their faces',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: _C.bronze,
+                  ),
+                ),
+                TextSpan(
+                  text: ' to follow the story.',
+                  style: TextStyle(color: _C.dark.withOpacity(0.75)),
+                ),
+              ],
             ),
-          ),
-          Text(
-            ' to follow the story.',
-            style: TextStyle(fontSize: 12, color: _C.dark.withOpacity(0.75)),
           ),
           const SizedBox(height: 16),
           Row(
@@ -740,13 +746,13 @@ class _DirectionIllustrationState extends State<_DirectionIllustration>
         ),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.remove_red_eye_outlined, size: 14, color: _C.dark),
-                const SizedBox(width: 4),
-                Icon(Icons.remove_red_eye_outlined, size: 14, color: _C.dark),
-              ],
+            Image.asset(
+              widget.isRtl
+                  ? 'assets/icons/right_left.png'
+                  : 'assets/icons/left_right.png',
+              width: 42,
+              height: 42,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 4),
             AnimatedBuilder(
@@ -823,24 +829,11 @@ class _DirectionIllustrationTTBState extends State<_DirectionIllustrationTTB>
         ),
         child: Column(
           children: [
-            Column(
-              children: [
-                Icon(Icons.remove_red_eye_outlined, size: 14, color: _C.dark),
-                const SizedBox(height: 2),
-                AnimatedBuilder(
-                  animation: _anim,
-                  builder: (_, __) => Transform.translate(
-                    offset: Offset(0, _anim.value),
-                    child: Icon(
-                      Icons.arrow_downward,
-                      size: 14,
-                      color: _C.bronze,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Icon(Icons.remove_red_eye_outlined, size: 14, color: _C.dark),
-              ],
+            Image.asset(
+              'assets/icons/top_bottom.png',
+              width: 58,
+              height: 58,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 6),
             Text(
