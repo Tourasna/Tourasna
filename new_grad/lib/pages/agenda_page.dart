@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import '../utils/network_navigator.dart';
 import '../models/agenda_item.dart';
 import '../models/recommendation_item.dart';
 import '../services/agenda_service.dart';
@@ -517,7 +517,7 @@ class _AgendaPageState extends State<AgendaPage> {
                         .where((e) => e['landmarkId'] != null)
                         .map((e) => e['landmarkId'].toString())
                         .toList();
-                    Navigator.pushNamed(
+                    navigateWithNetworkCheck(
                       context,
                       '/interactive_map',
                       arguments: {'placeIds': placeIds},
@@ -1160,13 +1160,14 @@ class _AgendaPageState extends State<AgendaPage> {
                 _buildNavItem(
                   iconPath: 'assets/icons/explore.png',
                   label: 'Explore',
-                  onPressed: () => Navigator.pushNamed(context, "/homescreen"),
+                  onPressed: () =>
+                      navigateWithNetworkCheck(context, '/homescreen'),
                 ),
                 const SizedBox(width: 28),
                 _buildNavItem(
                   iconPath: 'assets/icons/favs.png',
                   label: 'FAVs',
-                  onPressed: () => Navigator.pushNamed(context, "/favs"),
+                  onPressed: () => navigateWithNetworkCheck(context, '/favs'),
                 ),
               ],
             ),
@@ -1176,13 +1177,14 @@ class _AgendaPageState extends State<AgendaPage> {
                   iconPath: 'assets/icons/agenda.png',
                   label: 'Agenda',
                   isActive: true,
-                  onPressed: () => Navigator.pushNamed(context, "/agenda"),
+                  onPressed: () => navigateWithNetworkCheck(context, '/agenda'),
                 ),
                 const SizedBox(width: 28),
                 _buildNavItem(
                   iconPath: 'assets/images/Discovery-3.png',
                   label: 'Discovery',
-                  onPressed: () => Navigator.pushNamed(context, "/discovery"),
+                  onPressed: () =>
+                      navigateWithNetworkCheck(context, '/discovery'),
                 ),
               ],
             ),
