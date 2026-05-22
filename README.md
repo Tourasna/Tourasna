@@ -52,7 +52,7 @@ Tourasna/
 - Youssef Maged Makram 
 - Alia Mostafa
 - Hossam Elghazaly
-- Fady Mohamed Farouk
+- Fady Muhammad Farouk
 
 ## 📄 License
 
