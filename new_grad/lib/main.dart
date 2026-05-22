@@ -8,6 +8,7 @@ import 'package:new_grad/pages/discovery_page.dart';
 import 'package:new_grad/pages/favs.dart';
 import 'package:new_grad/pages/hieroglyph_translator_page.dart';
 import 'package:new_grad/pages/profile_page.dart';
+import 'package:new_grad/pages/storytelling_page.dart';
 import 'package:new_grad/pages/terms_and_conditions.dart';
 import 'package:new_grad/pages/done.dart';
 import 'package:new_grad/pages/home_page.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/preferences': (context) => const PreferencesPage(),
         '/homescreen': (context) => const HomePage(),
+        '/storytelling': (context) => const StorytellingPage(),
         '/terms': (context) => const TermsAndConditions(),
         '/profile': (context) => const ProfilePage(),
         '/done': (context) => const DonePage(),

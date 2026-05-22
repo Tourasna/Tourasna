@@ -371,9 +371,8 @@ class _HomePageState extends State<HomePage> {
                         _serviceButton(
                           iconPath: 'assets/images/story.png',
                           label: 'Storytelling',
-                          onTap: () {
-                            // TODO: navigate to TTS/Stories page
-                          },
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/storytelling'),
                         ),
                       ],
                     ),
