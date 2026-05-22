@@ -7,17 +7,18 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/enhanced_animations.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shimmer/shimmer.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../interactive_map_feature.dart';
 
 /// InteractiveMapScreen - ONLY for Agenda
-/// 
+///
 /// This screen displays places from user's agenda on the map.
 /// Input: List<String> placeIds (REQUIRED)
 class InteractiveMapScreen extends StatefulWidget {
   // ✅ REQUIRED: placeIds from Agenda
   final List<String> placeIds;
-  
+
   const InteractiveMapScreen({
     Key? key,
     required this.placeIds, // ← REQUIRED, not optional
@@ -55,13 +56,20 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
 
     // ✅ ALWAYS load from placeIds (no check needed)
     Future.microtask(() async {
-      print("🗺️ Loading trip from ${widget.placeIds.length} agenda places");
-      await mapProvider.loadTripFromPlaceIds(context, widget.placeIds);
-      mapProvider.startLiveLocationTracking(context);
-      
-      setState(() {
-        _isMapReady = true;
-      });
+      final permission = await Geolocator.requestPermission();
+
+      if (mounted)
+        await mapProvider.loadTripFromPlaceIds(context, widget.placeIds);
+
+      final hasPermission =
+          permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse;
+
+      if (widget.placeIds.isNotEmpty && hasPermission) {
+        mapProvider.startLiveLocationTracking(context);
+      }
+
+      if (mounted) setState(() => _isMapReady = true);
     });
   }
 
@@ -148,11 +156,18 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                   // Top Bar
                   Container(
                     height: 60,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: AppColors.tealDark, size: 28),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.tealDark,
+                            size: 28,
+                          ),
                           onPressed: () => Navigator.pop(context),
                           tooltip: 'Back to Agenda',
                         ),
@@ -168,13 +183,15 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.history, color: AppColors.pyramid, size: 28),
+                          icon: const Icon(
+                            Icons.history,
+                            color: AppColors.pyramid,
+                            size: 28,
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
-                              FadePageRoute(
-                                page: const TripHistoryScreen(),
-                              ),
+                              FadePageRoute(page: const TripHistoryScreen()),
                             );
                           },
                           tooltip: 'Trip History',
@@ -314,12 +331,16 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                                 onPressed: () async {
                                   await provider.refreshUserLocation(context);
                                   if (provider.visiblePlaces.isNotEmpty &&
-                                      provider.visiblePlaces.first.id == 'user') {
+                                      provider.visiblePlaces.first.id ==
+                                          'user') {
                                     _mapController.animateCamera(
                                       CameraUpdate.newLatLngZoom(
                                         LatLng(
                                           provider.visiblePlaces.first.latitude,
-                                          provider.visiblePlaces.first.longitude,
+                                          provider
+                                              .visiblePlaces
+                                              .first
+                                              .longitude,
                                         ),
                                         15,
                                       ),
@@ -375,7 +396,9 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
                                 const Icon(Icons.list_alt),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'View ${widget.placeIds.length} Places',
+                                  widget.placeIds.isEmpty
+                                      ? 'No places in agenda'
+                                      : 'View ${widget.placeIds.length} Places',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -399,7 +422,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
             if (provider.loading || !_isMapReady) {
               return const SizedBox.shrink();
             }
-            
+
             return FloatingActionButton.extended(
               onPressed: _startNavigation,
               icon: const Icon(Icons.navigation),
@@ -415,11 +438,15 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
 
   Future<void> _startNavigation() async {
     final provider = mapProvider;
-    
-    await provider.refreshUserLocation(context);
-    
+
+    // ← add timeout so it doesn't block forever
+    await provider
+        .refreshUserLocation(context)
+        .timeout(const Duration(seconds: 5), onTimeout: () {});
+
+    if (!mounted) return;
+
     if (provider.visiblePlaces.isEmpty) {
-      if (!mounted) return;
       _showEnhancedSnackBar(
         context,
         'No places found!',
@@ -428,13 +455,12 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
       );
       return;
     }
-    
+
     final placesToVisit = provider.visiblePlaces
         .where((place) => place.id != 'user')
         .toList();
-    
+
     if (placesToVisit.isEmpty) {
-      if (!mounted) return;
       _showEnhancedSnackBar(
         context,
         'No places to visit!',
@@ -443,15 +469,17 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
       );
       return;
     }
-    
+
     if (!mounted) return;
     Navigator.push(
       context,
       SlidePageRoute(
         page: ActiveTripScreen(
           places: placesToVisit,
-          startingLocation: provider.customStartLocation ??
-              (provider.visiblePlaces.isNotEmpty && provider.visiblePlaces.first.id == 'user'
+          startingLocation:
+              provider.customStartLocation ??
+              (provider.visiblePlaces.isNotEmpty &&
+                      provider.visiblePlaces.first.id == 'user'
                   ? LatLng(
                       provider.visiblePlaces.first.latitude,
                       provider.visiblePlaces.first.longitude,
@@ -487,9 +515,7 @@ class _InteractiveMapScreenState extends State<InteractiveMapScreen> {
         ),
         backgroundColor: color,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(

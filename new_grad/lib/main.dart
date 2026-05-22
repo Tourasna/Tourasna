@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/start',
       routes: {
         '/start': (context) => const FirstPage(),
-        '/home': (context) => const WelcomePage(),
+        '/welcome': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/preferences': (context) => const PreferencesPage(),
@@ -55,6 +55,8 @@ class MyApp extends StatelessWidget {
         '/chatbot': (context) => const ChatbotPage(),
         '/favs': (context) => const FavsPage(),
         '/mocka': (context) => ChatMockPage(),
+        '/hieroglyph': (context) => HieroglyphTranslatorPage(),
+        '/discovery': (context) => const DiscoveryPage(),
         '/agenda': (context) => AgendaPage(),
         '/interactive_map': (context) {
           final args =

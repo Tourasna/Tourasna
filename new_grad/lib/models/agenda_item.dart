@@ -4,6 +4,9 @@ class AgendaItem {
   final DateTime start;
   final DateTime end;
   final String? placeId;
+  final int? landmarkId;
+  final double? latitude;
+  final double? longitude;
   final String? notes;
 
   AgendaItem({
@@ -12,6 +15,9 @@ class AgendaItem {
     required this.start,
     required this.end,
     this.placeId,
+    this.landmarkId,
+    this.latitude,
+    this.longitude,
     this.notes,
   });
 
@@ -21,7 +27,16 @@ class AgendaItem {
       title: json['title'],
       start: DateTime.parse(json['start_datetime']),
       end: DateTime.parse(json['end_datetime']),
-      placeId: json['place_id'],
+      placeId: json['place_id']?.toString(),
+      landmarkId: json['landmark_id'] != null
+          ? int.tryParse(json['landmark_id'].toString())
+          : null,
+      latitude: json['latitude'] != null
+          ? double.tryParse(json['latitude'].toString())
+          : null,
+      longitude: json['longitude'] != null
+          ? double.tryParse(json['longitude'].toString())
+          : null,
       notes: json['notes'],
     );
   }
@@ -32,6 +47,7 @@ class AgendaItem {
       'startDateTime': start.toIso8601String(),
       'endDateTime': end.toIso8601String(),
       if (placeId != null) 'placeId': placeId,
+      if (landmarkId != null) 'landmarkId': landmarkId,
       if (notes != null) 'notes': notes,
     };
   }
@@ -41,7 +57,8 @@ class AgendaItem {
       'startDateTime': start.toIso8601String(),
       'endDateTime': end.toIso8601String(),
       if (title.isNotEmpty) 'title': title,
-      'placeId': placeId,
+      if (placeId != null) 'placeId': placeId,
+      if (landmarkId != null) 'landmarkId': landmarkId,
       'notes': notes,
     };
   }

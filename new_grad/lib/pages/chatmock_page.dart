@@ -9,6 +9,10 @@ class ChatMockPage extends StatefulWidget {
 }
 
 class _ChatMockPageState extends State<ChatMockPage> {
+  final Color bgColor = const Color(0xFFF2EADC);
+  final Color darkColor = const Color(0xFF1A3C3C);
+  final Color goldColor = const Color(0xFFC5A059);
+
   final List<_ChatMessage> messages = [];
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -41,31 +45,23 @@ class _ChatMockPageState extends State<ChatMockPage> {
                 ),
               ),
             );
-            showIntro = false; // hide intro once we have messages
+            showIntro = false;
           });
           _scrollToBottom();
         }
       },
       onDisconnected: () {
-        if (mounted) {
-          debugPrint("❌ Chat disconnected");
-        }
+        if (mounted) debugPrint("❌ Chat disconnected");
       },
-
       onStream: _handleStreamChunk,
       onStreamEnd: _handleStreamEnd,
     );
   }
 
-  // ─────────────────────────────────────────────
-  // STREAM HANDLING (UX)
-  // ─────────────────────────────────────────────
   void _handleStreamChunk(String chunk) {
     if (!mounted) return;
-
     setState(() {
       showIntro = false;
-
       if (_streamingIndex == null) {
         messages.add(_ChatMessage(chunk, true));
         _streamingIndex = messages.length - 1;
@@ -74,7 +70,6 @@ class _ChatMockPageState extends State<ChatMockPage> {
         messages[_streamingIndex!] = _ChatMessage(current.text + chunk, true);
       }
     });
-
     _scrollToBottom();
   }
 
@@ -82,9 +77,6 @@ class _ChatMockPageState extends State<ChatMockPage> {
     _streamingIndex = null;
   }
 
-  // ─────────────────────────────────────────────
-  // SEND MESSAGE (UX)
-  // ─────────────────────────────────────────────
   void sendMessage() {
     final text = controller.text.trim();
     if (text.isEmpty) return;
@@ -97,7 +89,6 @@ class _ChatMockPageState extends State<ChatMockPage> {
 
     controller.clear();
     chatService.sendMessage(text);
-
     _scrollToBottom();
   }
 
@@ -120,167 +111,369 @@ class _ChatMockPageState extends State<ChatMockPage> {
     super.dispose();
   }
 
-  // ─────────────────────────────────────────────
-  // UI (from the UI mock)
-  // ─────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5E8C7),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF5E8C7),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                if (showIntro) ...[
-                  const SizedBox(height: 16),
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: const BoxDecoration(
-                      color: Colors.orange,
-                      shape: BoxShape.circle,
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/icons/chatmocka.png",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Chat now with Horus",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final msg = messages[index];
-
-                      return Align(
-                        alignment: msg.isBot
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            if (msg.isBot) ...[
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: const BoxDecoration(
-                                  color: Colors.orange,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    "assets/icons/ChatmockAvatar.png",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                            ],
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              padding: const EdgeInsets.all(12),
-                              constraints: const BoxConstraints(maxWidth: 260),
-                              decoration: BoxDecoration(
-                                color: msg.isBot
-                                    ? Colors.amber.shade300
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: Text(
-                                msg.text,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ── APP BAR ───────────────────────────────
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: bgColor,
+                border: Border(
+                  bottom: BorderSide(color: darkColor.withOpacity(0.05)),
                 ),
-              ],
-            ),
-          ),
-
-          // INPUT BAR (from the UI mock, UX: submit-to-send kept)
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(color: Colors.black),
+              ),
+              child: Row(
+                children: [
+                  // BACK
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: goldColor.withOpacity(0.2)),
+                      ),
+                      child: Icon(Icons.chevron_left, color: darkColor),
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: controller,
-                            onSubmitted: (_) => sendMessage(),
-                            decoration: const InputDecoration(
-                              hintText: "Type...",
-                              border: InputBorder.none,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  // AVATAR
+                  Stack(
+                    children: [
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: goldColor.withOpacity(0.3),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/images/fahmy_chat.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              color: goldColor.withOpacity(0.2),
+                              child: Icon(Icons.person, color: darkColor),
                             ),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.black,
+                      ),
+                      Positioned(
+                        bottom: 1,
+                        right: 1,
+                        child: Container(
+                          width: 11,
+                          height: 11,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: bgColor, width: 2),
                           ),
-                          onPressed: () {
-                            // keep your UI behavior here if you want
-                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  // NAME + STATUS
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Fahmy',
+                          style: TextStyle(
+                            fontFamily: 'Gambetta',
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: darkColor,
+                          ),
+                        ),
+                        Text(
+                          'Online Guide',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: darkColor.withOpacity(0.5),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: sendMessage,
-                  child: const CircleAvatar(
-                    radius: 22,
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.send, color: Colors.white),
+
+                  // MORE
+                  Icon(Icons.more_vert, color: darkColor.withOpacity(0.5)),
+                ],
+              ),
+            ),
+
+            // ── MESSAGES ─────────────────────────────
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                itemCount: messages.isEmpty && showIntro
+                    ? 1
+                    : messages.length + 1,
+                itemBuilder: (context, index) {
+                  // Date divider always first
+                  if (index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: darkColor.withOpacity(0.06),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'TODAY',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.5,
+                              color: darkColor.withOpacity(0.4),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  // Intro greeting if no messages yet
+                  if (messages.isEmpty && showIntro) {
+                    return _buildBotBubble(
+                      'Greetings, traveler! I am Fahmy. Are you ready to discover the secrets of the ancient kings? What monument shall we explore today?',
+                    );
+                  }
+
+                  final msg = messages[index - 1];
+                  return msg.isBot
+                      ? _buildBotBubble(msg.text)
+                      : _buildUserBubble(msg.text);
+                },
+              ),
+            ),
+
+            // ── INPUT BAR ─────────────────────────────
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              decoration: BoxDecoration(
+                color: bgColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: darkColor.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -4),
                   ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  // + BUTTON
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: goldColor.withOpacity(0.2)),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: darkColor.withOpacity(0.4),
+                      size: 22,
+                    ),
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  // TEXT FIELD
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: darkColor.withOpacity(0.1)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: darkColor.withOpacity(0.04),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: controller,
+                        onSubmitted: (_) => sendMessage(),
+                        style: TextStyle(
+                          color: darkColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Ask Fahmy...',
+                          hintStyle: TextStyle(
+                            color: darkColor.withOpacity(0.35),
+                            fontSize: 14,
+                          ),
+                          border: InputBorder.none,
+                          suffixIcon: Icon(
+                            Icons.sentiment_satisfied_alt_outlined,
+                            color: darkColor.withOpacity(0.35),
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  // SEND BUTTON
+                  GestureDetector(
+                    onTap: sendMessage,
+                    child: Container(
+                      width: 46,
+                      height: 46,
+                      decoration: BoxDecoration(
+                        color: darkColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: darkColor.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.send_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBotBubble(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // AVATAR
+          Container(
+            width: 30,
+            height: 30,
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: goldColor.withOpacity(0.3)),
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/chatmocka.png',
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: goldColor.withOpacity(0.2),
+                  child: Icon(Icons.person, size: 16, color: darkColor),
                 ),
-              ],
+              ),
+            ),
+          ),
+
+          // BUBBLE
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              constraints: const BoxConstraints(maxWidth: 280),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+                border: Border.all(color: goldColor.withOpacity(0.2)),
+                boxShadow: [
+                  BoxShadow(
+                    color: darkColor.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 14, color: darkColor, height: 1.5),
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildUserBubble(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          constraints: const BoxConstraints(maxWidth: 280),
+          decoration: BoxDecoration(
+            color: darkColor,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(4),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: darkColor.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+              height: 1.5,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -289,6 +482,5 @@ class _ChatMockPageState extends State<ChatMockPage> {
 class _ChatMessage {
   final String text;
   final bool isBot;
-
   _ChatMessage(this.text, this.isBot);
 }

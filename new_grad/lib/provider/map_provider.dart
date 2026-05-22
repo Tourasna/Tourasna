@@ -29,7 +29,7 @@ class MapProvider extends ChangeNotifier {
 
   bool userLocationAvailable = false;
   String? locationErrorMessage;
-  
+
   LatLng? customStartLocation;
   bool isSelectingStartLocation = false;
 
@@ -45,9 +45,9 @@ class MapProvider extends ChangeNotifier {
   // ════════════════════════════════════════════════════════════════════════
   // 🆕 NEW: Load trip from Agenda placeIds
   // ════════════════════════════════════════════════════════════════════════
-  
+
   /// Load trip from list of placeIds (from Agenda)
-  /// 
+  ///
   /// This method fetches coordinates from Backend using PlacesRepository
   /// and creates a single-day trip with all places
   Future<void> loadTripFromPlaceIds(
@@ -59,12 +59,21 @@ class MapProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // 1. Fetch locations from Backend
       print("📡 Fetching locations from Backend...");
-      final List<PlaceLocation> locations = 
-          await placesRepository.getMultiplePlaceLocations(placeIds);
-      
+
+      // convert string IDs to ints for the new endpoint
+      final landmarkIds = placeIds
+          .map((id) => int.tryParse(id))
+          .whereType<int>()
+          .toList();
+
+      final List<PlaceLocation> locations = landmarkIds.isNotEmpty
+          ? await placesRepository.getMultipleByLandmarkIds(landmarkIds)
+          : [];
+
       print("✅ Fetched ${locations.length} locations from Backend");
+
+      // rest unchanged from here...
 
       // 2. Convert PlaceLocation → Placemap
       final List<Placemap> places = locations.map((loc) {
@@ -112,7 +121,7 @@ class MapProvider extends ChangeNotifier {
 
       // 5. Set day 0 (build markers + route)
       await setDay(0);
-      
+
       loading = false;
       print("✅ loadTripFromPlaceIds() finished successfully");
       notifyListeners();
@@ -294,13 +303,13 @@ class MapProvider extends ChangeNotifier {
               style: const TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 20),
-            
+
             InkWell(
               onTap: () async {
                 Navigator.pop(ctx);
                 loading = true;
                 notifyListeners();
-                
+
                 final location = await _tryGetUserLocation(context);
                 if (location != null) {
                   userLocationAvailable = true;
@@ -311,7 +320,7 @@ class MapProvider extends ChangeNotifier {
                     await _showLocationOptionsDialog(context);
                   }
                 }
-                
+
                 loading = false;
                 notifyListeners();
               },
@@ -339,10 +348,7 @@ class MapProvider extends ChangeNotifier {
                           SizedBox(height: 4),
                           Text(
                             'Start from where you are now',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
                           ),
                         ],
                       ),
@@ -352,28 +358,31 @@ class MapProvider extends ChangeNotifier {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             InkWell(
               onTap: () async {
                 Navigator.pop(ctx);
-                
+
                 await showDialog(
                   context: context,
                   builder: (dialogContext) => PlaceSearchDialog(
                     onPlaceSelected: (location, placeName) {
                       Navigator.of(dialogContext).pop();
-                      
+
                       customStartLocation = location;
                       _addUserLocationToTrip(location);
                       setDay(selectedDayIndex);
-                      
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Row(
                             children: [
-                              const Icon(Icons.check_circle, color: Colors.white),
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.white,
+                              ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
@@ -422,10 +431,7 @@ class MapProvider extends ChangeNotifier {
                           SizedBox(height: 4),
                           Text(
                             'Hotel, address, landmark...',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
                           ),
                         ],
                       ),
@@ -435,9 +441,9 @@ class MapProvider extends ChangeNotifier {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             InkWell(
               onTap: () {
                 Navigator.pop(ctx);
@@ -467,10 +473,7 @@ class MapProvider extends ChangeNotifier {
                           SizedBox(height: 4),
                           Text(
                             'Begin directly at destination',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
                           ),
                         ],
                       ),
@@ -488,12 +491,14 @@ class MapProvider extends ChangeNotifier {
 
   void setCustomStartLocation(LatLng location) {
     if (!isSelectingStartLocation) return;
-    
+
     customStartLocation = location;
     isSelectingStartLocation = false;
-    
-    print("📍 Custom start location set: ${location.latitude}, ${location.longitude}");
-    
+
+    print(
+      "📍 Custom start location set: ${location.latitude}, ${location.longitude}",
+    );
+
     _addUserLocationToTrip(location);
     setDay(selectedDayIndex);
     notifyListeners();
@@ -508,7 +513,9 @@ class MapProvider extends ChangeNotifier {
           0,
           Placemap(
             id: 'user',
-            name: customStartLocation != null ? 'Selected Start Point' : 'Your Location',
+            name: customStartLocation != null
+                ? 'Selected Start Point'
+                : 'Your Location',
             latitude: userLocation.latitude,
             longitude: userLocation.longitude,
             category: 'Start Point',
@@ -524,7 +531,7 @@ class MapProvider extends ChangeNotifier {
     final newLocation = await _tryGetUserLocation(context);
     if (newLocation == null) {
       print("⚠️ No new location available to refresh");
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -599,41 +606,44 @@ class MapProvider extends ChangeNotifier {
 
   void startLiveLocationTracking(BuildContext context) {
     if (customStartLocation != null) return;
-    
+
     print("🟢 Starting live location tracking...");
-    
-    _positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 10,
-      ),
-    ).listen((position) {
-      print("📍 Live location update: ${position.latitude}, ${position.longitude}");
-      
-      if (trip == null || trip!.days.isEmpty) return;
 
-      userLocationAvailable = true;
+    _positionStream =
+        Geolocator.getPositionStream(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 10,
+          ),
+        ).listen((position) {
+          print(
+            "📍 Live location update: ${position.latitude}, ${position.longitude}",
+          );
 
-      for (final day in trip!.days) {
-        final userPlace = Placemap(
-          id: 'user',
-          name: 'Your Location',
-          latitude: position.latitude,
-          longitude: position.longitude,
-          category: 'Start Point',
-        );
+          if (trip == null || trip!.days.isEmpty) return;
 
-        if (day.places.isEmpty || day.places.first.id != 'user') {
-          day.places.insert(0, userPlace);
-        } else {
-          day.places[0] = userPlace;
-        }
-      }
+          userLocationAvailable = true;
 
-      _buildMarkers();
-      _buildRoute();
-      notifyListeners();
-    });
+          for (final day in trip!.days) {
+            final userPlace = Placemap(
+              id: 'user',
+              name: 'Your Location',
+              latitude: position.latitude,
+              longitude: position.longitude,
+              category: 'Start Point',
+            );
+
+            if (day.places.isEmpty || day.places.first.id != 'user') {
+              day.places.insert(0, userPlace);
+            } else {
+              day.places[0] = userPlace;
+            }
+          }
+
+          _buildMarkers();
+          _buildRoute();
+          notifyListeners();
+        });
   }
 
   void stopLiveLocationTracking() {
@@ -674,7 +684,7 @@ class MapProvider extends ChangeNotifier {
     for (final p in visiblePlaces) {
       try {
         BitmapDescriptor icon;
-        
+
         if (p.id == 'user') {
           if (!_iconCache.containsKey('user')) {
             print("📍 Creating user location icon");
@@ -684,7 +694,7 @@ class MapProvider extends ChangeNotifier {
             );
           }
           icon = _iconCache['user']!;
-          
+
           newMarkers[p.id] = Marker(
             markerId: MarkerId(p.id),
             position: LatLng(p.latitude, p.longitude),
@@ -697,28 +707,28 @@ class MapProvider extends ChangeNotifier {
 
         placeNumber++;
         String iconKey = '${p.category}_${p.id}_$placeNumber';
-        
+
         if (!_iconCache.containsKey(iconKey)) {
           String iconPath;
           Color pinColor;
-          
-          if (p.category?.contains('Pharaonic') == true || 
+
+          if (p.category?.contains('Pharaonic') == true ||
               p.category?.contains('Archaeological') == true) {
             iconPath = 'assets/icons/Pharaonic and Archaeological Tourism.png';
             pinColor = const Color(0xFFC6873D);
-          } else if (p.category?.contains('Islamic') == true || 
-                     p.category?.contains('Coptic') == true) {
+          } else if (p.category?.contains('Islamic') == true ||
+              p.category?.contains('Coptic') == true) {
             iconPath = 'assets/icons/Islamic and Coptic Tourism.png';
             pinColor = const Color(0xFF2F6A6E);
-          } else if (p.category?.contains('Modern') == true || 
-                     p.category?.contains('Leisure') == true) {
+          } else if (p.category?.contains('Modern') == true ||
+              p.category?.contains('Leisure') == true) {
             iconPath = 'assets/icons/Modern and Leisure Tourism.png';
             pinColor = const Color(0xFF596A77);
-          } else if (p.category?.contains('Culinary') == true || 
-                     p.category?.contains('Traditional') == true || 
-                     p.category?.contains('Market') == true ||
-                     p.category?.contains('Food') == true ||
-                     p.category?.contains('Shopping') == true) {
+          } else if (p.category?.contains('Culinary') == true ||
+              p.category?.contains('Traditional') == true ||
+              p.category?.contains('Market') == true ||
+              p.category?.contains('Food') == true ||
+              p.category?.contains('Shopping') == true) {
             iconPath = 'assets/icons/Culinary and Traditional Markets.png';
             pinColor = const Color(0xFF5B3E2F);
           } else {
@@ -776,20 +786,20 @@ class MapProvider extends ChangeNotifier {
           points: res.polylinePoints,
           width: 6,
           color: Colors.blue,
-          patterns: [
-            PatternItem.dash(30),
-            PatternItem.gap(20),
-          ],
+          patterns: [PatternItem.dash(30), PatternItem.gap(20)],
           startCap: Cap.roundCap,
           endCap: Cap.roundCap,
         ),
       };
 
-      distanceText = '${(res.totalDistanceMeters / 1000).toStringAsFixed(1)} km';
+      distanceText =
+          '${(res.totalDistanceMeters / 1000).toStringAsFixed(1)} km';
       final mins = (res.totalDurationSeconds / 60).round();
       durationText = '$mins min';
 
-      print("✅ Route built successfully: ${res.polylinePoints.length} points, $distanceText, $durationText");
+      print(
+        "✅ Route built successfully: ${res.polylinePoints.length} points, $distanceText, $durationText",
+      );
     } catch (e, st) {
       print("❌ Error in _buildRoute(): $e");
       print(st);

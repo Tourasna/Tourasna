@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:new_grad/pages/welcome_page.dart';
+import 'package:new_grad/pages/home_page.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -14,12 +16,22 @@ class _FirstPageState extends State<FirstPage> {
   void initState() {
     super.initState();
 
-    // Wait 5 seconds then move to Login Page
     Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const WelcomePage()),
-      );
+      if (!mounted) return;
+
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null && user.emailVerified) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const WelcomePage()),
+        );
+      }
     });
   }
 
@@ -37,9 +49,7 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
           ),
-
           Container(color: Colors.white.withOpacity(0.25)),
-
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +60,6 @@ class _FirstPageState extends State<FirstPage> {
                   height: 415,
                 ),
                 const SizedBox(height: 50),
-
                 const Text(
                   'Loading...',
                   style: TextStyle(

@@ -1,21 +1,24 @@
 import 'dart:convert';
-import '../models/place_search_item.dart';
+import '../models/recommendation_item.dart';
 import 'api_client.dart';
 
 class PlacesSearchService {
-  Future<List<PlaceSearchItem>> search({
+  Future<List<RecommendationItem>> search({
     required String query,
     required String city,
   }) async {
+    if (query.trim().isEmpty) return [];
+
     final res = await ApiClient.get(
-      '/api/places-search/search?q=$query&city=$city',
+      '/api/landmarks/search?q=${Uri.encodeComponent(query)}&limit=20',
     );
 
     if (res.statusCode != 200) {
       throw Exception('Search failed');
     }
 
-    final List data = jsonDecode(res.body);
-    return data.map((e) => PlaceSearchItem.fromJson(e)).toList();
+    final json = jsonDecode(res.body);
+    final List data = json['data'];
+    return data.map((e) => RecommendationItem.fromJson(e)).toList();
   }
 }
