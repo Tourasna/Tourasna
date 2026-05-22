@@ -19,6 +19,7 @@ import 'package:new_grad/pages/welcome_page.dart';
 import 'package:new_grad/pages/preferences_page.dart';
 import 'package:new_grad/pages/chatbot_page.dart';
 import 'package:new_grad/pages/chatmock_page.dart';
+import 'package:new_grad/pages/offline_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +61,15 @@ class MyApp extends StatelessWidget {
         '/hieroglyph': (context) => HieroglyphTranslatorPage(),
         '/discovery': (context) => const DiscoveryPage(),
         '/agenda': (context) => AgendaPage(),
+        '/offline': (context) {
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>?;
+          return OfflinePage(
+            returnRoute: args?['returnRoute'] ?? '/homescreen',
+            returnArguments: args?['returnArguments'],
+          );
+        },
         '/interactive_map': (context) {
           final args =
               ModalRoute.of(context)?.settings.arguments

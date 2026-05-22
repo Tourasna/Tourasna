@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import '../utils/network_navigator.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -540,13 +541,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     iconPath: 'assets/icons/explore.png',
                     label: 'Explore',
                     onPressed: () =>
-                        Navigator.pushNamed(context, "/homescreen"),
+                        navigateWithNetworkCheck(context, '/homescreen'),
                   ),
                   const SizedBox(width: 28),
                   _buildNavItem(
                     iconPath: 'assets/icons/favs.png',
                     label: 'FAVs',
-                    onPressed: () => Navigator.pushNamed(context, "/favs"),
+                    onPressed: () => navigateWithNetworkCheck(context, '/favs'),
                   ),
                 ],
               ),
@@ -555,13 +556,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/agenda.png',
                     label: 'Agenda',
-                    onPressed: () => Navigator.pushNamed(context, "/agenda"),
+                    onPressed: () =>
+                        navigateWithNetworkCheck(context, '/agenda'),
                   ),
                   const SizedBox(width: 28),
                   _buildNavItem(
                     iconPath: 'assets/images/Discovery-3.png',
                     label: 'Discovery',
-                    onPressed: () => Navigator.pushNamed(context, "/discovery"),
+                    onPressed: () =>
+                        navigateWithNetworkCheck(context, '/discovery'),
                   ),
                 ],
               ),

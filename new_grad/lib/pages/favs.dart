@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/recommendation_item.dart';
 import '../services/favorites_service.dart';
+import '../utils/network_navigator.dart';
 
 class _C {
   static const papyrus = Color(0xFFF2EADC);
@@ -150,7 +151,7 @@ class _FavsPageState extends State<FavsPage> {
           ),
           const SizedBox(height: 28),
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/discovery'),
+            onTap: () => navigateWithNetworkCheck(context, '/discovery'),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               decoration: BoxDecoration(
@@ -326,18 +327,18 @@ class _FavsPageState extends State<FavsPage> {
             _navItem(
               'assets/icons/explore.png',
               'Explore',
-              () => Navigator.pushNamed(context, '/homescreen'),
+              () => navigateWithNetworkCheck(context, '/homescreen'),
             ),
             _navItem('assets/icons/favs.png', 'FAVs', () {}, isActive: true),
             _navItem(
               'assets/icons/agenda.png',
               'Agenda',
-              () => Navigator.pushNamed(context, '/agenda'),
+              () => navigateWithNetworkCheck(context, '/agenda'),
             ),
             _navItem(
               'assets/images/Discovery-3.png',
               'Discovery',
-              () => Navigator.pushNamed(context, '/discovery'),
+              () => navigateWithNetworkCheck(context, '/discovery'),
             ),
           ],
         ),
@@ -423,7 +424,7 @@ class _FavsPageState extends State<FavsPage> {
               label: 'Add to Agenda',
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/agenda', arguments: item);
+                navigateWithNetworkCheck(context, '/agenda', arguments: item);
               },
             ),
             const SizedBox(height: 10),

@@ -8,6 +8,7 @@ import 'trip_discovery.dart';
 import 'discovery_details_page.dart';
 import '../services/landmark_service.dart';
 import '../services/agenda_service.dart';
+import '../utils/network_navigator.dart';
 
 final AILensService aiLens = AILensService();
 
@@ -43,14 +44,14 @@ class _HomePageState extends State<HomePage> {
 
       if (!mounted) return;
 
-      Navigator.pushNamed(
+      await navigateWithNetworkCheck(
         context,
         '/interactive_map',
         arguments: {'placeIds': placeIds},
       );
     } catch (_) {
       if (!mounted) return;
-      Navigator.pushNamed(
+      await navigateWithNetworkCheck(
         context,
         '/interactive_map',
         arguments: {'placeIds': <String>[]},
@@ -365,14 +366,16 @@ class _HomePageState extends State<HomePage> {
                               'assets/images/Hieroglyphic_Translator_logo.png',
                           label: 'Translator',
                           onTap: () =>
-                              Navigator.pushNamed(context, "/hieroglyph"),
+                              navigateWithNetworkCheck(context, '/hieroglyph'),
                         ),
                         const SizedBox(width: 12),
                         _serviceButton(
                           iconPath: 'assets/images/story.png',
                           label: 'Storytelling',
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/storytelling'),
+                          onTap: () => navigateWithNetworkCheck(
+                            context,
+                            '/storytelling',
+                          ),
                         ),
                       ],
                     ),
@@ -503,7 +506,8 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, '/hieroglyph'),
+                      onTap: () =>
+                          navigateWithNetworkCheck(context, '/hieroglyph'),
                       child: Container(
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
@@ -593,7 +597,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         GestureDetector(
                           onTap: () =>
-                              Navigator.pushNamed(context, '/discovery'),
+                              navigateWithNetworkCheck(context, '/discovery'),
                           child: Text(
                             'See All',
                             style: TextStyle(
@@ -758,7 +762,7 @@ class _HomePageState extends State<HomePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/favs.png',
                     label: 'FAVs',
-                    onPressed: () => Navigator.pushNamed(context, "/favs"),
+                    onPressed: () => navigateWithNetworkCheck(context, '/favs'),
                   ),
                 ],
               ),
@@ -767,13 +771,15 @@ class _HomePageState extends State<HomePage> {
                   _buildNavItem(
                     iconPath: 'assets/icons/agenda.png',
                     label: 'Agenda',
-                    onPressed: () => Navigator.pushNamed(context, "/agenda"),
+                    onPressed: () =>
+                        navigateWithNetworkCheck(context, '/agenda'),
                   ),
                   const SizedBox(width: 28),
                   _buildNavItem(
                     iconPath: 'assets/images/Discovery-3.png',
                     label: 'Discovery',
-                    onPressed: () => Navigator.pushNamed(context, "/discovery"),
+                    onPressed: () =>
+                        navigateWithNetworkCheck(context, '/discovery'),
                   ),
                 ],
               ),
