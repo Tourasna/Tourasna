@@ -214,6 +214,118 @@ class _ProfilePageState extends State<ProfilePage> {
     if (mounted) setState(() => loading = false);
   }
 
+  void _showAvatarOptions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: darkColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEAE2D1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.photo_library_outlined,
+                  color: goldColor,
+                  size: 20,
+                ),
+              ),
+              title: Text(
+                'Change Photo',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: darkColor,
+                  fontSize: 14,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _pickAndUploadAvatar();
+              },
+            ),
+            if (data?['avatar_url'] != null)
+              ListTile(
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.delete_outline,
+                    color: Colors.red.shade400,
+                    size: 20,
+                  ),
+                ),
+                title: Text(
+                  'Remove Photo',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.red.shade400,
+                    fontSize: 14,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _removeAvatar();
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _removeAvatar() async {
+    setState(() => loading = true);
+    try {
+      final res = await ApiClient.delete('/api/profiles/avatar');
+      if (res.statusCode == 200 || res.statusCode == 204) {
+        await _loadProfile();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Profile photo removed'),
+              backgroundColor: darkColor,
+            ),
+          );
+        }
+      } else {
+        throw Exception('Failed: ${res.statusCode}');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to remove photo: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+    if (mounted) setState(() => loading = false);
+  }
+
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
     if (mounted)
@@ -333,7 +445,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           bottom: 0,
                           right: 0,
                           child: GestureDetector(
-                            onTap: () => _pickAndUploadAvatar(),
+                            onTap: () => _showAvatarOptions(),
                             child: Container(
                               width: 30,
                               height: 30,
