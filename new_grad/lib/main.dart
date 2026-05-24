@@ -7,15 +7,12 @@ import 'package:new_grad/pages/agenda_page.dart';
 import 'package:new_grad/pages/discovery_page.dart';
 import 'package:new_grad/pages/favs.dart';
 import 'package:new_grad/pages/hieroglyph_translator_page.dart';
+import 'package:new_grad/pages/landing_page.dart';
 import 'package:new_grad/pages/profile_page.dart';
 import 'package:new_grad/pages/storytelling_page.dart';
-import 'package:new_grad/pages/terms_and_conditions.dart';
-import 'package:new_grad/pages/done.dart';
 import 'package:new_grad/pages/home_page.dart';
 import 'package:new_grad/pages/sign_up.dart';
-import 'package:new_grad/pages/start_page.dart';
 import 'package:new_grad/pages/Login_page.dart';
-import 'package:new_grad/pages/welcome_page.dart';
 import 'package:new_grad/pages/preferences_page.dart';
 import 'package:new_grad/pages/chatbot_page.dart';
 import 'package:new_grad/pages/chatmock_page.dart';
@@ -45,16 +42,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/start',
       routes: {
-        '/start': (context) => const FirstPage(),
-        '/welcome': (context) => const WelcomePage(),
+        '/start': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/preferences': (context) => const PreferencesPage(),
         '/homescreen': (context) => const HomePage(),
         '/storytelling': (context) => const StorytellingPage(),
-        '/terms': (context) => const TermsAndConditions(),
         '/profile': (context) => const ProfilePage(),
-        '/done': (context) => const DonePage(),
         '/chatbot': (context) => const ChatbotPage(),
         '/favs': (context) => const FavsPage(),
         '/mocka': (context) => ChatMockPage(),

@@ -267,6 +267,35 @@ class _HieroglyphTranslatorPageState extends State<HieroglyphTranslatorPage>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          GestureDetector(
+            onTap: () {
+              if (_step > 1) {
+                _goToStep(_step - 1);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: _C.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 18,
+                color: _C.dark,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,25 +323,6 @@ class _HieroglyphTranslatorPageState extends State<HieroglyphTranslatorPage>
               ],
             ),
           ),
-          if (_step > 1)
-            GestureDetector(
-              onTap: () => _goToStep(_step - 1),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: _C.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                child: Icon(Icons.chevron_left, color: _C.dark),
-              ),
-            ),
         ],
       ),
     );

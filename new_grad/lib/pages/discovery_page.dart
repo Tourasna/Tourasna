@@ -245,17 +245,35 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-
-              // ── TITLE ──────────────────────────────────────
-              Text(
-                "Discover Egypt",
-                style: TextStyle(
-                  fontFamily: 'Gambetta',
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: darkColor,
-                ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE9E1D3),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 18,
+                        color: darkColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    "Discover Egypt",
+                    style: TextStyle(
+                      fontFamily: 'Gambetta',
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: darkColor,
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 16),
