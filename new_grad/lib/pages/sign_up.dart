@@ -293,8 +293,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     _termsSection(
                       darkColor,
                       goldColor,
-                      '1. About Tourasna',
-                      'Tourasna is a tourism application providing AI-based monument recognition, 3D model viewing, location-based discovery, personalized recommendations, and user profiles.',
+                      '1. About Tourathna',
+                      'Tourathna is a tourism application providing AI-based monument recognition, 3D model viewing, location-based discovery, personalized recommendations, and user profiles.',
                     ),
                     _termsSection(
                       darkColor,
@@ -306,7 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       darkColor,
                       goldColor,
                       '3. AI Recognition Disclaimer',
-                      'AI results are predictions and may not be accurate. Tourasna is not responsible for incorrect outputs.',
+                      'AI results are predictions and may not be accurate. Tourathna is not responsible for incorrect outputs.',
                     ),
                     _termsSection(
                       darkColor,
@@ -336,19 +336,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       darkColor,
                       goldColor,
                       '8. Limitation of Liability',
-                      'Tourasna is not liable for inaccurate tourism information, travel issues, injuries, losses, or third-party services.',
+                      'Tourathna is not liable for inaccurate tourism information, travel issues, injuries, losses, or third-party services.',
                     ),
                     _termsSection(
                       darkColor,
                       goldColor,
                       '9. Intellectual Property',
-                      'All assets and designs belong to Tourasna. Copying or reverse engineering is prohibited.',
+                      'All assets and designs belong to Tourathna. Copying or reverse engineering is prohibited.',
                     ),
                     _termsSection(
                       darkColor,
                       goldColor,
                       '10. Contact',
-                      'Email: tourasnahelpcenter@gmail.com',
+                      'Email: Tourathnahelpcenter@gmail.com',
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -513,7 +513,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Join Tourasna and start your journey',
+                      'Join Tourathna and start your journey',
                       style: TextStyle(
                         color: darkColor.withOpacity(0.6),
                         fontSize: 13,
@@ -752,7 +752,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       decorationColor: goldColor,
                                     ),
                                   ),
-                                  const TextSpan(text: ' of Tourasna.'),
+                                  const TextSpan(text: ' of Tourathna.'),
                                 ],
                               ),
                             ),
