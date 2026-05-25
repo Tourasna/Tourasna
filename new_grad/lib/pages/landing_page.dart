@@ -372,7 +372,7 @@ class _LandingPageState extends State<LandingPage>
                           AnimatedBuilder(
                             animation: _typeCtrl,
                             builder: (_, __) {
-                              const full = 'TOURASNA';
+                              const full = 'TOURATHNA';
                               final n = (full.length * _typeProgress.value)
                                   .floor();
                               return Text(
@@ -479,7 +479,7 @@ class _LandingPageState extends State<LandingPage>
                             const SizedBox(height: 14),
 
                             const Text(
-                              'TOURASNA',
+                              'TOURATHNA',
                               style: TextStyle(
                                 fontFamily: 'Gambetta',
                                 fontWeight: FontWeight.w600,
