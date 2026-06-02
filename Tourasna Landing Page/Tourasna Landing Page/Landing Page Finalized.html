@@ -29,19 +29,27 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opac
   background-size:3px 3px;mix-blend-mode:multiply;}
 main,header,footer{position:relative;z-index:1}
 
+/* PAGE SYSTEM */
+.page{display:none}
+.page.active{display:block}
+
+/* PAGE TRANSITION */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.page.active{animation:fadeUp .35s ease forwards}
+
 /* NAV */
 .nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);background:rgba(243,234,212,.72);border-bottom:1px solid var(--line)}
 .nav-inner{max-width:1280px;margin:0 auto;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer}
 .brand-mark{width:46px;height:46px;flex:none;object-fit:contain}
 .brand-text{display:flex;flex-direction:column;line-height:1}
 .brand-name{font-family:'Cinzel',serif;font-weight:700;font-size:18px;letter-spacing:.18em;color:var(--teal)}
 .brand-ar{font-family:'Amiri',serif;font-weight:700;font-size:14px;color:var(--gold-deep);margin-top:3px;letter-spacing:.02em}
-.nav-links{display:flex;gap:36px}
-.nav-links a{font-size:14px;font-weight:500;color:var(--ink-soft);letter-spacing:.02em;position:relative;padding:6px 0}
-.nav-links a:hover{color:var(--teal)}
-.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
-.nav-links a:hover::after{transform:scaleX(1)}
+.nav-links{display:flex;gap:4px}
+.nav-links button{font-size:14px;font-weight:500;color:var(--ink-soft);letter-spacing:.02em;position:relative;padding:7px 16px;background:none;border:none;cursor:pointer;border-radius:999px;transition:background .2s,color .2s}
+.nav-links button:hover{color:var(--teal);background:rgba(31,61,58,.06)}
+.nav-links button.active{color:var(--teal);font-weight:600}
+.nav-links button.active::after{content:"";position:absolute;left:16px;right:16px;bottom:2px;height:1.5px;background:var(--teal);border-radius:2px}
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;letter-spacing:.04em;padding:11px 22px;border-radius:999px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer;border:none}
 .btn-primary{background:var(--teal);color:var(--papyrus-light);box-shadow:0 1px 0 rgba(255,255,255,.15) inset,0 8px 20px -8px rgba(31,61,58,.6)}
 .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px)}
@@ -64,9 +72,6 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .hero-phone-bg .glow{width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(198,150,85,.35),transparent 65%);filter:blur(30px)}
 .hero-phone-bg .ring{position:absolute;width:480px;height:480px;border-radius:50%;border:1px dashed rgba(31,61,58,.18)}
 .hero-phone-bg .ring.r2{width:420px;height:420px;border-color:rgba(31,61,58,.10)}
-.phone{position:relative;width:312px;height:640px;background:#0a0805;border-radius:46px;padding:8px;box-shadow:0 40px 80px -20px rgba(0,0,0,.45),0 12px 30px -10px rgba(31,61,58,.35),inset 0 0 0 1.5px rgba(255,255,255,.08),inset 0 0 0 3px #1a1612;z-index:2}
-.phone-screen{width:100%;height:100%;border-radius:38px;overflow:hidden;background:var(--papyrus);position:relative}
-.phone-screen img{width:100%;height:100%;object-fit:cover;object-position:top}
 .hero-phone-wrap .ornament{position:absolute;z-index:1;opacity:.6}
 .orn-lotus-tl{top:-10px;left:-10px;width:120px;color:var(--gold-deep)}
 .orn-lotus-br{bottom:-30px;right:-20px;width:120px;color:var(--teal);transform:rotate(180deg)}
@@ -74,8 +79,19 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .glyph-row{display:flex;align-items:center;justify-content:center;gap:18px;font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:24px;color:var(--gold-deep);opacity:.42;padding:24px 0;letter-spacing:.2em;user-select:none}
 .glyph-row::before,.glyph-row::after{content:"";flex:1;max-width:280px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep),transparent);opacity:.5}
 
+/* EXPLORE CARDS on home */
+.explore-strip{max-width:1280px;margin:0 auto;padding:0 40px 80px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.explore-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px 24px;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;display:flex;flex-direction:column;gap:12px}
+.explore-card:hover{transform:translateY(-5px);box-shadow:0 16px 32px -12px rgba(31,61,58,.2);border-color:var(--gold)}
+.explore-card-glyph{font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:32px;color:var(--gold-deep);opacity:.7}
+.explore-card-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);line-height:1.15}
+.explore-card-desc{font-size:13px;color:var(--stone);line-height:1.5}
+.explore-card-arrow{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--teal);letter-spacing:.04em}
+.explore-card-arrow svg{transition:transform .2s}
+.explore-card:hover .explore-card-arrow svg{transform:translateX(4px)}
+
 /* SECTION BASE */
-.section{padding:120px 40px;position:relative}
+.section{padding:100px 40px;position:relative}
 .container{max-width:1280px;margin:0 auto}
 .section-eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.32em;font-weight:600;color:var(--gold-deep);text-transform:uppercase;margin-bottom:20px}
 .section-eyebrow::before{content:"";width:32px;height:1px;background:var(--gold-deep)}
@@ -92,8 +108,8 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .section-head.center .section-eyebrow span::after{left:100%}
 .section-head.center .section-sub{margin:0 auto}
 
-/* FEATURES */
-.features{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* FEATURES PAGE */
+.features-page{background:var(--paper)}
 .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:24px;overflow:hidden;border:1px solid var(--line)}
 .feature{background:var(--paper);padding:40px 32px 36px;display:flex;flex-direction:column;gap:20px;transition:background .25s ease}
 .feature:hover{background:var(--papyrus-light)}
@@ -103,26 +119,24 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .feature-copy{font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
 .feature-tag{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;font-weight:600;color:var(--gold-deep);text-transform:uppercase;padding-top:18px;border-top:1px solid var(--line)}
 
-/* PREVIEW */
-.preview{padding-bottom:80px}
-.preview-stage{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:36px;padding:40px 0 20px;align-items:start;justify-items:center}
-.preview-card{display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:300px}
-.preview-phone{width:280px;height:609px;background:#0a0805;border-radius:42px;padding:8px;box-shadow:0 36px 70px -22px rgba(0,0,0,.4),0 10px 26px -10px rgba(31,61,58,.32),inset 0 0 0 1.5px rgba(255,255,255,.08),inset 0 0 0 3px #1a1612;margin-bottom:28px;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
-.preview-phone .scr{width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--papyrus);position:relative}
-.preview-phone .scr img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-.preview-card:hover .preview-phone{transform:translateY(-10px)}
-.preview-num{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;font-weight:600;color:var(--gold-deep);margin-bottom:6px}
-.preview-label{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.2}
-.preview-copy{font-size:13.5px;color:var(--ink-soft);max-width:200px;line-height:1.5}
+/* DEMO PAGE */
+.demo-page{position:relative;overflow:hidden}
+.demo-page .container{position:relative;z-index:1}
+.float-glyphs{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.float-glyphs span{position:absolute;font-family:'Noto Sans Egyptian Hieroglyphs',serif;color:var(--gold-deep);animation:floatGlyph linear infinite}
+@keyframes floatGlyph{0%{transform:translateY(20px) rotate(0deg);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateY(-120px) rotate(10deg);opacity:0}}
 
-/* ============ DEMO SHARED ============ */
-.demo-section{padding:100px 40px}
+/* Demo tabs */
+.demo-tabs{display:flex;gap:4px;background:var(--papyrus-dark);border-radius:999px;padding:4px;width:fit-content;margin:0 auto 56px}
+.demo-tab{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;font-weight:600;text-transform:uppercase;padding:10px 28px;border-radius:999px;border:none;cursor:pointer;background:transparent;color:var(--stone);transition:background .2s,color .2s}
+.demo-tab.active{background:var(--teal);color:var(--papyrus-light)}
+.demo-panel{display:none}
+.demo-panel.active{display:block}
 
 /* MONUMENT GRID */
 .demo-monuments{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
 .monument-card{background:var(--papyrus-light);border:1px solid var(--line-strong);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s ease;position:relative}
 .monument-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -12px rgba(31,61,58,.25);border-color:var(--gold)}
-.monument-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--papyrus-dark)}
 .monument-card-img-placeholder{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--papyrus-dark),var(--papyrus));font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:52px;color:var(--gold-deep);opacity:.6}
 .monument-card-body{padding:20px 22px 22px}
 .monument-card-glyph{font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:18px;color:var(--gold-deep);margin-bottom:6px;opacity:.7}
@@ -137,7 +151,7 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .story-player,.hiero-result{margin-top:16px}
 .story-player-inner,.hiero-result-inner{background:var(--papyrus-light);border:1px solid var(--line-strong);border-radius:24px;padding:48px 52px;max-width:860px;margin:0 auto}
 .story-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
-.story-back{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-strong);border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background .2s ease,color .2s ease}
+.story-back{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-strong);border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background .2s,color .2s}
 .story-back:hover{background:var(--papyrus-dark);color:var(--teal)}
 .story-glyph{font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:28px;color:var(--gold-deep);opacity:.5}
 .story-loading,.hiero-loading{display:flex;flex-direction:column;align-items:center;gap:16px;padding:40px 0;color:var(--stone)}
@@ -147,7 +161,7 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .story-place-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:500;color:var(--teal);margin-bottom:28px;line-height:1.1}
 .story-text{font-size:16px;line-height:1.8;color:var(--ink-soft);margin-bottom:36px;border-left:3px solid var(--gold);padding-left:24px}
 .story-audio-row{display:flex;align-items:center;gap:20px}
-.btn-audio{display:inline-flex;align-items:center;gap:10px;background:var(--teal);color:var(--papyrus-light);border:none;border-radius:999px;padding:13px 28px;font-size:14px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:background .2s ease,transform .15s ease}
+.btn-audio{display:inline-flex;align-items:center;gap:10px;background:var(--teal);color:var(--papyrus-light);border:none;border-radius:999px;padding:13px 28px;font-size:14px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:background .2s,transform .15s}
 .btn-audio:hover{background:var(--teal-dark);transform:scale(1.02)}
 .audio-waves{display:none;align-items:flex-end;gap:3px;height:22px}
 .audio-waves.playing{display:flex}
@@ -160,9 +174,9 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 @keyframes wave{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
 .story-error{text-align:center;padding:32px;color:var(--rust);font-size:15px}
 
-/* HIEROGLYPHICS SAMPLES */
+/* HIERO SAMPLES */
 .hiero-samples{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:640px;margin:0 auto}
-.hiero-sample-card{background:var(--papyrus-light);border:1px solid var(--line-strong);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s ease}
+.hiero-sample-card{background:var(--papyrus-light);border:1px solid var(--line-strong);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s}
 .hiero-sample-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -12px rgba(31,61,58,.25);border-color:var(--gold)}
 .hiero-sample-img-wrap{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1410,#2c1f14);padding:28px}
 .hiero-sample-glyph-display{font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:72px;color:var(--gold-light);letter-spacing:4px;text-align:center;line-height:1.1;text-shadow:0 2px 20px rgba(198,150,85,.4)}
@@ -170,7 +184,7 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .hiero-sample-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:5px}
 .hiero-sample-sub{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:var(--stone);text-transform:uppercase;margin-bottom:12px}
 .hiero-sample-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.04em}
-.hiero-sample-cta svg{transition:transform .2s ease}
+.hiero-sample-cta svg{transition:transform .2s}
 .hiero-sample-card:hover .hiero-sample-cta svg{transform:translateX(3px)}
 
 /* HIERO RESULT */
@@ -186,35 +200,48 @@ h1.hero-title .accent-glyph{font-family:'Noto Sans Egyptian Hieroglyphs','Amiri'
 .hiero-signs-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:var(--gold-deep);text-transform:uppercase;margin-bottom:16px;padding-top:28px;border-top:1px solid var(--line)}
 .hiero-signs{display:flex;flex-wrap:wrap;gap:10px}
 .hiero-sign{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:70px}
-.hiero-sign-glyph{font-family:'Noto Sans Egyptian Hieroglyphs',serif;font-size:28px;color:var(--ink);line-height:1}
 .hiero-sign-name{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.16em;color:var(--gold-deep);text-transform:uppercase;text-align:center}
 .hiero-sign-meaning{font-size:11px;color:var(--stone);text-align:center;line-height:1.3}
 
-/* DOWNLOAD */
-.download{background:var(--teal);color:var(--papyrus-light);position:relative;overflow:hidden;padding:140px 40px;margin-top:40px}
-.download::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(198,150,85,.22),transparent 55%),radial-gradient(ellipse at 90% 90%,rgba(198,150,85,.16),transparent 55%);pointer-events:none}
-.download::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:4px 4px;pointer-events:none}
-.download-inner{max-width:1280px;margin:0 auto;position:relative;display:grid;grid-template-columns:1.3fr .9fr;gap:64px;align-items:center}
-.download .section-eyebrow{color:var(--gold-light)}
-.download .section-eyebrow::before{background:var(--gold-light)}
-.download h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-.01em;margin-bottom:24px;color:var(--papyrus-light)}
-.download h2 em{font-style:italic;color:var(--gold-light)}
-.download p{font-size:17px;line-height:1.6;color:rgba(250,243,224,.8);max-width:520px;margin-bottom:36px}
-.download .hero-cta .app-badge{background:var(--papyrus-light);color:var(--teal-dark)}
-.download .hero-cta .app-badge:hover{background:#fff}
+/* PREVIEW PAGE */
+.preview-stage{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;padding:40px 0 20px;align-items:start;justify-items:center}
+.preview-card{display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:300px}
+.preview-phone{width:280px;height:609px;background:#0a0805;border-radius:42px;padding:8px;box-shadow:0 36px 70px -22px rgba(0,0,0,.4),0 10px 26px -10px rgba(31,61,58,.32),inset 0 0 0 1.5px rgba(255,255,255,.08),inset 0 0 0 3px #1a1612;margin-bottom:28px;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.preview-phone .scr{width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--papyrus)}
+.preview-phone .scr img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.preview-card:hover .preview-phone{transform:translateY(-10px)}
+.preview-num{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;font-weight:600;color:var(--gold-deep);margin-bottom:6px}
+.preview-label{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.2}
+.preview-copy{font-size:13.5px;color:var(--ink-soft);max-width:200px;line-height:1.5}
+
+/* DOWNLOAD PAGE */
+.download-page{background:var(--teal);color:var(--papyrus-light);position:relative;overflow:hidden;padding:120px 40px}
+.download-page::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(198,150,85,.22),transparent 55%),radial-gradient(ellipse at 90% 90%,rgba(198,150,85,.16),transparent 55%);pointer-events:none}
+.download-page::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:4px 4px;pointer-events:none}
+.download-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.3fr .9fr;gap:64px;align-items:center}
+.download-page .section-eyebrow{color:var(--gold-light)}
+.download-page .section-eyebrow::before{background:var(--gold-light)}
+.download-page h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-.01em;margin-bottom:24px;color:var(--papyrus-light)}
+.download-page h2 em{font-style:italic;color:var(--gold-light)}
+.download-page p{font-size:17px;line-height:1.6;color:rgba(250,243,224,.8);max-width:520px;margin-bottom:36px}
 .download-art{position:relative;display:flex;align-items:center;justify-content:center;height:380px}
-.download-art .ar-circle{width:340px;height:340px;border-radius:50%;background:rgba(198,150,85,.10);border:1px solid rgba(198,150,85,.3);position:absolute;display:flex;align-items:center;justify-content:center}
+.download-art .ar-circle{width:340px;height:340px;border-radius:50%;background:rgba(198,150,85,.10);border:1px solid rgba(198,150,85,.3);position:absolute}
 .download-art .ar-circle.r2{width:260px;height:260px;border-color:rgba(198,150,85,.45)}
 .download-art .ar-arabic{font-family:'Amiri',serif;font-weight:700;font-size:120px;color:var(--gold-light);position:relative;z-index:2;text-shadow:0 4px 30px rgba(198,150,85,.4);line-height:1}
-.download-art .ar-mini{position:absolute;font-family:'Cinzel',serif;font-weight:600;letter-spacing:.4em;font-size:11px;color:var(--gold-light);bottom:30px;left:50%;transform:translateX(-50%);opacity:.8}
+.download-art .ar-mini{position:absolute;font-family:'Cinzel',serif;font-weight:600;letter-spacing:.4em;font-size:11px;color:var(--gold-light);bottom:30px;left:50%;transform:translateX(-50%);opacity:.8;white-space:nowrap}
 .download-art .gx{font-family:'Noto Sans Egyptian Hieroglyphs',serif;position:absolute;color:var(--gold-light);opacity:.35;font-size:32px}
 .download-art .gx.g1{top:18%;left:5%}
 .download-art .gx.g2{top:8%;right:8%}
 .download-art .gx.g3{bottom:18%;left:8%}
 .download-art .gx.g4{bottom:6%;right:4%}
 
+/* Pulse rings */
+.pulse-rings{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pulse-ring{position:absolute;border-radius:50%;border:1px solid rgba(198,150,85,.3);animation:pulseRing 4s ease-out infinite}
+@keyframes pulseRing{0%{transform:translate(-50%,-50%) scale(1);opacity:.8}100%{transform:translate(-50%,-50%) scale(5);opacity:0}}
+
 /* FOOTER */
-footer{background:var(--teal-dark);color:rgba(243,234,212,.7);padding:40px;font-size:13px}
+footer{background:var(--teal-dark);color:rgba(243,234,212,.7);padding:40px;font-size:13px;position:relative;z-index:1}
 .foot-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .foot-brand{display:flex;align-items:center;gap:10px}
 .foot-brand .brand-name{color:var(--papyrus-light);font-size:15px}
@@ -224,20 +251,17 @@ footer{background:var(--teal-dark);color:rgba(243,234,212,.7);padding:40px;font-
 
 /* RESPONSIVE */
 @media(max-width:1080px){
-  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-inner,.download-inner{grid-template-columns:1fr;gap:40px}
   .hero-phone-wrap{order:-1;transform:scale(.9)}
-  .download-inner{grid-template-columns:1fr;gap:40px}
-  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .features-grid,.explore-strip{grid-template-columns:repeat(2,1fr)}
   .demo-monuments{grid-template-columns:repeat(2,1fr)}
   .hiero-samples{grid-template-columns:1fr}
 }
 @media(max-width:680px){
-  .hero,.section,.download{padding:60px 22px}
-  .demo-section{padding:70px 22px}
+  .hero,.section,.download-page{padding:60px 22px}
   .nav-inner{padding:14px 20px;gap:12px}
-  .nav-links{display:none}
-  .features-grid,.demo-monuments{grid-template-columns:1fr}
-  .hiero-samples{grid-template-columns:1fr}
+  .nav-links button{font-size:12px;padding:6px 10px}
+  .features-grid,.demo-monuments,.explore-strip{grid-template-columns:1fr}
   .preview-stage{grid-template-columns:1fr;gap:32px}
   .download-art{display:none}
   footer{padding:32px 22px}
@@ -251,281 +275,312 @@ footer{background:var(--teal-dark);color:rgba(243,234,212,.7);padding:40px;font-
 </head>
 <body>
 
-<!-- NAV -->
 <header class="nav">
   <div class="nav-inner">
-    <a class="brand" href="#">
+    <div class="brand" onclick="navigateTo('home')">
       <img class="brand-mark" src="./Landing Page Finalized_files/logo.png" alt="Tourathna logo">
       <div class="brand-text">
         <span class="brand-name">TOURATHNA</span>
         <span class="brand-ar">تراثنا</span>
       </div>
-    </a>
+    </div>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#demo-storytelling">Storytelling</a>
-      <a href="#demo-hieroglyphics">Translator</a>
-      <a href="#preview">Preview</a>
-      <a href="#download">Download</a>
+      <button onclick="navigateTo('home')" data-page="home">Home</button>
+      <button onclick="navigateTo('features')" data-page="features">Features</button>
+      <button onclick="navigateTo('demo')" data-page="demo">Demo</button>
+      <button onclick="navigateTo('preview')" data-page="preview">Preview</button>
+      <button onclick="navigateTo('download')" data-page="download">Download</button>
     </nav>
-    <a href="#download" class="btn btn-primary">
+    <button class="btn btn-primary" onclick="navigateTo('download')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
       Download
-    </a>
+    </button>
   </div>
 </header>
 
 <main>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <span class="hero-eyebrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 19 L6 22 L7 15 L2 10 L9 9 Z"/></svg>
-        Egypt, For You
-      </span>
-      <h1 class="hero-title">Our legacy<br>is your <em>Journey</em><span class="accent-glyph">𓂀</span></h1>
-      <p class="hero-lead">Tourathna is your AI heritage companion — it decodes hieroglyphs through your camera, reconstructs lost artifacts in 3D, and guides you through 5,000 years of Egypt with immersive multilingual storytelling, a discovery map that uncovers hidden landmarks, and a smart itinerary that learns exactly what moves you, one site at a time.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#download" style="padding:16px 30px;font-size:15px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
-          Download the app now
-        </a>
-      </div>
-    </div>
-    <div class="hero-phone-wrap">
-      <div class="hero-phone-bg" aria-hidden="true">
-        <div class="glow"></div>
-        <div class="ring"></div>
-        <div class="ring r2"></div>
-      </div>
-      <svg class="ornament orn-lotus-tl" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-        <path d="M40 70 Q 28 50, 12 42 Q 28 38, 40 12 Q 52 38, 68 42 Q 52 50, 40 70 Z" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".7"/>
-        <path d="M40 64 Q 32 50, 22 44 Q 32 40, 40 24 Q 48 40, 58 44 Q 48 50, 40 64 Z" fill="currentColor" opacity=".15"/>
-        <line x1="40" y1="14" x2="40" y2="68" stroke="currentColor" stroke-width="1" opacity=".4"/>
-      </svg>
-      <svg class="ornament orn-lotus-br" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-        <path d="M40 70 Q 28 50, 12 42 Q 28 38, 40 12 Q 52 38, 68 42 Q 52 50, 40 70 Z" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".5"/>
-      </svg>
-      <svg class="ornament orn-ankh" viewBox="0 0 24 32" fill="none" aria-hidden="true">
-        <ellipse cx="12" cy="9" rx="6" ry="7" stroke="currentColor" stroke-width="1.6" fill="none"/>
-        <line x1="12" y1="16" x2="12" y2="30" stroke="currentColor" stroke-width="1.6"/>
-        <line x1="4" y1="20" x2="20" y2="20" stroke="currentColor" stroke-width="1.6"/>
-      </svg>
-      <div class="hero-image">
-        <img src="./Landing Page Finalized_files/logo.png" alt="Tourathna logo">
-      </div>
-    </div>
-  </div>
-  <div class="glyph-row" aria-hidden="true">𓂀 &nbsp; 𓊽 &nbsp; 𓋹 &nbsp; 𓆣 &nbsp; 𓇳 &nbsp; 𓏏 &nbsp; 𓈖</div>
-</section>
-
-<!-- FEATURES -->
-<section class="section features" id="features">
-  <div class="container">
-    <div class="section-head">
-      <span class="section-eyebrow">What do we offer</span>
-      <h2 class="section-title">Built around <em>your curiosity</em>.</h2>
-      <p class="section-sub">Eight tools, one journey. From the moment you land in Cairo to the last sunset over the Nile — Tourathna keeps Egypt within hand's reach.</p>
-    </div>
-    <div class="features-grid">
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="14" opacity=".3"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/><line x1="24" y1="6" x2="24" y2="9"/><line x1="24" y1="39" x2="24" y2="42"/><line x1="6" y1="24" x2="9" y2="24"/><line x1="39" y1="24" x2="42" y2="24"/></svg></div>
-        <h3 class="feature-name">Personalised Recommender</h3>
-        <p class="feature-copy">Share your interests, budget, and how long you have — Tourathna builds a full day-by-day itinerary around you, surfacing hidden gems and experiences tailored to exactly what you love.</p>
-        <span class="feature-tag">𓊽 &nbsp; Day &amp; Trip plans</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24 Q 18 12, 30 18 Q 38 22, 42 24"/><path d="M6 24 Q 18 32, 30 28 Q 38 26, 42 24"/><circle cx="24" cy="24" r="4" fill="currentColor"/><path d="M30 28 Q 32 34, 28 38"/><path d="M22 28 L 18 36"/><path d="M14 27 Q 12 31, 8 32" opacity=".7"/></svg></div>
-        <h3 class="feature-name">AI Lens</h3>
-        <p class="feature-copy">Point your camera at any monument. The story of who built it, when, and why — instantly, in your language.</p>
-        <span class="feature-tag">𓂀 &nbsp; Live recognition</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 10 H 36 Q 40 10, 40 14 V 34 Q 40 38, 36 38 H 14"/><path d="M14 10 Q 10 10, 10 14 V 34 Q 10 38, 14 38 Q 18 38, 18 34 V 14 Q 18 10, 14 10 Z" fill="currentColor" opacity=".12"/><line x1="22" y1="18" x2="34" y2="18" opacity=".5"/><line x1="22" y1="24" x2="34" y2="24" opacity=".5"/><line x1="22" y1="30" x2="30" y2="30" opacity=".5"/><circle cx="14" cy="24" r="1.2" fill="currentColor"/></svg></div>
-        <h3 class="feature-name">Storytellings</h3>
-        <p class="feature-copy">Audio tales narrated by Egyptologists, triggered by your steps. Every column has a voice. Every wall has a name.</p>
-        <span class="feature-tag">𓋹 &nbsp; Narrated walks</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 8 Q 10 8, 10 14 V 34 Q 10 40, 16 40 H 32 Q 38 40, 38 34 V 14 Q 38 8, 32 8 Z"/><line x1="14" y1="6" x2="14" y2="42" opacity=".3"/><text x="24" y="22" text-anchor="middle" font-family="Noto Sans Egyptian Hieroglyphs, serif" font-size="9" fill="currentColor" stroke="none">𓂀</text><text x="24" y="32" text-anchor="middle" font-family="Noto Sans Egyptian Hieroglyphs, serif" font-size="7" fill="currentColor" stroke="none">𓋹𓊽</text></svg></div>
-        <h3 class="feature-name">Hieroglyphic Translator</h3>
-        <p class="feature-copy">Photograph any wall. Decode the whispers of the Pharaohs in seconds — with right-to-left or boustrophedon reading.</p>
-        <span class="feature-tag">𓂧 &nbsp; Real-time decode</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
-        <h3 class="feature-name">Conversational Chatbot</h3>
-        <p class="feature-copy">Curious about the temple in front of you? Just ask Fahmy. He knows every pharaoh, every inscription, and every hidden story Egypt has to tell.</p>
-        <span class="feature-tag">Real-Time Assistance</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
-        <h3 class="feature-name">Interactive Map</h3>
-        <p class="feature-copy">Plot your agenda as one connected route, navigate each stop with ease, and book a cab to your next destination — all in one place.</p>
-        <span class="feature-tag">Interactive Navigation</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
-        <h3 class="feature-name">Agenda Planner</h3>
-        <p class="feature-copy">A planner where users can apply generated plans directly or build manually — adding, editing, and organising stops as they see fit.</p>
-        <span class="feature-tag">Personal Itinerary</span>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
-        <h3 class="feature-name">3D Visualizer</h3>
-        <p class="feature-copy">Capture what's in front of you. Turn it into a 3D model you can move, inspect, and explore — right in your hands.</p>
-        <span class="feature-tag">Immersive Interaction</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======= DEMO: STORYTELLING ======= -->
-<section class="section demo-section" id="demo-storytelling" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="container">
-    <div class="section-head center">
-      <span class="section-eyebrow"><span>Live Demo</span></span>
-      <h2 class="section-title">Hear the <em>stories</em> of Egypt.</h2>
-      <p class="section-sub">Pick a monument and listen to its AI-generated story — narrated with the depth it deserves. Powered by our live backend.</p>
-    </div>
-    <div class="demo-monuments" id="monumentGrid"></div>
-    <div class="story-player" id="storyPlayer" style="display:none">
-      <div class="story-player-inner">
-        <div class="story-header">
-          <button class="story-back" id="storyBack">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-            Choose another
+<!-- ═══ PAGE: HOME ═══ -->
+<div class="page active" id="page-home">
+  <section class="hero" style="position:relative;overflow:hidden">
+    <div class="float-glyphs" aria-hidden="true" id="floatGlyphsHome"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <span class="hero-eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 19 L6 22 L7 15 L2 10 L9 9 Z"/></svg>
+          Egypt, For You
+        </span>
+        <h1 class="hero-title">Our legacy<br>is your <em>Journey</em><span class="accent-glyph">𓂀</span></h1>
+        <p class="hero-lead">Tourathna is your AI heritage companion — it decodes hieroglyphs through your camera, reconstructs lost artifacts in 3D, and guides you through 5,000 years of Egypt with immersive multilingual storytelling and a smart itinerary that learns exactly what moves you.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="navigateTo('demo')" style="padding:16px 30px;font-size:15px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Try the Demo
           </button>
-          <span class="story-glyph">𓂀</span>
+          <button class="btn" onclick="navigateTo('download')" style="padding:16px 30px;font-size:15px;background:transparent;border:1.5px solid var(--teal);color:var(--teal)">
+            Download App
+          </button>
         </div>
-        <div class="story-loading" id="storyLoading">
-          <div class="story-spinner"></div>
-          <p>Summoning the story…</p>
+      </div>
+      <div class="hero-phone-wrap">
+        <div class="hero-phone-bg" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="ring"></div>
+          <div class="ring r2"></div>
         </div>
-        <div class="story-content" id="storyContent" style="display:none">
-          <h3 class="story-place-name" id="storyPlaceName"></h3>
-          <div class="story-text" id="storyText"></div>
-          <div class="story-audio-row">
-            <button class="btn-audio" id="btnAudio">
-              <svg id="audioIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              <span id="audioLabel">Listen to Story</span>
-            </button>
-            <div class="audio-waves" id="audioWaves">
-              <span></span><span></span><span></span><span></span><span></span>
+        <svg class="ornament orn-lotus-tl" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <path d="M40 70 Q 28 50, 12 42 Q 28 38, 40 12 Q 52 38, 68 42 Q 52 50, 40 70 Z" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".7"/>
+          <path d="M40 64 Q 32 50, 22 44 Q 32 40, 40 24 Q 48 40, 58 44 Q 48 50, 40 64 Z" fill="currentColor" opacity=".15"/>
+          <line x1="40" y1="14" x2="40" y2="68" stroke="currentColor" stroke-width="1" opacity=".4"/>
+        </svg>
+        <svg class="ornament orn-lotus-br" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <path d="M40 70 Q 28 50, 12 42 Q 28 38, 40 12 Q 52 38, 68 42 Q 52 50, 40 70 Z" stroke="currentColor" stroke-width="1.4" fill="none" opacity=".5"/>
+        </svg>
+        <svg class="ornament orn-ankh" viewBox="0 0 24 32" fill="none" aria-hidden="true">
+          <ellipse cx="12" cy="9" rx="6" ry="7" stroke="currentColor" stroke-width="1.6" fill="none"/>
+          <line x1="12" y1="16" x2="12" y2="30" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="4" y1="20" x2="20" y2="20" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <img src="./Landing Page Finalized_files/logo.png" alt="Tourathna logo" style="position:relative;z-index:2;width:240px">
+      </div>
+    </div>
+    <div class="glyph-row" aria-hidden="true">𓂀 &nbsp; 𓊽 &nbsp; 𓋹 &nbsp; 𓆣 &nbsp; 𓇳 &nbsp; 𓏏 &nbsp; 𓈖</div>
+  </section>
+  <div class="explore-strip">
+    <div class="explore-card" onclick="navigateTo('features')">
+      <div class="explore-card-glyph">𓊽</div>
+      <div class="explore-card-title">Eight powerful features</div>
+      <div class="explore-card-desc">AI lens, storytelling, maps, recommendations and more — all in one app.</div>
+      <div class="explore-card-arrow">Explore features <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>
+    <div class="explore-card" onclick="navigateTo('demo')">
+      <div class="explore-card-glyph">𓂀</div>
+      <div class="explore-card-title">Live AI demo</div>
+      <div class="explore-card-desc">Hear monument stories and decode real hieroglyphs — powered by our live backend.</div>
+      <div class="explore-card-arrow">Try the demo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>
+    <div class="explore-card" onclick="navigateTo('preview')">
+      <div class="explore-card-glyph">𓋹</div>
+      <div class="explore-card-title">App screenshots</div>
+      <div class="explore-card-desc">See the real interface — from trip planning to the hieroglyph translator.</div>
+      <div class="explore-card-arrow">See preview <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>
+    <div class="explore-card" onclick="navigateTo('download')">
+      <div class="explore-card-glyph">𓇳</div>
+      <div class="explore-card-title">Download free</div>
+      <div class="explore-card-desc">No ads, no clutter. Just Egypt, told the way it deserves to be told.</div>
+      <div class="explore-card-arrow">Get the app <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: FEATURES ═══ -->
+<div class="page" id="page-features">
+  <section class="section features-page" style="position:relative;overflow:hidden">
+      <div class="float-glyphs" aria-hidden="true" id="floatGlyphsFeatures"></div>
+      <div class="container" style="position:relative;z-index:1">
+      <div class="section-head">
+        <span class="section-eyebrow">What do we offer</span>
+        <h2 class="section-title">Built around <em>your curiosity</em>.</h2>
+        <p class="section-sub">Eight tools, one journey. From the moment you land in Cairo to the last sunset over the Nile — Tourathna keeps Egypt within hand's reach.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="14" opacity=".3"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/><line x1="24" y1="6" x2="24" y2="9"/><line x1="24" y1="39" x2="24" y2="42"/><line x1="6" y1="24" x2="9" y2="24"/><line x1="39" y1="24" x2="42" y2="24"/></svg></div>
+          <h3 class="feature-name">Personalised Recommender</h3>
+          <p class="feature-copy">Share your interests, budget, and how long you have — Tourathna builds a full day-by-day itinerary around you, surfacing hidden gems tailored to exactly what you love.</p>
+          <span class="feature-tag">𓊽 &nbsp; Day &amp; Trip plans</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 24 Q 18 12, 30 18 Q 38 22, 42 24"/><path d="M6 24 Q 18 32, 30 28 Q 38 26, 42 24"/><circle cx="24" cy="24" r="4" fill="currentColor"/><path d="M30 28 Q 32 34, 28 38"/><path d="M22 28 L 18 36"/><path d="M14 27 Q 12 31, 8 32" opacity=".7"/></svg></div>
+          <h3 class="feature-name">AI Lens</h3>
+          <p class="feature-copy">Point your camera at any monument. The story of who built it, when, and why — instantly, in your language.</p>
+          <span class="feature-tag">𓂀 &nbsp; Live recognition</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 10 H 36 Q 40 10, 40 14 V 34 Q 40 38, 36 38 H 14"/><path d="M14 10 Q 10 10, 10 14 V 34 Q 10 38, 14 38 Q 18 38, 18 34 V 14 Q 18 10, 14 10 Z" fill="currentColor" opacity=".12"/><line x1="22" y1="18" x2="34" y2="18" opacity=".5"/><line x1="22" y1="24" x2="34" y2="24" opacity=".5"/><line x1="22" y1="30" x2="30" y2="30" opacity=".5"/><circle cx="14" cy="24" r="1.2" fill="currentColor"/></svg></div>
+          <h3 class="feature-name">Storytellings</h3>
+          <p class="feature-copy">Audio tales narrated by Egyptologists, triggered by your steps. Every column has a voice. Every wall has a name.</p>
+          <span class="feature-tag">𓋹 &nbsp; Narrated walks</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 8 Q 10 8, 10 14 V 34 Q 10 40, 16 40 H 32 Q 38 40, 38 34 V 14 Q 38 8, 32 8 Z"/><line x1="14" y1="6" x2="14" y2="42" opacity=".3"/><text x="24" y="22" text-anchor="middle" font-family="Noto Sans Egyptian Hieroglyphs,serif" font-size="9" fill="currentColor" stroke="none">𓂀</text><text x="24" y="32" text-anchor="middle" font-family="Noto Sans Egyptian Hieroglyphs,serif" font-size="7" fill="currentColor" stroke="none">𓋹𓊽</text></svg></div>
+          <h3 class="feature-name">Hieroglyphic Translator</h3>
+          <p class="feature-copy">Photograph any wall. Decode the whispers of the Pharaohs in seconds — with right-to-left or boustrophedon reading.</p>
+          <span class="feature-tag">𓂧 &nbsp; Real-time decode</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
+          <h3 class="feature-name">Conversational Chatbot</h3>
+          <p class="feature-copy">Just ask Fahmy. He knows every pharaoh, every inscription, and every hidden story Egypt has to tell — in 16 languages.</p>
+          <span class="feature-tag">Real-Time Assistance</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
+          <h3 class="feature-name">Interactive Map</h3>
+          <p class="feature-copy">Plot your agenda as one connected route, navigate each stop with ease, and book a cab to your next destination.</p>
+          <span class="feature-tag">Interactive Navigation</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
+          <h3 class="feature-name">Agenda Planner</h3>
+          <p class="feature-copy">Apply generated plans directly or build manually — adding, editing, and organising stops as you see fit.</p>
+          <span class="feature-tag">Personal Itinerary</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="18"/><path d="M24 12 L28 24 L24 36 L20 24 Z" fill="currentColor" opacity=".2"/><path d="M24 12 L28 24 L24 24 Z" fill="currentColor"/><circle cx="24" cy="24" r="2" fill="var(--gold-deep)"/></svg></div>
+          <h3 class="feature-name">3D Visualizer</h3>
+          <p class="feature-copy">Turn monuments into 3D models you can move, inspect, and explore — right in your hands.</p>
+          <span class="feature-tag">Immersive Interaction</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ PAGE: DEMO ═══ -->
+<div class="page" id="page-demo">
+  <section class="section demo-page" style="background:var(--paper)">
+    <div class="float-glyphs" aria-hidden="true" id="floatGlyphs"></div>
+    <div class="container">
+      <div class="section-head center">
+        <span class="section-eyebrow"><span>Live Demo</span></span>
+        <h2 class="section-title">Experience <em>Tourathna</em> now.</h2>
+        <p class="section-sub">Two of our core AI features — live, running on our real backend. No mock-ups.</p>
+      </div>
+
+      <div class="demo-tabs">
+        <button class="demo-tab active" onclick="switchDemoTab('storytelling',this)">𓂀 &nbsp; Storytelling</button>
+        <button class="demo-tab" onclick="switchDemoTab('translator',this)">𓋹 &nbsp; Hieroglyph Translator</button>
+      </div>
+
+      <!-- STORYTELLING PANEL -->
+      <div class="demo-panel active" id="panel-storytelling">
+        <div class="section-head center" style="margin-bottom:40px">
+          <p class="section-sub">Pick a monument and listen to its AI-generated story — narrated with the depth it deserves.</p>
+        </div>
+        <div class="demo-monuments" id="monumentGrid"></div>
+        <div class="story-player" id="storyPlayer" style="display:none">
+          <div class="story-player-inner">
+            <div class="story-header">
+              <button class="story-back" id="storyBack">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+                Choose another
+              </button>
+              <span class="story-glyph">𓂀</span>
             </div>
+            <div class="story-loading" id="storyLoading"><div class="story-spinner"></div><p>Summoning the story…</p></div>
+            <div class="story-content" id="storyContent" style="display:none">
+              <h3 class="story-place-name" id="storyPlaceName"></h3>
+              <div class="story-text" id="storyText"></div>
+              <div class="story-audio-row">
+                <button class="btn-audio" id="btnAudio">
+                  <svg id="audioIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span id="audioLabel">Listen to Story</span>
+                </button>
+                <div class="audio-waves" id="audioWaves"><span></span><span></span><span></span><span></span><span></span></div>
+              </div>
+            </div>
+            <div class="story-error" id="storyError" style="display:none"><p>⚠️ Could not load story. Please check the server is running.</p></div>
           </div>
         </div>
-        <div class="story-error" id="storyError" style="display:none">
-          <p>⚠️ Could not load story. Please check the server is running and try again.</p>
-        </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ======= DEMO: HIEROGLYPHICS ======= -->
-<section class="section demo-section" id="demo-hieroglyphics" style="background:var(--papyrus)">
-  <div class="container">
-    <div class="section-head center">
-      <span class="section-eyebrow"><span>Live Demo</span></span>
-      <h2 class="section-title">Decode the <em>Pharaohs.</em></h2>
-      <p class="section-sub">Pick a real cartouche sample and watch our AI translate it in real time — glyphs, transliteration, and historical meaning.</p>
-    </div>
-    <div class="hiero-samples" id="hieroSamples"></div>
-    <div class="hiero-result" id="hieroResult" style="display:none">
-      <div class="hiero-result-inner">
-        <div class="story-header">
-          <button class="story-back" id="hieroBack">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-            Choose another
-          </button>
-          <span class="story-glyph">𓋹</span>
+      <!-- TRANSLATOR PANEL -->
+      <div class="demo-panel" id="panel-translator">
+        <div class="section-head center" style="margin-bottom:40px">
+          <p class="section-sub">Pick a real cartouche sample and watch our AI translate it — glyphs, transliteration, and historical meaning.</p>
         </div>
-        <div class="hiero-loading" id="hieroLoading">
-          <div class="story-spinner"></div>
-          <p>Reading the glyphs…</p>
-        </div>
-        <div class="hiero-content" id="hieroContent" style="display:none">
-          <div class="hiero-bilingual">
-            <div class="hiero-lang-block">
-              <div class="hiero-lang-label">English</div>
-              <div class="hiero-lang-text" id="hieroEn"></div>
+        <div class="hiero-samples" id="hieroSamples"></div>
+        <div class="hiero-result" id="hieroResult" style="display:none">
+          <div class="hiero-result-inner">
+            <div class="story-header">
+              <button class="story-back" id="hieroBack">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+                Choose another
+              </button>
+              <span class="story-glyph">𓋹</span>
             </div>
-            <div class="hiero-divider"></div>
-            <div class="hiero-lang-block hiero-ar">
-              <div class="hiero-lang-label">العربية</div>
-              <div class="hiero-lang-text" id="hieroAr" dir="rtl"></div>
+            <div class="hiero-loading" id="hieroLoading"><div class="story-spinner"></div><p>Reading the glyphs…</p></div>
+            <div class="hiero-content" id="hieroContent" style="display:none">
+              <div class="hiero-bilingual">
+                <div class="hiero-lang-block"><div class="hiero-lang-label">English</div><div class="hiero-lang-text" id="hieroEn"></div></div>
+                <div class="hiero-divider"></div>
+                <div class="hiero-lang-block hiero-ar"><div class="hiero-lang-label">العربية</div><div class="hiero-lang-text" id="hieroAr" dir="rtl"></div></div>
+              </div>
+              <div class="hiero-meta-row" id="hieroMeta"></div>
+              <div class="hiero-signs-title">Sign Breakdown</div>
+              <div class="hiero-signs" id="hieroSigns"></div>
             </div>
+            <div class="story-error" id="hieroError" style="display:none"><p>⚠️ Could not translate. Please check the server is running.</p></div>
           </div>
-          <div class="hiero-meta-row" id="hieroMeta"></div>
-          <div class="hiero-signs-title">Sign Breakdown</div>
-          <div class="hiero-signs" id="hieroSigns"></div>
-        </div>
-        <div class="story-error" id="hieroError" style="display:none">
-          <p>⚠️ Could not translate. Please check the server is running and try again.</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- PREVIEW -->
-<section class="section preview" id="preview">
-  <div class="container">
-    <div class="section-head center">
-      <span class="section-eyebrow"><span>App preview</span></span>
-      <h2 class="section-title">A guide that fits <em>in your pocket</em>.</h2>
-      <p class="section-sub">From the first plan to the last narrated story — every moment of your trip lives here.</p>
     </div>
-    <div class="preview-stage">
-      <div class="preview-card">
-        <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/trip plan.png" alt="Trip Discovery screen"></div></div>
-        <div class="preview-num">01</div>
-        <div class="preview-label">Plan your taste</div>
-        <p class="preview-copy">Pick a travel type, budget and pace.</p>
-      </div>
-      <div class="preview-card">
-        <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/discovery.png" alt="Discover Egypt"></div></div>
-        <div class="preview-num">02</div>
-        <div class="preview-label">Discover Egypt</div>
-        <p class="preview-copy">Search monuments, hidden gems and curated favourites.</p>
-      </div>
-      <div class="preview-card">
-        <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/hieroglyph.png" alt="Hieroglyph Translator"></div></div>
-        <div class="preview-num">03</div>
-        <div class="preview-label">Decode the walls</div>
-        <p class="preview-copy">Snap any cartouche — receive a clean translation.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- DOWNLOAD -->
-<section class="download" id="download">
-  <div class="download-inner">
-    <div>
-      <span class="section-eyebrow">Download Tourathna</span>
-      <h2>Begin your<br><em>pharaonic</em> journey.</h2>
-      <p>Free to download. No ads, no clutter — just Egypt, told the way it deserves to be told.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#" style="padding:18px 34px;font-size:16px;background:var(--papyrus-light);color:var(--teal-dark)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
-          Download the app now
-        </a>
+<!-- ═══ PAGE: PREVIEW ═══ -->
+<div class="page" id="page-preview">
+  <section class="section" style="background:var(--papyrus)">
+    <div class="container">
+      <div class="section-head center">
+        <span class="section-eyebrow"><span>App preview</span></span>
+        <h2 class="section-title">A guide that fits <em>in your pocket</em>.</h2>
+        <p class="section-sub">From the first plan to the last narrated story — every moment of your trip lives here.</p>
+      </div>
+      <div class="preview-stage">
+        <div class="preview-card">
+          <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/trip plan.png" alt="Trip Discovery screen"></div></div>
+          <div class="preview-num">01</div>
+          <div class="preview-label">Plan your taste</div>
+          <p class="preview-copy">Pick a travel type, budget and pace.</p>
+        </div>
+        <div class="preview-card">
+          <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/discovery.png" alt="Discover Egypt"></div></div>
+          <div class="preview-num">02</div>
+          <div class="preview-label">Discover Egypt</div>
+          <p class="preview-copy">Search monuments, hidden gems and curated favourites.</p>
+        </div>
+        <div class="preview-card">
+          <div class="preview-phone"><div class="scr"><img src="./Landing Page Finalized_files/hieroglyph.png" alt="Hieroglyph Translator"></div></div>
+          <div class="preview-num">03</div>
+          <div class="preview-label">Decode the walls</div>
+          <p class="preview-copy">Snap any cartouche — receive a clean translation.</p>
+        </div>
       </div>
     </div>
-    <div class="download-art" aria-hidden="true">
-      <div class="ar-circle"></div>
-      <div class="ar-circle r2"></div>
-      <span class="gx g1">𓂀</span><span class="gx g2">𓊽</span>
-      <span class="gx g3">𓋹</span><span class="gx g4">𓆣</span>
-      <div class="ar-arabic">تراثنا</div>
-      <div class="ar-mini">TOURATHNA · OUR HERITAGE</div>
+  </section>
+</div>
+
+<!-- ═══ PAGE: DOWNLOAD ═══ -->
+<div class="page" id="page-download">
+  <section class="download-page">
+    <div class="pulse-rings" aria-hidden="true" id="pulseRings"></div>
+    <div class="download-inner">
+      <div>
+        <span class="section-eyebrow">Download Tourathna</span>
+        <h2>Begin your<br><em>pharaonic</em> journey.</h2>
+        <p>Free to download. No ads, no clutter — just Egypt, told the way it deserves to be told.</p>
+        <div class="hero-cta">
+          <button class="btn" style="padding:18px 34px;font-size:16px;background:var(--papyrus-light);color:var(--teal-dark)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+            Download the app now
+          </button>
+        </div>
+      </div>
+      <div class="download-art" aria-hidden="true">
+        <div class="ar-circle"></div>
+        <div class="ar-circle r2"></div>
+        <span class="gx g1">𓂀</span><span class="gx g2">𓊽</span>
+        <span class="gx g3">𓋹</span><span class="gx g4">𓆣</span>
+        <div class="ar-arabic">تراثنا</div>
+        <div class="ar-mini">TOURATHNA · OUR HERITAGE</div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 </main>
 
@@ -545,73 +600,49 @@ footer{background:var(--teal-dark);color:rgba(243,234,212,.7);padding:40px;font-
 </footer>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-// IMPORTANT: Change this to 'http://13.50.201.36' when testing against EC2
-// or keep as empty string '' to use the demo fallback data below
-const USE_LIVE_API = true;
 const API_BASE = 'http://13.50.201.36';
+const USE_LIVE_API = true;
 
-// ─── MONUMENT DATA ────────────────────────────────────────────────────────────
-// Add the real place UUIDs from your `places` table here
+// ─── ROUTER ──────────────────────────────────────────────────────────────────
+function navigateTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  const btn = document.querySelector(`[data-page="${page}"]`);
+  if (btn) btn.classList.add('active');
+  history.pushState({page}, '', '#' + page);
+}
+
+window.addEventListener('popstate', e => {
+  if (e.state?.page) navigateTo(e.state.page);
+});
+
+// Load page from hash on first load
+// Router initialised at bottom of script after all functions are defined
+
+// ─── DEMO TABS ────────────────────────────────────────────────────────────────
+function switchDemoTab(tab, btn) {
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+// ─── MONUMENTS ────────────────────────────────────────────────────────────────
 const MONUMENTS = [
-  {
-    id: '8e745670-8146-4440-b390-146bcd2e46c3',
-    name: 'Great Sphinx of Giza',
-    category: 'Statues & Sculptures',
-    glyph: '𓂀',
-    description: 'Guardian of the Giza plateau for 4,500 years',
-    badge: 'Iconic'
-  },
-  {
-    id: '4237588a-75d3-4d2e-9842-01bfa14ea440',
-    name: 'Great Pyramids of Giza',
-    category: 'Architecture & Landmarks',
-    glyph: '𓇳',
-    description: 'Last surviving wonder of the ancient world',
-    badge: 'Wonder'
-  },
-  {
-    id: 'c635c843-3a9f-418c-b8f5-a42c50319cc8',
-    name: 'Citadel of Saladin',
-    category: 'Architecture & Landmarks',
-    glyph: '𓊽',
-    description: 'Medieval Islamic fortress overlooking Cairo',
-    badge: null
-  },
-  {
-    id: '6caaa654-2f18-45b2-b6c9-ee6fa5be920a',
-    name: "Khufu's Solar Boat",
-    category: 'Architecture & Landmarks',
-    glyph: '𓋹',
-    description: 'A 4,600-year-old cedar vessel buried with the pharaoh',
-    badge: null
-  }
+  { id:'8e745670-8146-4440-b390-146bcd2e46c3', name:'Great Sphinx of Giza',    category:'Statues & Sculptures',      glyph:'𓂀', badge:'Iconic' },
+  { id:'4237588a-75d3-4d2e-9842-01bfa14ea440', name:'Great Pyramids of Giza',  category:'Architecture & Landmarks',  glyph:'𓇳', badge:'Wonder' },
+  { id:'c635c843-3a9f-418c-b8f5-a42c50319cc8', name:'Citadel of Saladin',      category:'Architecture & Landmarks',  glyph:'𓊽', badge:null   },
+  { id:'6caaa654-2f18-45b2-b6c9-ee6fa5be920a', name:"Khufu's Solar Boat",      category:'Architecture & Landmarks',  glyph:'𓋹', badge:null   },
 ];
 
-// ─── HIEROGLYPHICS SAMPLES ────────────────────────────────────────────────────
-// These map to pre-uploaded images in your S3 bucket under tourasna-assets/samples/
-// The backend demo endpoint receives the sample key and looks up the S3 URL
 const HIERO_SAMPLES = [
-  {
-    key: 'ramesses',
-    title: 'Ramesses II Cartouche',
-    subtitle: 'New Kingdom · 1279–1213 BC',
-    glyphs: '𓇳𓏤𓊵𓏏𓊪',
-    hint: 'The royal name of Egypt\'s greatest pharaoh'
-  },
-  {
-    key: 'tutankhamun',
-    title: 'Tutankhamun Cartouche',
-    subtitle: 'New Kingdom · 1332–1323 BC',
-    glyphs: '𓇳𓏏𓌀𓅱𓈖𓇳',
-    hint: 'The boy king whose tomb changed history'
-  }
+  { key:'ramesses',    title:'Ramesses II Cartouche',   subtitle:'New Kingdom · 1279–1213 BC', glyphs:'𓇳𓏤𓊵𓏏𓊪' },
+  { key:'tutankhamun', title:'Tutankhamun Cartouche',   subtitle:'New Kingdom · 1332–1323 BC', glyphs:'𓇳𓏏𓌀𓅱𓈖𓇳' },
 ];
 
-// ─── STORYTELLING DEMO ───────────────────────────────────────────────────────
 const grid = document.getElementById('monumentGrid');
-const player = document.getElementById('storyPlayer');
-
 MONUMENTS.forEach(m => {
   const card = document.createElement('div');
   card.className = 'monument-card';
@@ -622,304 +653,203 @@ MONUMENTS.forEach(m => {
       <div class="monument-card-glyph">${m.glyph}</div>
       <div class="monument-card-name">${m.name}</div>
       <div class="monument-card-cat">${m.category}</div>
-      <div class="monument-card-cta">
-        Hear the story
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  `;
+      <div class="monument-card-cta">Hear the story <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>`;
   card.addEventListener('click', () => loadStory(m));
   grid.appendChild(card);
 });
 
-let speechUtterance = null;
-let isSpeaking = false;
+const hieroSamplesEl = document.getElementById('hieroSamples');
+HIERO_SAMPLES.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'hiero-sample-card';
+  card.innerHTML = `
+    <div class="hiero-sample-img-wrap"><div class="hiero-sample-glyph-display">${s.glyphs}</div></div>
+    <div class="hiero-sample-body">
+      <div class="hiero-sample-title">${s.title}</div>
+      <div class="hiero-sample-sub">${s.subtitle}</div>
+      <div class="hiero-sample-cta">Translate this cartouche <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>`;
+  card.addEventListener('click', () => translateSample(s));
+  hieroSamplesEl.appendChild(card);
+});
+
+// ─── STORYTELLING ─────────────────────────────────────────────────────────────
+let speechUtterance = null, isSpeaking = false;
 
 async function loadStory(monument) {
   grid.style.display = 'none';
+  const player = document.getElementById('storyPlayer');
   player.style.display = 'block';
-  player.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
   const loading = document.getElementById('storyLoading');
   const content = document.getElementById('storyContent');
-  const error = document.getElementById('storyError');
-  const nameEl = document.getElementById('storyPlaceName');
-  const textEl = document.getElementById('storyText');
-
-  loading.style.display = 'flex';
-  content.style.display = 'none';
-  error.style.display = 'none';
+  const error   = document.getElementById('storyError');
+  loading.style.display = 'flex'; content.style.display = 'none'; error.style.display = 'none';
   stopSpeech();
-
   try {
-    let storyText = '';
-
-    if (USE_LIVE_API && !monument.id.startsWith('REPLACE')) {
+    let text = '';
+    if (USE_LIVE_API) {
       const res = await fetch(`${API_BASE}/api/storytelling/demo/${monument.id}`);
-      if (!res.ok) throw new Error('Server error');
+      if (!res.ok) throw new Error();
       const data = await res.json();
-      storyText = data.story || data.story_en || data.storyEn || '';
+      text = data.story || data.story_en || '';
     } else {
-      // Fallback demo text when UUIDs not yet set
       await new Promise(r => setTimeout(r, 1200));
-      storyText = getDemoStory(monument.name);
+      text = getDemoStory(monument.name);
     }
-
-    nameEl.textContent = monument.name;
-    textEl.textContent = storyText;
+    document.getElementById('storyPlaceName').textContent = monument.name;
+    document.getElementById('storyText').textContent = text;
+    loading.style.display = 'none'; content.style.display = 'block';
+  } catch {
     loading.style.display = 'none';
-    content.style.display = 'block';
-  } catch(e) {
-    loading.style.display = 'none';
-    error.style.display = 'block';
+    const fallback = getDemoStory(monument.name);
+    if (fallback) { document.getElementById('storyPlaceName').textContent = monument.name; document.getElementById('storyText').textContent = fallback; content.style.display = 'block'; }
+    else error.style.display = 'block';
   }
-}
-
-function getDemoStory(name) {
-  const stories = {
-    'Great Sphinx of Giza': 'Rising from the plateau of Giza with the body of a lion and the face of a king, the Great Sphinx has watched over Egypt for more than four thousand years. Carved from a single outcrop of limestone during the reign of Pharaoh Khafre, it stands as the world\'s largest monolithic statue — 73 metres long, 20 metres tall. Ancient Egyptians called it Hor-em-akhet, "Horus on the Horizon." It stares eternally eastward, greeting the sunrise as it has done since the Old Kingdom. Beneath its paws, a granite stele records a dream: young Prince Thutmose, asleep in the shadow of the monument, was told by the Sphinx itself that if he cleared the sand from its body, he would become pharaoh. He did. He was.',
-    'Great Pyramids of Giza': 'Three pyramids stand on the Giza plateau, and together they represent the most ambitious building project in human history. The Great Pyramid of Khufu, built around 2560 BC, stood as the tallest structure on Earth for nearly four thousand years. Its construction required approximately 2.3 million stone blocks, some weighing up to 80 tonnes, assembled with a precision that modern engineers still struggle to fully explain. Beside it stands the pyramid of Khafre, guarded by the enigmatic Sphinx, and the smaller pyramid of Menkaure. These were not merely tombs — they were resurrection machines, engineered to launch the pharaoh\'s soul toward the circumpolar stars, ensuring eternal life for the king and, through him, the stability of Egypt itself.',
-    'Citadel of Saladin': 'Perched on the Mokattam cliffs at the edge of medieval Cairo, the Citadel of Saladin has commanded this city for over eight centuries. Built by the great Kurdish general Salah ad-Din al-Ayyubi beginning in 1176 AD, it was constructed to defend Egypt against the Crusaders — and it succeeded. For seven hundred years, every ruler of Egypt governed from within these walls: Ayyubids, Mamluks, Ottomans, and finally Muhammad Ali, whose alabaster mosque still dominates the skyline today. The Citadel is not one monument but many layered on top of one another — a palimpsest of power, each dynasty carving its ambitions into the same ancient stone.',
-    "Khufu's Solar Boat": 'In 1954, Egyptian archaeologist Kamal el-Mallakh was clearing rubble near the Great Pyramid when his team uncovered a sealed limestone pit. Inside, carefully dismantled into 1,224 individual cedar pieces, lay a ship that had not seen daylight in 4,600 years. Reassembled over fourteen years, Khufu\'s Solar Boat is 43 metres long and perfectly preserved — the oldest intact ship on Earth. It was buried to carry the pharaoh\'s soul across the celestial waters of the afterlife, following the sun god Ra on his eternal journey. Whether it ever sailed the Nile before its burial remains one of Egyptology\'s most debated questions.'
-  };
-  return stories[name] || 'This ancient monument holds stories that have endured for millennia. Our AI is preparing its full narrative — please ensure the backend server is connected to hear the complete story.';
 }
 
 document.getElementById('storyBack').addEventListener('click', () => {
   stopSpeech();
-  player.style.display = 'none';
+  document.getElementById('storyPlayer').style.display = 'none';
   grid.style.display = 'grid';
-  grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-document.getElementById('btnAudio').addEventListener('click', () => {
-  if (isSpeaking) {
-    stopSpeech();
-  } else {
-    playStory();
-  }
-});
+document.getElementById('btnAudio').addEventListener('click', () => isSpeaking ? stopSpeech() : playStory());
 
 function playStory() {
   const text = document.getElementById('storyText').textContent;
   if (!text) return;
   stopSpeech();
   speechUtterance = new SpeechSynthesisUtterance(text);
-  speechUtterance.rate = 0.92;
-  speechUtterance.pitch = 1;
-  speechUtterance.lang = 'en-GB';
-
-  // prefer a rich voice if available
-  const voices = speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.name.includes('Daniel') || v.name.includes('Karen') || v.name.includes('Google UK'));
+  speechUtterance.rate = 0.92; speechUtterance.lang = 'en-GB';
+  const preferred = speechSynthesis.getVoices().find(v => v.name.includes('Daniel') || v.name.includes('Google UK'));
   if (preferred) speechUtterance.voice = preferred;
-
-  speechUtterance.onstart = () => {
-    isSpeaking = true;
-    document.getElementById('audioIcon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
-    document.getElementById('audioLabel').textContent = 'Stop';
-    document.getElementById('audioWaves').classList.add('playing');
-  };
-  speechUtterance.onend = speechUtterance.onerror = () => {
-    isSpeaking = false;
-    document.getElementById('audioIcon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
-    document.getElementById('audioLabel').textContent = 'Listen to Story';
-    document.getElementById('audioWaves').classList.remove('playing');
-  };
+  speechUtterance.onstart = () => { isSpeaking = true; document.getElementById('audioIcon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'; document.getElementById('audioLabel').textContent = 'Stop'; document.getElementById('audioWaves').classList.add('playing'); };
+  speechUtterance.onend = speechUtterance.onerror = () => { isSpeaking = false; document.getElementById('audioIcon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>'; document.getElementById('audioLabel').textContent = 'Listen to Story'; document.getElementById('audioWaves').classList.remove('playing'); };
   speechSynthesis.speak(speechUtterance);
 }
 
 function stopSpeech() {
   if (speechSynthesis.speaking) speechSynthesis.cancel();
   isSpeaking = false;
-  const icon = document.getElementById('audioIcon');
-  const label = document.getElementById('audioLabel');
-  const waves = document.getElementById('audioWaves');
+  const icon = document.getElementById('audioIcon'); const label = document.getElementById('audioLabel'); const waves = document.getElementById('audioWaves');
   if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
   if (label) label.textContent = 'Listen to Story';
   if (waves) waves.classList.remove('playing');
 }
 
-// ─── HIEROGLYPHICS DEMO ───────────────────────────────────────────────────────
-const hieroSamplesEl = document.getElementById('hieroSamples');
-const hieroResultEl = document.getElementById('hieroResult');
+function getDemoStory(name) {
+  const s = {
+    'Great Sphinx of Giza': 'Rising from the plateau of Giza with the body of a lion and the face of a king, the Great Sphinx has watched over Egypt for more than four thousand years. Carved from a single outcrop of limestone during the reign of Pharaoh Khafre, it stands as the world\'s largest monolithic statue — 73 metres long, 20 metres tall. Ancient Egyptians called it Hor-em-akhet, "Horus on the Horizon." Beneath its paws, a granite stele records the dream of young Prince Thutmose, who was told by the Sphinx itself that if he cleared the sand from its body, he would become pharaoh. He did. He was.',
+    'Great Pyramids of Giza': 'Three pyramids stand on the Giza plateau, and together they represent the most ambitious building project in human history. The Great Pyramid of Khufu, built around 2560 BC, stood as the tallest structure on Earth for nearly four thousand years. Its construction required approximately 2.3 million stone blocks, some weighing up to 80 tonnes, assembled with a precision that modern engineers still struggle to explain. These were not merely tombs — they were resurrection machines, engineered to launch the pharaoh\'s soul toward the circumpolar stars.',
+    'Citadel of Saladin': 'Perched on the Mokattam cliffs at the edge of medieval Cairo, the Citadel of Saladin has commanded this city for over eight centuries. Built by Salah ad-Din al-Ayyubi beginning in 1176 AD to defend Egypt against the Crusaders. For seven hundred years, every ruler of Egypt governed from within these walls: Ayyubids, Mamluks, Ottomans, and finally Muhammad Ali, whose alabaster mosque still dominates the skyline today.',
+    "Khufu's Solar Boat": 'In 1954, archaeologist Kamal el-Mallakh uncovered a sealed limestone pit near the Great Pyramid. Inside, dismantled into 1,224 cedar pieces, lay a ship that had not seen daylight in 4,600 years. Reassembled over fourteen years, it is 43 metres long and perfectly preserved — the oldest intact ship on Earth. It was buried to carry the pharaoh\'s soul across the celestial waters of the afterlife, following the sun god Ra on his eternal journey.',
+  };
+  return s[name] || '';
+}
 
-HIERO_SAMPLES.forEach(s => {
-  const card = document.createElement('div');
-  card.className = 'hiero-sample-card';
-  card.innerHTML = `
-    <div class="hiero-sample-img-wrap">
-      <div class="hiero-sample-glyph-display">${s.glyphs}</div>
-    </div>
-    <div class="hiero-sample-body">
-      <div class="hiero-sample-title">${s.title}</div>
-      <div class="hiero-sample-sub">${s.subtitle}</div>
-      <div class="hiero-sample-cta">
-        Translate this cartouche
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  `;
-  card.addEventListener('click', () => translateSample(s));
-  hieroSamplesEl.appendChild(card);
-});
+// ─── HIEROGLYPHICS ────────────────────────────────────────────────────────────
+const hieroResultEl = document.getElementById('hieroResult');
 
 async function translateSample(sample) {
   hieroSamplesEl.style.display = 'none';
   hieroResultEl.style.display = 'block';
-  hieroResultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
   const loading = document.getElementById('hieroLoading');
   const content = document.getElementById('hieroContent');
-  const error = document.getElementById('hieroError');
-
-  loading.style.display = 'flex';
-  content.style.display = 'none';
-  error.style.display = 'none';
-
+  const error   = document.getElementById('hieroError');
+  loading.style.display = 'flex'; content.style.display = 'none'; error.style.display = 'none';
   try {
     let result = null;
-
     if (USE_LIVE_API) {
-      const res = await fetch(`${API_BASE}/api/hieroglyphics/demo`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sample: sample.key })
-      });
-      if (!res.ok) throw new Error('Server error');
+      const res = await fetch(`${API_BASE}/api/hieroglyphics/demo`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sample:sample.key}) });
+      if (!res.ok) throw new Error();
       result = await res.json();
     } else {
       await new Promise(r => setTimeout(r, 1800));
       result = getDemoTranslation(sample.key);
     }
-
     renderHieroResult(result);
+    loading.style.display = 'none'; content.style.display = 'block';
+  } catch {
     loading.style.display = 'none';
-    content.style.display = 'block';
-  } catch(e) {
-    loading.style.display = 'none';
-    // Fall back to demo data if live API fails
-    try {
-      const fallback = getDemoTranslation(sample.key);
-      renderHieroResult(fallback);
-      content.style.display = 'block';
-    } catch(e2) {
-      error.style.display = 'block';
-    }
+    try { renderHieroResult(getDemoTranslation(sample.key)); content.style.display = 'block'; }
+    catch { error.style.display = 'block'; }
   }
 }
 
 function renderHieroResult(data) {
-  // Real response shape: data.translation.english / .arabic / .transliteration
-  // data.translation.sign_meanings[] = { code, meaning_en, meaning_ar, sound }
-  // data.glyph_count, data.reading_direction
   const t = data.translation || {};
-  const en = t.english || '';
-  const ar = t.arabic || '';
-  const transliteration = t.transliteration || '';
-  const context = t.historical_context_en || '';
-  const method = t.translation_method || '';
-  const signs = t.sign_meanings || [];
-
-  document.getElementById('hieroEn').textContent = en;
-  document.getElementById('hieroAr').textContent = ar;
-
+  document.getElementById('hieroEn').textContent = t.english || '';
+  document.getElementById('hieroAr').textContent = t.arabic || '';
   const meta = document.getElementById('hieroMeta');
   meta.innerHTML = '';
-  if (transliteration) {
-    const chip = document.createElement('div');
-    chip.className = 'hiero-meta-chip';
-    chip.textContent = `Transliteration: ${transliteration}`;
-    meta.appendChild(chip);
-  }
-  if (data.glyph_count) {
-    const chip = document.createElement('div');
-    chip.className = 'hiero-meta-chip';
-    chip.textContent = `${data.glyph_count} glyphs detected`;
-    meta.appendChild(chip);
-  }
-  if (data.reading_direction) {
-    const chip = document.createElement('div');
-    chip.className = 'hiero-meta-chip';
-    chip.textContent = `Reading: ${data.reading_direction.toUpperCase()}`;
-    meta.appendChild(chip);
-  }
-  if (context) {
-    const chip = document.createElement('div');
-    chip.className = 'hiero-meta-chip';
-    chip.textContent = context.length > 90 ? context.slice(0, 90) + '…' : context;
-    meta.appendChild(chip);
-  }
-
+  [[`Transliteration: ${t.transliteration||''}`, !!t.transliteration],[`${data.glyph_count} glyphs detected`, !!data.glyph_count],[`Reading: ${(data.reading_direction||'').toUpperCase()}`, !!data.reading_direction],[(t.historical_context_en||'').slice(0,90)+'…', !!t.historical_context_en]].forEach(([txt,show]) => { if (!show) return; const c = document.createElement('div'); c.className='hiero-meta-chip'; c.textContent=txt; meta.appendChild(c); });
   const signsEl = document.getElementById('hieroSigns');
   signsEl.innerHTML = '';
-  if (signs && signs.length > 0) {
-    signs.slice(0, 12).forEach(s => {
-      const div = document.createElement('div');
-      div.className = 'hiero-sign';
-      div.innerHTML = `
-        <div class="hiero-sign-name">${s.code || ''}</div>
-        <div class="hiero-sign-meaning">${s.sound ? `/${s.sound}/` : ''}</div>
-        <div class="hiero-sign-meaning">${s.meaning_en || ''}</div>
-      `;
-      signsEl.appendChild(div);
-    });
-  }
+  (t.sign_meanings||[]).slice(0,12).forEach(s => { const d=document.createElement('div'); d.className='hiero-sign'; d.innerHTML=`<div class="hiero-sign-name">${s.code||''}</div><div class="hiero-sign-meaning">${s.sound?`/${s.sound}/`:''}</div><div class="hiero-sign-meaning">${s.meaning_en||''}</div>`; signsEl.appendChild(d); });
 }
 
 function getDemoTranslation(key) {
-  const demos = {
-    ramesses: {
-      translation: {
-        english: 'Ramesses, Beloved of Amun — User-Maat-Ra, the Strong Bull, Beloved of Maat, Protector of Egypt.',
-        arabic: 'رمسيس، حبيب آمون — يوسر ماعت رع، الثور القوي، حبيب ماعت، حامي مصر.',
-        transliteration: 'Ra-mes-su mry-Imn',
-        historical_context_en: 'Cartouche of Ramesses II, the most powerful pharaoh of the New Kingdom (1279–1213 BC)',
-        sign_meanings: [
-          { code:'N5', sound:'Ra', meaning_en:'sun disk (Ra)' },
-          { code:'Z1', sound:'—', meaning_en:'stroke / determinative' },
-          { code:'O29', sound:'ms', meaning_en:'born of' },
-          { code:'X1', sound:'t', meaning_en:'bread loaf' },
-          { code:'Q3', sound:'p', meaning_en:'mat' },
-          { code:'G17', sound:'m', meaning_en:'owl' },
-        ]
-      },
-      glyph_count: 6,
-      reading_direction: 'rtl'
-    },
-    tutankhamun: {
-      translation: {
-        english: 'Tutankhamun, Living Image of Amun — Nebkheperure, Lord of Manifestations of Ra.',
-        arabic: 'توت عنخ آمون، الصورة الحية لآمون — نب خبرو رع، سيد مظاهر رع.',
-        transliteration: 'Twt-ꜥnḫ-Jmn',
-        historical_context_en: 'Cartouche of Tutankhamun, the boy pharaoh whose intact tomb was discovered in 1922',
-        sign_meanings: [
-          { code:'N5', sound:'Ra', meaning_en:'sun disk (Ra)' },
-          { code:'X1', sound:'t', meaning_en:'bread loaf' },
-          { code:'S34', sound:'ꜥnḫ', meaning_en:'life / ankh' },
-          { code:'G17', sound:'m', meaning_en:'owl' },
-          { code:'N35', sound:'n', meaning_en:'water ripple' },
-          { code:'N5', sound:'Imn', meaning_en:'Amun / hidden one' },
-        ]
-      },
-      glyph_count: 6,
-      reading_direction: 'rtl'
-    }
+  const d = {
+    ramesses:    { translation:{ english:'Ramesses, Beloved of Amun — User-Maat-Ra, Protector of Egypt.', arabic:'رمسيس، حبيب آمون — يوسر ماعت رع، حامي مصر.', transliteration:'Ra-mes-su mry-Imn', historical_context_en:'Cartouche of Ramesses II, the most powerful pharaoh of the New Kingdom (1279–1213 BC)', sign_meanings:[{code:'N5',sound:'Ra',meaning_en:'sun disk'},{code:'O29',sound:'ms',meaning_en:'born of'},{code:'X1',sound:'t',meaning_en:'bread loaf'},{code:'G17',sound:'m',meaning_en:'owl'}] }, glyph_count:6, reading_direction:'rtl' },
+    tutankhamun: { translation:{ english:'Tutankhamun, Living Image of Amun — Lord of Manifestations of Ra.', arabic:'توت عنخ آمون، الصورة الحية لآمون — سيد مظاهر رع.', transliteration:'Twt-ꜥnḫ-Jmn', historical_context_en:'Cartouche of Tutankhamun, the boy pharaoh whose tomb was discovered in 1922', sign_meanings:[{code:'N5',sound:'Ra',meaning_en:'sun disk'},{code:'S34',sound:'ꜥnḫ',meaning_en:'life / ankh'},{code:'N35',sound:'n',meaning_en:'water ripple'}] }, glyph_count:6, reading_direction:'rtl' },
   };
-  return demos[key] || demos.ramesses;
+  return d[key] || d.ramesses;
 }
 
 document.getElementById('hieroBack').addEventListener('click', () => {
   hieroResultEl.style.display = 'none';
   hieroSamplesEl.style.display = 'grid';
-  hieroSamplesEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-// Load voices on page load (some browsers need this)
-if (typeof speechSynthesis !== 'undefined') {
-  speechSynthesis.getVoices();
-  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+// ─── ANIMATIONS ───────────────────────────────────────────────────────────────
+const GLYPHS = ['𓂀','𓊽','𓋹','𓆣','𓇳','𓏏','𓈖','𓂧','𓅱','𓆑','𓎛','𓌀','𓅓','𓆏'];
+let glyphsSpawned = { home: false, features: false, demo: false };
+let ringsSpawned = false;
+
+function spawnGlyphs(id, countVal, key) {
+  if (glyphsSpawned[key]) return;
+  glyphsSpawned[key] = true;
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let i = 0; i < countVal; i++) {
+    const s = document.createElement('span');
+    s.textContent = GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+    s.style.cssText = `left:${2+Math.random()*96}%;top:${10+Math.random()*80}%;font-size:${14+Math.random()*22}px;opacity:${0.06+Math.random()*0.14};animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*-14}s`;
+    el.appendChild(s);
+  }
 }
+
+function spawnPulseRings(id) {
+  if (ringsSpawned) return;
+  ringsSpawned = true;
+  const el = document.getElementById(id);
+  if (!el) return;
+  [{left:'15%',top:'50%'},{left:'85%',top:'30%'},{left:'50%',top:'80%'}].forEach((pos,i) => {
+    for (let j=0;j<3;j++) {
+      const r = document.createElement('div');
+      r.className = 'pulse-ring';
+      r.style.cssText = `left:${pos.left};top:${pos.top};width:${40+j*10}px;height:${40+j*10}px;animation-delay:${i*1.3+j*1.3}s;animation-duration:${4+i*0.5}s`;
+      el.appendChild(r);
+    }
+  });
+}
+
+if (typeof speechSynthesis !== 'undefined') { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
+
+// Wire navigation clicks to also trigger animations
+const _origNavigateTo = navigateTo;
+window.navigateTo = function(page) {
+  _origNavigateTo(page);
+  if (page === 'home')     spawnGlyphs('floatGlyphsHome',     16, 'home');
+  if (page === 'features') spawnGlyphs('floatGlyphsFeatures', 14, 'features');
+  if (page === 'demo')     spawnGlyphs('floatGlyphs',         20, 'demo');
+  if (page === 'download') spawnPulseRings('pulseRings');
+};
+
+// Trigger for the initial page
+const _init = location.hash.replace('#','') || 'home';
+window.navigateTo(_init);
 </script>
 </body>
 </html>

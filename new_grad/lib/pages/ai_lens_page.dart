@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_grad/pages/landmark_details_page.dart';
+import 'package:new_grad/pages/heritage_3d_page.dart';
 
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
@@ -21,10 +21,10 @@ class _AILensPageState extends State<AILensPage> {
   Future<void> _scan() async {
     setState(() => _loading = true);
 
-    // Step 1 → run camera + TFLite
-    final label = await _lens.runCamera();
+    // Step 1 — camera + TFLite → ScanResult
+    final ScanResult? scan = await _lens.runCamera();
 
-    if (label == null) {
+    if (scan == null) {
       setState(() => _loading = false);
       ScaffoldMessenger.of(
         context,
@@ -32,22 +32,37 @@ class _AILensPageState extends State<AILensPage> {
       return;
     }
 
-    // Step 2 → fetch place from backend
-    final Place? place = await _repo.getByMLLabel(label);
+    print(
+      "AI LENS → className=${scan.className}  classIndex=${scan.classIndex}  mlLabel=${scan.mlLabel}",
+    );
+
+    // Step 2 — look up place by derived ml_label
+    final Place? place = await _repo.getByMLLabel(scan.mlLabel);
 
     setState(() => _loading = false);
 
     if (place == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("No match for label: $label")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "No monument or landmark identified — try again with a different artifact or angle",
+          ),
+        ),
+      );
       return;
     }
 
-    // Step 3 → details page
+    // Step 3 — Heritage3DPage: shows place info + triggers 3D generation
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
+      MaterialPageRoute(
+        builder: (_) => Heritage3DPage(
+          place: place,
+          className: scan.className,
+          classIndex: scan.classIndex,
+          imageB64: scan.imageB64,
+        ),
+      ),
     );
   }
 
