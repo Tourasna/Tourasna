@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_grad/pages/landmark_details_page.dart';
 import '../models/recommendation_item.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
@@ -9,6 +8,7 @@ import 'discovery_details_page.dart';
 import '../services/landmark_service.dart';
 import '../services/agenda_service.dart';
 import '../utils/network_navigator.dart';
+import 'package:new_grad/pages/heritage_3d_page.dart';
 
 final AILensService aiLens = AILensService();
 
@@ -84,21 +84,32 @@ class _HomePageState extends State<HomePage> {
   bool _searching = false;
 
   Future<void> _runAILens(BuildContext context) async {
-    final label = await aiLens.runCamera();
-    if (label == null) return;
+    final scan = await aiLens.runCamera();
+    if (scan == null) return;
 
-    final place = await _placesRepo.getByMLLabel(label);
+    final place = await _placesRepo.getByMLLabel(scan.mlLabel);
 
     if (place == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("No match for label")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "No monument or landmark identified — try again with a different artifact or angle",
+          ),
+        ),
+      );
       return;
     }
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => LandmarkDetailsPage(place: place)),
+      MaterialPageRoute(
+        builder: (_) => Heritage3DPage(
+          place: place,
+          className: scan.className,
+          classIndex: scan.classIndex,
+          imageB64: scan.imageB64,
+        ),
+      ),
     );
   }
 
