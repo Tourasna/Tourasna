@@ -8,7 +8,8 @@ import 'discovery_details_page.dart';
 import '../services/landmark_service.dart';
 import '../services/agenda_service.dart';
 import '../utils/network_navigator.dart';
-import 'package:new_grad/pages/heritage_3d_page.dart';
+import 'ai_lens_landmark_page.dart';
+import '../models/recommendation_item.dart';
 
 final AILensService aiLens = AILensService();
 
@@ -85,26 +86,43 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _runAILens(BuildContext context) async {
     final scan = await aiLens.runCamera();
-    if (scan == null) return;
-
+    if (scan == null) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Monument not recognized — try better lighting or a closer angle',
+          ),
+        ),
+      );
+      return;
+    }
     final place = await _placesRepo.getByMLLabel(scan.mlLabel);
 
     if (place == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            "No monument or landmark identified — try again with a different artifact or angle",
+            'No monument or landmark identified — '
+            'try again with a different artifact or angle',
           ),
         ),
       );
       return;
     }
 
+    RecommendationItem? item;
+    try {
+      item = await _placesRepo.searchRecommendationByName(place.name);
+    } catch (_) {}
+
+    if (!context.mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => Heritage3DPage(
+        builder: (_) => AiLensLandmarkPage(
           place: place,
+          item: item,
           className: scan.className,
           classIndex: scan.classIndex,
           imageB64: scan.imageB64,

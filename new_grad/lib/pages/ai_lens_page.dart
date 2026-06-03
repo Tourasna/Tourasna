@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:new_grad/pages/heritage_3d_page.dart';
-
+import 'ai_lens_landmark_page.dart';
 import '../services/ai_lens.dart';
 import '../services/places_repo.dart';
 import '../models/place.dart';
+import '../models/recommendation_item.dart';
 
 class AILensPage extends StatefulWidget {
   const AILensPage({super.key});
@@ -28,36 +28,50 @@ class _AILensPageState extends State<AILensPage> {
       setState(() => _loading = false);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text("Cancelled.")));
+      ).showSnackBar(const SnackBar(content: Text('Cancelled.')));
       return;
     }
 
     print(
-      "AI LENS → className=${scan.className}  classIndex=${scan.classIndex}  mlLabel=${scan.mlLabel}",
+      'AI LENS → className=${scan.className}  '
+      'classIndex=${scan.classIndex}  mlLabel=${scan.mlLabel}',
     );
 
-    // Step 2 — look up place by derived ml_label
+    // Step 2 — fetch Place by ml_label
     final Place? place = await _repo.getByMLLabel(scan.mlLabel);
 
-    setState(() => _loading = false);
-
     if (place == null) {
+      setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            "No monument or landmark identified — try again with a different artifact or angle",
+            'No monument or landmark identified — '
+            'try again with a different artifact or angle',
           ),
         ),
       );
       return;
     }
 
-    // Step 3 — Heritage3DPage: shows place info + triggers 3D generation
+    // Step 3 — fetch RecommendationItem for rich data (photos, address, etc.)
+    // Falls back gracefully to null if the search returns nothing
+    RecommendationItem? item;
+    try {
+      item = await _repo.searchRecommendationByName(place.name);
+    } catch (_) {
+      // Non-fatal — AiLensLandmarkPage will fall back to Place data
+    }
+
+    setState(() => _loading = false);
+
+    // Step 4 — navigate to landmark page
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => Heritage3DPage(
+        builder: (_) => AiLensLandmarkPage(
           place: place,
+          item: item,
           className: scan.className,
           classIndex: scan.classIndex,
           imageB64: scan.imageB64,
@@ -69,13 +83,13 @@ class _AILensPageState extends State<AILensPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("AI Lens")),
+      appBar: AppBar(title: const Text('AI Lens')),
       body: Center(
         child: _loading
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: _scan,
-                child: const Text("Scan Landmark"),
+                child: const Text('Scan Landmark'),
               ),
       ),
     );

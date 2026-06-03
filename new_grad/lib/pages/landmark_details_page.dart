@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/place.dart';
-import 'viewer_page.dart';
 import '../services/google_tts_service.dart';
 import '../services/api_keys.dart';
 import '../services/storytelling_service.dart';
@@ -466,25 +465,6 @@ class _LandmarkDetailsPageState extends State<LandmarkDetailsPage>
                             text: storyText,
                             onTap: _startStoryFlow,
                             dark: true,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          _mainButton(
-                            icon: Icons.view_in_ar,
-                            text: "View 3D Model",
-                            dark: false,
-                            onTap: () {
-                              _tts.stop();
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      ViewerPage(place: widget.place),
-                                ),
-                              );
-                            },
                           ),
                         ],
                       ),
