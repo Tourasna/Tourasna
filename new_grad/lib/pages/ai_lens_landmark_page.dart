@@ -40,26 +40,14 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
   String _preferredGender = 'male';
   int _currentPhoto = 0;
 
+  final List<String> _loadedPhotos = [];
+  bool _photosInitialized = false;
+
   static const String _voicePrefKey = 'tts_preferred_gender';
 
   final Color bgColor = const Color(0xFFF2EADC);
   final Color darkColor = const Color(0xFF1A3C3C);
   final Color goldColor = const Color(0xFFC5A059);
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
-
-  List<String> get _photos {
-    final urls = widget.item?.photoUrls ?? [];
-    if (urls.isNotEmpty) return urls;
-    if (widget.place.imageUrl.isNotEmpty) return [widget.place.imageUrl];
-    final photoFromInfo = widget.place.infoJson?['photo_url']?.toString();
-    if (photoFromInfo != null && photoFromInfo.isNotEmpty) {
-      return [photoFromInfo];
-    }
-    return [
-      'https://tourasna-assets.s3.amazonaws.com/landmarks/places/${widget.place.id}/photo_1.jpg',
-    ];
-  }
 
   double? get _rating => widget.item?.rating;
   String? get _address => widget.item?.address;
@@ -79,6 +67,7 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
     WidgetsBinding.instance.addObserver(this);
     _tts = GoogleTTSService(apiKey: ApiKeys.googleMapsApiKey);
     _loadVoicePreference();
+    _initPhotos();
   }
 
   Future<void> _loadVoicePreference() async {
@@ -90,6 +79,37 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
   Future<void> _saveVoicePreference(String gender) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_voicePrefKey, gender);
+  }
+
+  void _initPhotos() {
+    if (_photosInitialized) return;
+    _photosInitialized = true;
+    final idx = widget.classIndex.toString().padLeft(3, '0');
+    final sanitised = widget.className
+        .replaceAll(' ', '_')
+        .replaceAll('/', '-');
+    final base =
+        'https://tourasna-assets.s3.eu-north-1.amazonaws.com/models/refs/${idx}_$sanitised';
+
+    final candidates = [
+      '$base/top.jpg',
+      '$base/front.jpg',
+      '$base/side.jpg',
+      '$base/back.jpg',
+    ];
+
+    for (final url in candidates) {
+      final image = NetworkImage(url);
+      image
+          .resolve(const ImageConfiguration())
+          .addListener(
+            ImageStreamListener((_, __) {
+              if (mounted && !_loadedPhotos.contains(url)) {
+                setState(() => _loadedPhotos.add(url));
+              }
+            }, onError: (_, __) {}),
+          );
+    }
   }
 
   @override
@@ -432,7 +452,7 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
       storyLabel = 'Hear Monument Story';
     }
 
-    final photos = _photos;
+    final photos = _loadedPhotos;
     final description =
         widget.item?.description ??
         widget.place.description ??
@@ -522,12 +542,8 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
                                         photos[i],
                                         fit: BoxFit.cover,
                                         width: double.infinity,
-                                        errorBuilder: (_, __, ___) =>
-                                            _photoPlaceholder(),
                                       ),
                                     ),
-
-                                    // Rating badge
                                     if (_rating != null)
                                       Positioned(
                                         top: 16,
@@ -564,8 +580,6 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
                                           ),
                                         ),
                                       ),
-
-                                    // AI Identified badge
                                     Positioned(
                                       top: 16,
                                       right: 16,
@@ -601,8 +615,6 @@ class _AiLensLandmarkPageState extends State<AiLensLandmarkPage>
                                         ),
                                       ),
                                     ),
-
-                                    // Dot indicators
                                     if (photos.length > 1)
                                       Positioned(
                                         bottom: 12,

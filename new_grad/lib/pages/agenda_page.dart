@@ -1008,7 +1008,12 @@ class _AgendaPageState extends State<AgendaPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // title
-                Text(event['title'], style: _serif.copyWith(fontSize: 18)),
+                Text(
+                  event['title'],
+                  style: _serif.copyWith(fontSize: 18),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 6),
                 // time range
                 Row(
@@ -1580,6 +1585,8 @@ class _AgendaPageState extends State<AgendaPage> {
               Text(
                 'Remove "${event['title']}" from your agenda?',
                 textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: _sans.copyWith(
                   fontSize: 13,
                   color: _C.teal.withValues(alpha: 0.55),
