@@ -9,22 +9,35 @@ Tourasna is a graduation project developed by students of the Faculty of Informa
 ## 🚀 Features
 
 📸 AI Lens — Real-time landmark recognition from your camera
+
 🔤 Hieroglyphics Translator — Detect and translate ancient Egyptian glyphs
+
 🏛️ 3D Monument Viewer — AI-generated 3D models of iconic landmarks
+
 🎙️ AI Storytelling — Immersive monument narratives with voice synthesis
+
 🤖 FAHMY Chatbot — Context-aware cultural tourism assistant
+
 🗺️ Interactive Map — Real-time monument map with compass and proximity
+
 📅 Trip Planner — Build and manage personalized itineraries
+
 ⭐ Recommendations — Personalized heritage site suggestions
 
 ## 🛠️ Tech Stack
 
 Mobile: Flutter
+
 Backend: NestJS, FastAPI
+
 Database: MySQL
+
 Auth: Firebase
+
 Cloud: AWS EC2, AWS S3
+
 AI: Groq, Google TTS, Modal GPU
+
 DevOps: Docker, nginx
 
 ## 📁 Project Structure
