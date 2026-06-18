@@ -5,7 +5,7 @@ import { PlacesSearchService } from './places-search.service';
 import { FirebaseAuthGuard } from '../../auth/firebase-auth.guard';
 
 @UseGuards(FirebaseAuthGuard)
-@Controller('places')
+@Controller('places-search')
 export class PlacesSearchController {
   constructor(private readonly placesSearchService: PlacesSearchService) {}
 
@@ -13,7 +13,7 @@ export class PlacesSearchController {
   async search(
     @Query('q') q: string,
     @Query('city') city: string,
-  ) {
+  ): Promise<any[]> {   // ✅ IMPORTANT: explicit return type
     if (!q || !city) {
       return [];
     }

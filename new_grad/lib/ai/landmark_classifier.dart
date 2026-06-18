@@ -28,7 +28,7 @@ class LandmarkClassifier {
 
   /// Minimum confidence to count as a valid detection.
   /// Below this → return null ("not identified").
-  static const _threshold = 0.001;
+  static const _threshold = 0.25;
 
   /// YOLOv8 output: [1, 4 + numClasses, numAnchors]
   /// For 640×640 input with 127 classes:

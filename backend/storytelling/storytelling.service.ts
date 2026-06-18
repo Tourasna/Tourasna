@@ -14,38 +14,68 @@ export class StorytellingService {
     private readonly config: ConfigService,
   ) {}
 
+  async getAllPlacesWithPhotos(): Promise<any[]> {
+    const [rows] = await this.db.pool.query<RowDataPacket[]>(
+      `SELECT
+        p.id,
+        p.name,
+        p.description,
+        p.category,
+        p.glb_url,
+        (
+          SELECT r.photo_urls
+          FROM recommendation_items r
+          WHERE LOWER(TRIM(r.name)) = LOWER(TRIM(p.name))
+          LIMIT 1
+        ) AS photo_urls,
+        p.photo_url,
+        CASE WHEN s.id IS NOT NULL THEN 1 ELSE 0 END AS has_story
+       FROM places p
+       LEFT JOIN storytelling s ON s.place_id = p.id
+       ORDER BY has_story DESC, RAND()`,
+    );
+
+    return rows.map((r) => {
+      let photos: string[] = [];
+      try {
+        if (r.photo_urls) {
+          photos = typeof r.photo_urls === 'string'
+            ? JSON.parse(r.photo_urls)
+            : r.photo_urls;
+        }
+      } catch (_) {}
+
+      return {
+        id:          r.id,
+        name:        r.name,
+        description: r.description,
+        category:    r.category,
+        glbUrl:      r.glb_url ?? null,
+        photoUrl:    photos[0] ?? r.photo_url ?? null,
+        hasStory:    r.has_story === 1,
+      };
+    });
+  }
+
   async getStory(placeId: string): Promise<{ story: string }> {
-    // 1️⃣ Cache check
     const [cached] = await this.db.pool.query<RowDataPacket[]>(
       'SELECT story FROM storytelling WHERE place_id = ?',
       [placeId],
     );
+    if (cached.length > 0) return { story: cached[0].story as string };
 
-    if (cached.length > 0) {
-      return { story: cached[0].story as string };
-    }
-
-    // 2️⃣ Fetch place
     const [places] = await this.db.pool.query<RowDataPacket[]>(
       'SELECT name, description FROM places WHERE id = ?',
       [placeId],
     );
+    if (places.length === 0) throw new NotFoundException('Place not found');
 
-    if (places.length === 0) {
-      throw new NotFoundException('Place not found');
-    }
-
-    const name = places[0].name as string;
+    const name        = places[0].name as string;
     const description = places[0].description as string;
 
-    // 3️⃣ Resolve AI service URL (STRICT)
     const aiServiceUrl = this.config.get<string>('AI_SERVICE_URL');
+    if (!aiServiceUrl) throw new Error('AI_SERVICE_URL is not configured');
 
-    if (!aiServiceUrl) {
-      throw new Error('AI_SERVICE_URL is not configured');
-    }
-
-    // 4️⃣ Call Python AI (Groq)
     const aiRes = await firstValueFrom(
       this.http.post(
         `${aiServiceUrl}/storytelling`,
@@ -53,24 +83,16 @@ export class StorytellingService {
         { timeout: 60_000 },
       ),
     );
-
     const story: string | undefined = aiRes.data?.story;
+    if (!story) throw new Error('AI storytelling service returned no story');
 
-    if (!story) {
-      throw new Error('AI storytelling service returned no story');
-    }
-
-    // 5️⃣ Persist (race-safe)
     try {
       await this.db.pool.query(
         'INSERT INTO storytelling (id, place_id, story) VALUES (?, ?, ?)',
         [randomUUID(), placeId, story],
       );
     } catch (err: any) {
-      // Duplicate entry → another request already inserted it
-      if (err?.code !== 'ER_DUP_ENTRY') {
-        throw err;
-      }
+      if (err?.code !== 'ER_DUP_ENTRY') throw err;
     }
 
     return { story };

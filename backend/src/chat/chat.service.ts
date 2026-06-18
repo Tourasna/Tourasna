@@ -57,10 +57,7 @@ export class ChatService {
   // ─────────────────────────────────────────────
   // SAVE ASSISTANT MESSAGE
   // ─────────────────────────────────────────────
-  async saveAssistantMessage(
-    userId: string,
-    content: string,
-  ): Promise<void> {
+  async saveAssistantMessage(userId: string, content: string): Promise<void> {
     const sessionId = await this.getOrCreateSession(userId);
 
     await this.db.pool.query(
@@ -73,7 +70,7 @@ export class ChatService {
   }
 
   // ─────────────────────────────────────────────
-  // LOAD CHAT HISTORY
+  // HISTORY (FIXES BUILD ERROR)
   // ─────────────────────────────────────────────
   async getHistory(userId: string, limit = 30) {
     const sessionId = await this.getOrCreateSession(userId);
@@ -93,17 +90,14 @@ export class ChatService {
   }
 
   // ─────────────────────────────────────────────
-  // PYTHON WS CONNECTION
+  // PYTHON WS
   // ─────────────────────────────────────────────
-  createPythonConnection(userId: string): WebSocket {
-  const url = `${process.env.AI_CHAT_WS_URL}/chat/${userId}`;
+  createPythonConnection(sessionId: string): WebSocket {
+    const base = process.env.AI_CHAT_WS_URL!;
+    const url = `${base}/chat/${sessionId}`;
 
-  const ws = new WebSocket(url);
+    console.log('🌐 Connecting to Python WS:', url);
 
-  ws.on('error', (err) => {
-    console.error('❌ Python Chat WS error:', err.message);
-  });
-
-  return ws;
-}
+    return new WebSocket(url);
+  }
 }
