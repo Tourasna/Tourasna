@@ -359,7 +359,7 @@ class _AgendaPageState extends State<AgendaPage> {
       final token = await AuthService().getValidToken();
       if (!mounted) return;
       if (token != null) {
-        await _loadAgendaForDay(_today);
+        await _loadAgendaForDay(_selectedDay);
         if (widget.prefilledTitle != null) {
           _eventDialog(prefilledTitle: widget.prefilledTitle);
         }

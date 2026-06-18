@@ -11,6 +11,15 @@ export class FirebaseAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
+    // ✅ IMPORTANT: Allow CORS preflight requests
+    // OPTIONS requests never include Authorization headers
+
+    console.log('METHOD:', req.method, 'URL:', req.originalUrl);
+
+    if (req.method === 'OPTIONS') {
+      return true;
+    }
+
     console.log('--- AUTH GUARD HIT ---');
 
     const authHeader = req.headers.authorization;
@@ -29,6 +38,7 @@ export class FirebaseAuthGuard implements CanActivate {
 
       console.log('✅ Token verified:', decoded.uid);
 
+      // Attach trusted user info to request
       req.user = {
         uid: decoded.uid,
         email: decoded.email,

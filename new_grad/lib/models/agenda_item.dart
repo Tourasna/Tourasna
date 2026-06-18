@@ -25,8 +25,8 @@ class AgendaItem {
     return AgendaItem(
       id: json['id'],
       title: json['title'],
-      start: DateTime.parse(json['start_datetime']),
-      end: DateTime.parse(json['end_datetime']),
+      start: DateTime.parse(json['start_datetime']).toLocal(),
+      end: DateTime.parse(json['end_datetime']).toLocal(),
       placeId: json['place_id']?.toString(),
       landmarkId: json['landmark_id'] != null
           ? int.tryParse(json['landmark_id'].toString())
@@ -44,8 +44,8 @@ class AgendaItem {
   Map<String, dynamic> toCreateJson() {
     return {
       'title': title,
-      'startDateTime': start.toIso8601String(),
-      'endDateTime': end.toIso8601String(),
+      'startDateTime': start.toUtc().toIso8601String(),
+      'endDateTime': end.toUtc().toIso8601String(),
       if (placeId != null) 'placeId': placeId,
       if (landmarkId != null) 'landmarkId': landmarkId,
       if (notes != null) 'notes': notes,
@@ -54,8 +54,8 @@ class AgendaItem {
 
   Map<String, dynamic> toUpdateJson() {
     return {
-      'startDateTime': start.toIso8601String(),
-      'endDateTime': end.toIso8601String(),
+      'startDateTime': start.toUtc().toIso8601String(),
+      'endDateTime': end.toUtc().toIso8601String(),
       if (title.isNotEmpty) 'title': title,
       if (placeId != null) 'placeId': placeId,
       if (landmarkId != null) 'landmarkId': landmarkId,

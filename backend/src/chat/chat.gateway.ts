@@ -12,18 +12,18 @@ import { ChatService } from './chat.service';
 import * as admin from 'firebase-admin';
 import WebSocket from 'ws';
 
-@WebSocketGateway({
-  cors: { origin: '*' },
-})
+@WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer()
   server: Server;
 
+  // 🔑 socket.id → python ws
   private pythonSockets = new Map<string, WebSocket>();
-  private responseBuffers = new Map<string, string>();
-  private pendingMessages = new Map<string, string[]>();
+
+  // 🔑 socket.id → response buffer
+  private buffers = new Map<string, string>();
 
   constructor(private readonly chatService: ChatService) {}
 
@@ -38,6 +38,9 @@ export class ChatGateway
       const decoded = await admin.auth().verifyIdToken(token);
       client.data.userId = decoded.uid;
 
+      // 🔥 CRITICAL: socket identity, NOT DB session
+      client.data.sessionId = client.id;
+
       console.log('✅ WS AUTH:', decoded.uid);
     } catch {
       client.disconnect();
@@ -45,12 +48,14 @@ export class ChatGateway
   }
 
   handleDisconnect(client: Socket) {
-    const ws = this.pythonSockets.get(client.id);
-    if (ws) ws.close();
+    const sid = client.data.sessionId;
+    if (!sid) return;
 
-    this.pythonSockets.delete(client.id);
-    this.pendingMessages.delete(client.id);
-    this.responseBuffers.delete(client.id);
+    this.pythonSockets.get(sid)?.close();
+    this.pythonSockets.delete(sid);
+    this.buffers.delete(sid);
+
+    console.log('🔌 WS DISCONNECT', sid);
   }
 
   // ─────────────────────────────────────────────
@@ -62,61 +67,76 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
   ) {
     const userId = client.data.userId;
-    if (!userId) return;
+    const sid = client.data.sessionId;
 
+    if (!userId || !sid || !body?.message) return;
+
+    console.log('📨 MESSAGE:', body.message);
+
+    // ✅ Persist using DB session (correct place)
     await this.chatService.saveUserMessage(userId, body.message);
 
-    let pyWs = this.pythonSockets.get(client.id);
+    let pyWs = this.pythonSockets.get(sid);
 
-    if (!pyWs) {
-      pyWs = this.chatService.createPythonConnection(userId);
+    // ─────────────────────────────────────────────
+    // CREATE PYTHON WS ONCE
+    // ─────────────────────────────────────────────
+    if (!pyWs || pyWs.readyState !== WebSocket.OPEN && pyWs.readyState !== WebSocket.CONNECTING) {
+      console.log('🌐 Connecting to Python WS:', sid);
 
-      this.pythonSockets.set(client.id, pyWs);
-      this.pendingMessages.set(client.id, []);
-      this.responseBuffers.set(client.id, '');
+      pyWs = this.chatService.createPythonConnection(sid);
+
+      this.pythonSockets.set(sid, pyWs);
+      this.buffers.set(sid, '');
 
       pyWs.on('open', () => {
-        const queue = this.pendingMessages.get(client.id) || [];
-        queue.forEach((msg) => pyWs!.send(msg));
-        this.pendingMessages.set(client.id, []);
+        console.log('🟢 Python WS OPEN', sid);
+        pyWs!.send(JSON.stringify({ message: body.message }));
       });
 
-      pyWs.on('message', (data) => {
+      pyWs.on('message', async (data) => {
         const chunk = data.toString();
 
         if (chunk === '__END__') {
-          const full = this.responseBuffers.get(client.id) || '';
+          const full = this.buffers.get(sid) || '';
 
-          this.chatService.saveAssistantMessage(userId, full);
+          if (full.trim()) {
+            await this.chatService.saveAssistantMessage(userId, full);
+          }
 
-          this.responseBuffers.set(client.id, '');
+          this.buffers.set(sid, '');
           client.emit('end');
           return;
         }
 
-        const current = this.responseBuffers.get(client.id) || '';
-        this.responseBuffers.set(client.id, current + chunk);
-
+        this.buffers.set(sid, (this.buffers.get(sid) || '') + chunk);
         client.emit('stream', chunk);
       });
 
       pyWs.on('close', () => {
-        this.pythonSockets.delete(client.id);
-        this.pendingMessages.delete(client.id);
-        this.responseBuffers.delete(client.id);
+        console.log('🔌 Python WS CLOSED', sid);
+        this.pythonSockets.delete(sid);
+        this.buffers.delete(sid);
       });
 
       pyWs.on('error', (err) => {
         console.error('❌ Python WS error:', err.message);
+        client.emit('end'); // never block UI
       });
+
+      // 🛡 Safety timeout
+      setTimeout(() => {
+        if (this.buffers.get(sid)) {
+          client.emit('end');
+        }
+      }, 300000);
+
+      return;
     }
 
-    const payload = JSON.stringify({ message: body.message });
-
-    if (pyWs.readyState === WebSocket.OPEN) {
-      pyWs.send(payload);
-    } else {
-      this.pendingMessages.get(client.id)!.push(payload);
-    }
+    // ─────────────────────────────────────────────
+    // SEND MESSAGE IF ALREADY CONNECTED
+    // ─────────────────────────────────────────────
+    pyWs.send(JSON.stringify({ message: body.message }));
   }
 }

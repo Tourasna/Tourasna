@@ -1,12 +1,12 @@
-// src/profiles/profiles.module.ts
 import { Module } from '@nestjs/common';
-import { ProfilesController } from './profiles.controller';
-import { ProfilesService } from './profiles.service';
 import { DatabaseModule } from '../database/database.module';
+import { ProfilesService } from './profiles.service';
+import { ProfilesController } from './profiles.controller';
+import { AvatarService } from './avatar.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [ProfilesController],
-  providers: [ProfilesService],
+  providers: [ProfilesService, AvatarService],
 })
 export class ProfilesModule {}

@@ -1088,30 +1088,182 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
   DateTime _selectedDate = DateTime.now();
   bool _saving = false;
 
-  Future<void> _confirm() async {
-    setState(() => _saving = true);
-    final selectedDate = _selectedDate;
+  final List<String> _timeSlots = List.generate(16, (i) {
+    final h = i + 7;
+    final dh = h > 12 ? h - 12 : h;
+    final p = h < 12 ? 'AM' : 'PM';
+    return '$dh:00 $p';
+  });
+
+  String? _start;
+  String? _end;
+
+  void _pickTime(StateSetter setD, bool isStart) {
+    final allSlots = _timeSlots;
+    final slots = isStart
+        ? allSlots
+        : (_start == null
+              ? allSlots
+              : allSlots.where((t) {
+                  final si = allSlots.indexOf(_start!);
+                  final ti = allSlots.indexOf(t);
+                  return ti > si;
+                }).toList());
+
+    final current = isStart ? _start : _end;
+    int initialIndex = slots.indexOf(current ?? slots[0]);
+    if (initialIndex < 0) initialIndex = 0;
+    final ctrl = FixedExtentScrollController(initialItem: initialIndex);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        height: 300,
+        decoration: const BoxDecoration(
+          color: Color(0xFFEAE2D1),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: _C.dark.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  Text(
+                    isStart ? 'Start Time' : 'End Time',
+                    style: const TextStyle(
+                      fontFamily: 'Gambetta',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: _C.dark,
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _C.dark,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'Done',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    decoration: BoxDecoration(
+                      color: _C.dark.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: _C.bronze.withOpacity(0.30)),
+                    ),
+                  ),
+                  ListWheelScrollView.useDelegate(
+                    controller: ctrl,
+                    itemExtent: 50,
+                    perspective: 0.003,
+                    diameterRatio: 2.2,
+                    physics: const FixedExtentScrollPhysics(),
+                    onSelectedItemChanged: (i) {
+                      if (isStart) {
+                        setD(() {
+                          _start = slots[i];
+                          if (_end != null) {
+                            final si = allSlots.indexOf(_start!);
+                            final ei = allSlots.indexOf(_end!);
+                            if (ei <= si) _end = null;
+                          }
+                        });
+                      } else {
+                        setD(() => _end = slots[i]);
+                      }
+                    },
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      childCount: slots.length,
+                      builder: (_, i) {
+                        final sel = slots[i] == (isStart ? _start : _end);
+                        return Center(
+                          child: Text(
+                            slots[i],
+                            style: TextStyle(
+                              fontSize: sel ? 18 : 15,
+                              fontWeight: sel
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: sel ? _C.dark : _C.dark.withOpacity(0.35),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  DateTime _combine(DateTime day, String time) {
+    final parts = time.split(RegExp(r'[: ]'));
+    int h = int.parse(parts[0]);
+    final m = int.parse(parts[1]);
+    final isPm = parts[2] == 'PM';
+    if (isPm && h != 12) h += 12;
+    if (!isPm && h == 12) h = 0;
+    return DateTime(day.year, day.month, day.day, h, m).toUtc();
+  }
+
+  Future<void> _confirm(StateSetter setD) async {
+    if (_start == null || _end == null) return;
+    setD(() => _saving = true);
+
+    final agendaService = AgendaService();
+    final start = _combine(_selectedDate, _start!);
+    final end = _combine(_selectedDate, _end!);
 
     try {
-      await AgendaService().create(
+      await agendaService.create(
         AgendaItem(
           id: 0,
           title: widget.place.item.name,
-          start: DateTime(
-            selectedDate.year,
-            selectedDate.month,
-            selectedDate.day,
-            9,
-            0,
-          ),
-          end: DateTime(
-            selectedDate.year,
-            selectedDate.month,
-            selectedDate.day,
-            11,
-            0,
-          ),
+          start: start,
+          end: end,
           placeId: null,
+          landmarkId: widget.place.item.id,
           notes:
               '${widget.place.item.category} • ${widget.place.item.budget} budget',
         ),
@@ -1119,23 +1271,300 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
 
       if (!mounted) return;
       Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => AgendaPage(initialDate: selectedDate),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 8),
+              Text('Added to agenda'),
+            ],
+          ),
+          backgroundColor: _C.dark,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          margin: const EdgeInsets.all(16),
         ),
       );
     } catch (e) {
       if (!mounted) return;
-      setState(() => _saving = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().contains('overlap')
-                ? 'That slot conflicts with an existing event. Pick a different date.'
-                : 'Failed to save: $e',
+      setD(() => _saving = false);
+
+      final isConflict =
+          e.toString().toLowerCase().contains('overlap') ||
+          e.toString().toLowerCase().contains('conflict') ||
+          e.toString().contains('409');
+
+      if (!isConflict) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        );
+        return;
+      }
+
+      // fetch free slots
+      final allItems = await agendaService.fetch(
+        from: _selectedDate,
+        to: _selectedDate.add(const Duration(days: 1)),
+      );
+
+      final dayStart = DateTime(
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        7,
+        0,
+      ).toUtc();
+      final dayEnd = DateTime(
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        22,
+        0,
+      ).toUtc();
+      final sorted = List.of(allItems)
+        ..sort((a, b) => a.start.compareTo(b.start));
+      final freeSlots = <Map<String, DateTime>>[];
+      DateTime cursor = dayStart;
+      for (final item in sorted) {
+        if (cursor.isBefore(item.start)) {
+          DateTime sc = cursor;
+          while (!sc.add(const Duration(hours: 2)).isAfter(item.start)) {
+            freeSlots.add({
+              'start': sc,
+              'end': sc.add(const Duration(hours: 2)),
+            });
+            sc = sc.add(const Duration(hours: 1));
+            if (freeSlots.length >= 8) break;
+          }
+        }
+        if (item.end.isAfter(cursor)) cursor = item.end;
+      }
+      DateTime sc = cursor;
+      while (!sc.add(const Duration(hours: 2)).isAfter(dayEnd)) {
+        freeSlots.add({'start': sc, 'end': sc.add(const Duration(hours: 2))});
+        sc = sc.add(const Duration(hours: 1));
+        if (freeSlots.length >= 8) break;
+      }
+
+      if (freeSlots.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('That day is full. Pick a different date.'),
+            backgroundColor: Colors.red,
           ),
-          backgroundColor: Colors.red,
+        );
+        return;
+      }
+
+      // show free slots sheet
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (_) => Container(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+          decoration: const BoxDecoration(
+            color: Color(0xFFEAE2D1),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: _C.dark.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                    ),
+                    child: const Icon(
+                      Icons.warning_amber_rounded,
+                      color: Colors.orange,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Time Conflict',
+                        style: TextStyle(
+                          fontFamily: 'Gambetta',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          color: _C.dark,
+                        ),
+                      ),
+                      Text(
+                        'Pick an available slot below',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: _C.dark.withOpacity(0.45),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'AVAILABLE SLOTS',
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.8,
+                  color: _C.bronze,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 320),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: freeSlots.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (ctx, i) {
+                    final sStart = freeSlots[i]['start']!;
+                    final sEnd = freeSlots[i]['end']!;
+                    String fmt(DateTime d) {
+                      final h = d.hour > 12
+                          ? d.hour - 12
+                          : d.hour == 0
+                          ? 12
+                          : d.hour;
+                      final m = d.minute.toString().padLeft(2, '0');
+                      final p = d.hour < 12 ? 'AM' : 'PM';
+                      return '$h:$m $p';
+                    }
+
+                    final mins = sEnd.difference(sStart).inMinutes;
+                    final dur = mins >= 60
+                        ? '${mins ~/ 60}h${mins % 60 > 0 ? ' ${mins % 60}m' : ''}'
+                        : '${mins}m';
+                    return GestureDetector(
+                      onTap: () async {
+                        Navigator.pop(ctx);
+                        try {
+                          await agendaService.create(
+                            AgendaItem(
+                              id: 0,
+                              title: widget.place.item.name,
+                              start: sStart,
+                              end: sEnd,
+                              placeId: null,
+                              landmarkId: widget.place.item.id,
+                              notes:
+                                  '${widget.place.item.category} • ${widget.place.item.budget} budget',
+                            ),
+                          );
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                children: const [
+                                  Icon(Icons.check_circle, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text('Added to agenda'),
+                                ],
+                              ),
+                              backgroundColor: _C.dark,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              margin: const EdgeInsets.all(16),
+                            ),
+                          );
+                        } catch (_) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Still conflicts. Try another slot.',
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _C.cream.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: _C.dark.withOpacity(0.08)),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: _C.dark,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.access_time,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${fmt(sStart)}  →  ${fmt(sEnd)}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                      color: _C.dark,
+                                    ),
+                                  ),
+                                  Text(
+                                    '$dur free',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: _C.dark.withOpacity(0.45),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(Icons.chevron_right_rounded, color: _C.bronze),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -1146,124 +1575,217 @@ class _SinglePlaceAgendaDialogState extends State<_SinglePlaceAgendaDialog> {
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-      child: Container(
-        decoration: BoxDecoration(
-          color: _C.cream,
-          borderRadius: BorderRadius.circular(28),
-          border: const Border(top: BorderSide(color: _C.gold, width: 4)),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.place.item.name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            color: _C.dark,
-                            height: 1.2,
+      child: StatefulBuilder(
+        builder: (_, setD) => Container(
+          decoration: BoxDecoration(
+            color: _C.cream,
+            borderRadius: BorderRadius.circular(28),
+            border: const Border(top: BorderSide(color: _C.gold, width: 4)),
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.place.item.name,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                              color: _C.dark,
+                              height: 1.2,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 2),
-                        const Text(
-                          'ADD TO YOUR AGENDA',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.5,
-                            color: _C.gold,
+                          const SizedBox(height: 2),
+                          const Text(
+                            'ADD TO YOUR AGENDA',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.5,
+                              color: _C.gold,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.close,
-                      color: _C.dark.withValues(alpha: 0.4),
-                      size: 22,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const _LandmarksBar(count: 1, total: 1),
-              const SizedBox(height: 20),
-              Text(
-                'SCHEDULE SUMMARY',
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: _C.dark.withValues(alpha: 0.4),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Container(
-                    width: 5,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: _C.bronze.withValues(alpha: 0.5),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      widget.place.item.name,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: _C.dark.withValues(alpha: 0.75),
-                        fontWeight: FontWeight.w500,
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              StatefulBuilder(
-                builder: (context, setLocal) => _buildDatePicker(
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(
+                        Icons.close,
+                        color: _C.dark.withOpacity(0.4),
+                        size: 22,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const _LandmarksBar(count: 1, total: 1),
+                const SizedBox(height: 20),
+
+                // date picker
+                _buildDatePicker(
                   context,
                   _selectedDate,
-                  (d) => setState(() => _selectedDate = d),
+                  (d) => setD(() => _selectedDate = d),
                   'SELECT DATE',
                 ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: _DialogButton(
-                      label: 'CANCEL',
-                      filled: false,
-                      onTap: () => Navigator.pop(context),
-                    ),
+                const SizedBox(height: 20),
+
+                // time pickers
+                Text(
+                  'SCHEDULE',
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.8,
+                    color: _C.bronze,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: _DialogButton(
-                      label: _saving ? 'SAVING...' : 'CONFIRM',
-                      filled: true,
-                      onTap: _saving ? () {} : _confirm,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _pickTime(setD, true),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _start != null
+                                ? _C.dark.withOpacity(0.06)
+                                : Colors.white.withOpacity(0.50),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: _start != null
+                                  ? _C.bronze.withOpacity(0.35)
+                                  : _C.dark.withOpacity(0.08),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.schedule_rounded,
+                                size: 15,
+                                color: _start != null
+                                    ? _C.bronze
+                                    : _C.dark.withOpacity(0.30),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _start ?? 'Start',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: _start != null
+                                        ? _C.dark
+                                        : _C.dark.withOpacity(0.35),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                size: 16,
+                                color: _C.dark.withOpacity(0.30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _pickTime(setD, false),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _end != null
+                                ? _C.dark.withOpacity(0.06)
+                                : Colors.white.withOpacity(0.50),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: _end != null
+                                  ? _C.bronze.withOpacity(0.35)
+                                  : _C.dark.withOpacity(0.08),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.schedule_rounded,
+                                size: 15,
+                                color: _end != null
+                                    ? _C.bronze
+                                    : _C.dark.withOpacity(0.30),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _end ?? 'End',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: _end != null
+                                        ? _C.dark
+                                        : _C.dark.withOpacity(0.35),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                size: 16,
+                                color: _C.dark.withOpacity(0.30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _DialogButton(
+                        label: 'CANCEL',
+                        filled: false,
+                        onTap: () => Navigator.pop(context),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 2,
+                      child: _DialogButton(
+                        label: _saving ? 'SAVING...' : 'CONFIRM',
+                        filled: true,
+                        onTap: (_saving || _start == null || _end == null)
+                            ? () {}
+                            : () => _confirm(setD),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
