@@ -6,21 +6,26 @@ Tourasna is an AI-powered heritage tourism assistant that provides personalized 
 
 Tourasna is a graduation project developed by students of the Faculty of Information Technology and Computer Science, Nile University. It leverages artificial intelligence to enhance smart tourism experiences through personalized guidance, landmark recognition, and optimized cultural itineraries.
 
-## 🚀 Key Features
+## 🚀 Features
 
-- 🧠 Landmark recognition using deep learning (CNN)
-- 🧭 Personalized tour suggestions based on user preferences
-- 🗺️ Smart route planning using real-time data
-- 🧍‍♂️ User profiling and behavior-based recommendations
-- 📱 Mobile-friendly design for tourists on the go
+📸 AI Lens — Real-time landmark recognition from your camera
+🔤 Hieroglyphics Translator — Detect and translate ancient Egyptian glyphs
+🏛️ 3D Monument Viewer — AI-generated 3D models of iconic landmarks
+🎙️ AI Storytelling — Immersive monument narratives with voice synthesis
+🤖 FAHMY Chatbot — Context-aware cultural tourism assistant
+🗺️ Interactive Map — Real-time monument map with compass and proximity
+📅 Trip Planner — Build and manage personalized itineraries
+⭐ Recommendations — Personalized heritage site suggestions
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
-- **Frontend:** Flutter / React Native
-- **Backend:** Python, Flask / FastAPI
-- **AI Models:** TensorFlow / PyTorch (CNN & GNN)
-- **Mapping:** Google Maps API / Mapbox
-- **Recommendation Engine:** Graph Neural Networks (GAT)
+Mobile: Flutter
+Backend: NestJS, FastAPI
+Database: MySQL
+Auth: Firebase
+Cloud: AWS EC2, AWS S3
+AI: Groq, Google TTS, Modal GPU
+DevOps: Docker, nginx
 
 ## 📁 Project Structure
 
